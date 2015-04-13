@@ -26,3 +26,5 @@ Things you may want to cover:
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
+
+[![Build Status](https://travis-ci.org/cocolote/jamradio.svg?branch=master)](https://travis-ci.org/cocolote/jamradio) [![Code Climate](https://codeclimate.com/github/cocolote/jamradio.png)](https://codeclimate.com/github/cocolote/jamradio) [![Coverage Status](https://coveralls.io/repos/cocolote/jamradio/badge.png)](https://coveralls.io/r/cocolote/jamradio)
