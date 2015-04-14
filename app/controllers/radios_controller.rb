@@ -28,7 +28,7 @@ class RadiosController < ApplicationController
   def destroy
     UserRadio.destroy_all(user: current_user, radio_id: params[:id])
     respond_to do |format|
-      format.json { render json: {id: params[:id], message: "The radio was deleted" } }
+      format.json { render json: { id: params[:id], message: "The radio was deleted" } }
     end
   end
 
@@ -37,5 +37,4 @@ class RadiosController < ApplicationController
   def radio_params
     params.require(:radio).permit(:category, :name)
   end
-
 end
