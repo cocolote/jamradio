@@ -26,7 +26,6 @@ class RadiosController < ApplicationController
   end
 
   def destroy
-
     UserRadio.destroy_all(user: current_user, radio_id: params[:id])
     respond_to do |format|
       format.json { render json: {id: params[:id], message: "The radio was deleted" } }

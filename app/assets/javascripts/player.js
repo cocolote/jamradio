@@ -4,7 +4,7 @@ $('#new_radio').on('submit', function(e) {
 
   var category = $('#radio_category').val();
   var name = $('#radio_name').val();
-  var radio = {name: name, category: category}
+  var radio = {name: name, category: category};
 
   var newRadio = $.ajax({
     url: '/radios',
@@ -41,7 +41,7 @@ $('#radios-play-list').on('click', '.delete-radio', function(e) {
     $('#list-element-' + result.id).remove();
     alert(result.message);
   });
-  deleteRadio.fail(function(messages) {
-    alert("Something went wrong!")
+  deleteRadio.fail(function() {
+    alert('Something went wrong!');
   });
 });
