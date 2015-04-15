@@ -11,4 +11,6 @@
 /log/*
 !/log/.keep
 /tmp
+/public/uploads
 /coverage
+.env
