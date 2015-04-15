@@ -46,11 +46,11 @@ $('#radios-play-list').on('click', '.radios', function(e) {
 function getParameters(radio) {
   var serchParameters;
   if (radio === 'genres') {
-    var serchParameters = { state: 'finished', sharing: 'public', streamable: true, genres: radioName, limit: 200 };
+    serchParameters = { state: 'finished', sharing: 'public', streamable: true, genres: radioName, limit: 200 };
   }else{
-    var serchParameters = { state: 'finished', sharing: 'public', streamable: true, q: radioName, limit: 200 };
+    serchParameters = { state: 'finished', sharing: 'public', streamable: true, q: radioName, limit: 200 };
   }
-  return serchParameters
+  return serchParameters;
 }
 
 function getTracks() {
@@ -87,7 +87,7 @@ function songController(track) {
 
   $('#play-pause-btn').on('mousedown', function() {
     var element = $(this).attr('id');
-    animateButtons(element)
+    // animateButtons(element);
   });
 
   $('#play-pause-btn').on('click', function() {
@@ -102,11 +102,13 @@ function songController(track) {
 
 // UPDATES THE SONG TIMER
 function timer(track) {
+  var sMinutes;
+  var sSeconds;
   setInterval(function() {
     if (track.sID === soundManager.soundIDs[0]) {
         var seconds = track.position / 1000;
-        min = Math.floor(seconds / 60);
-        sec = Math.floor(seconds % 60);
+        var min = Math.floor(seconds / 60);
+        var sec = Math.floor(seconds % 60);
         min.toString().length === 1 ? sMinutes = '0' + min : sMinutes = min;
         sec.toString().length === 1 ? sSeconds = '0' + sec : sSeconds = sec;
         $('#timer-p').text(sMinutes + ':' + sSeconds);
