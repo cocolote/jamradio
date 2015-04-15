@@ -1,0 +1,138 @@
+$orange: #DA6100;
+$grey: #2A2827;
+
+@font-face {
+  font-family: 'LED';
+  src: url(/assets/minisystem.ttf) format(truetype);
+}
+
+body {
+  background-image: url(/assets/party_ball.png);
+  background-size: 100%;
+  color: $orange;
+}
+
+#soundcloud-credit {
+  color: $orange;
+}
+
+.app-name {
+  display: inline-block;
+}
+
+.btn {
+  padding: 0;
+  border-radius: 100%;
+
+  img {
+    width: 65%;
+  }
+}
+
+#player {
+  background-color: rgba(0,0,0,0.85);
+  border: 1px solid red;
+  margin-top: 5vh;
+  margin-bottom: 1vh;
+  width: 100%;
+  padding: 2%;
+}
+
+#song-title-container {
+  font-family: 'LED';
+  border: 1px solid red;
+  margin-left: auto;
+  margin-right: auto;
+  height: 5em;
+  width: 60%;
+
+  p {
+    display: inline-block;
+    height: 100%;
+    padding: 0.5em;
+    padding-top: 1.5em;
+  }
+
+  #timer-p {
+    border-left: 1px dashed $orange;
+  }
+
+  #song-title {
+    width: 87.5%;
+    margin: 0;
+    font-size: 200%;
+    padding: 0;
+    padding-top: 2%;
+  }
+}
+
+#timer-container, .btn {
+  font-family: 'LED';
+  display: inline-block;
+  border: 1px solid red;
+}
+
+#timer-p {
+  float: right;
+}
+
+#player-controllers {
+  margin-top: 4vh;
+  text-align: center;
+}
+
+#play-pause {
+  margin-right: 10%;
+}
+
+#progress-bar-container {
+  border: 1px solid red;
+  margin-left: auto;
+  margin-right: auto;
+  height: 2vh;
+  width: 60%;
+}
+
+#new-radio {
+  width: 70%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 5vh;
+  font-family: 'LED';
+  #radio_category {
+    font-family: 'LED';
+  }
+}
+
+#player-list {
+  font-family: 'LED';
+  border: 1px solid red;
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 2vh;
+  overflow: auto;
+
+  #radios-play-list {
+    border: 1px solid red;
+    width: 85%;
+    height: 40vh;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 0;
+  }
+    p {
+      display: inline-block;
+    }
+
+    .playlist-element-right {
+      float: right;
+    }
+}
+
+.list-element {
+  border: 1px solid red;
+  li, p {
+    margin: 0;
+  }
+}

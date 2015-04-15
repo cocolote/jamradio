@@ -1,15 +1,12 @@
-<div class="row player">
-  <div class="small-6 columns player-container">
-    <h4 id="soundcloud-credit">Powered by <a href="http://www.soundcloud.com">SoundCloud</a></h4>
-    <div>
+<div class="row" id="player">
+    <h3 id="soundcloud-credit" class="app-name">JamRadio
+      <p class="app-name">(Powered by <a href="http://www.soundcloud.com">SoundCloud)</a></p>
+    </h3>
       <p class="radio-timer" id="radio-playing">Radio</p>
-      <div class="radio-timer" id="timer">
-        <p id="timer-p">00:00</p>
-      </div>
-    </div>
 
     <div id="song-title-container">
-      <p id="song-title"></p>
+      <p id="song-title">Un Titulo</p>
+      <p id="timer-p">00:00</p>
     </div>
     <div id="progress-bar-container">
       <div id="progess-bar"></div>
@@ -17,37 +14,26 @@
 
     <div id="player-controllers">
       <div class="btn" id="play-pause">
-        <%= image_tag "/images/edit-icon.png", id: "play-pause-btn" %>
+        <%= image_tag "play.png", id: "play-pause-btn" %>
       </div>
       <div class="btn" id='next-song'>
-        <%= image_tag "/images/fastForward.png", id: "next-btn" %>
+        <%= image_tag "fastForward.png", id: "next-btn" %>
       </div>
     </div>
-    <div class="row">
-      <div id="headsets-logo-container" class="small-4 columns">
-        <%= image_tag "/images/glowing-headset.png" %>
-      </div>
-      <div class="small-4 columns"></div>
-      <div class="small-4 columns"></div>
-    </div>
-  </div>
 
-  <div class="small-6 columns">
     <div class="row">
       <div class="new-log" id="new-radio-container">
-        <%= image_tag "/images/new-radio-1.png", id: "new-radio-button" %>
+
       </div>
     </div>
     <div id="new-radio">
       <%= form_for @radio do |f| %>
         <div class="row">
           <div class="small-6 columns">
-            <%= f.label :category %><br>
             <%= f.select :category, [["Genre", "genres"], ["Artist", "artist"]] %>
           </div>
           <div class="small-6 columns">
-            <%= f.label :name %><br>
-            <%= f.text_field :name %>
+            <%= f.text_field :name, placeholder: "Radio Type" %>
           </div>
         </div>
       <% end %>
@@ -62,7 +48,7 @@
                 <p class="plylist-element">
                   <%= link_to radio.name, "#", class: "radios", category: radio.category , name: radio.name %>
                 </p>
-                <p class="playlist-element">
+                <p class="playlist-element-right">
                   <%= link_to "X", '#', id: radio.id, class: "delete-radio" %>
                 </p>
               </li>
@@ -71,5 +57,4 @@
         <% end %>
       </ol>
     </div>
-  </div>
 </div>
