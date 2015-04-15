@@ -70,6 +70,7 @@ body {
   }
 }
 
+
 #timer-container, .btn {
   font-family: 'LED';
   display: inline-block;
@@ -90,12 +91,19 @@ body {
 }
 
 #progress-bar-container {
-  border: 1px solid red;
+
   margin-left: auto;
   margin-right: auto;
-  height: 2vh;
+  height: 0.5em;
   width: 60%;
+
+  #progess-bar {
+    background-color: $orange;
+    height: 0.5em;
+    width: 0;
+  }
 }
+
 
 #new-radio {
   width: 70%;
