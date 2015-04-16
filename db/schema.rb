@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414002124) do
+ActiveRecord::Schema.define(version: 20150416150120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,16 @@ ActiveRecord::Schema.define(version: 20150414002124) do
 
   add_index "radios", ["name", "category"], name: "index_radios_on_name_and_category", unique: true, using: :btree
 
+  create_table "songs", force: :cascade do |t|
+    t.integer  "sc_song_id", null: false
+    t.string   "title",      null: false
+    t.integer  "duration",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "songs", ["sc_song_id"], name: "index_songs_on_sc_song_id", unique: true, using: :btree
+
   create_table "user_radios", force: :cascade do |t|
     t.integer  "user_id",    null: false
     t.integer  "radio_id",   null: false
@@ -33,6 +43,15 @@ ActiveRecord::Schema.define(version: 20150414002124) do
   end
 
   add_index "user_radios", ["user_id", "radio_id"], name: "index_user_radios_on_user_id_and_radio_id", unique: true, using: :btree
+
+  create_table "user_songs", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "song_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "user_songs", ["user_id", "song_id"], name: "index_user_songs_on_user_id_and_song_id", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "user_name",                           null: false

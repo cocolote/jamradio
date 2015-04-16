@@ -26,6 +26,7 @@
 
       </div>
     </div>
+
     <div id="new-radio">
       <%= form_for @radio do |f| %>
         <div class="row">
@@ -39,6 +40,9 @@
       <% end %>
     </div>
 
+    <div id="serch-songs">
+    </div>
+
     <div id="player-list">
       <ol id="radios-play-list">
         <% if current_user && !current_user.radios.empty? %>
@@ -50,6 +54,24 @@
                 </p>
                 <p class="playlist-element-right">
                   <%= link_to "X", '#', id: radio.id, class: "delete-radio" %>
+                </p>
+              </li>
+            </div>
+          <% end %>
+        <% end %>
+      </ol>
+
+      <ol id="songs-play-list">
+        <% if current_user && !current_user.songs.empty? %>
+          <% current_user.songs.each do |song| %>
+            <div class="list-element" id="list-element-<%= song.id %>">
+              <li>
+                <p class="plylist-element">
+                  <%= link_to song.title, "#", class: "songs", title: song.title , sc_song_id: song.sc_song_id %>
+                </p>
+                <p class="playlist-element-right">
+                  (<% "#{song.duration * 1000 / 60 } : #{song.duration * 1000 % 60 }" %>)
+                  <%= link_to " X", '#', id: radio.id, class: "delete-radio" %>
                 </p>
               </li>
             </div>

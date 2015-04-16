@@ -26,7 +26,6 @@ function stopMusic(track) {
   if(typeof(soundManager) !== 'undefined'){
     soundManager.stopAll();
     var soundsIDs = soundManager.soundIDs;
-    // var trackID = soundsIDs[0];
     for (i = 0; i < soundsIDs.length; i++) {
       soundManager.destroySound(soundsIDs[i]);
     }
@@ -58,17 +57,22 @@ function getTracks() {
   SC.get('/tracks', getParameters(radioCategory), function(songs) {
     stopMusic();
     currentTracks = songs;
-    playSong(currentTracks);
+    pick_random_song(currentTracks);
   });
 }
 
 // GETS THE SONG AND PLAYS IT
-function playSong(tracks) {
+function pickRandomSong(tracks) {
   var i = Math.floor(Math.random() * tracks.length);
-  $('#song-title').replaceWith('<p id="song-title"><marquee behavior="scroll" direction="left">' + tracks[i].title + '</marquee></p>');
-  SC.stream('/tracks/' + tracks[i].id, { flashVersion: 9, autoPlay: true, multiShot: false, onfinish: function() {
-    stopMusic(); playSong(currentTracks); } }, function(track) {
-    songController(track);
+  playSong(tracks[i]);
+}
+
+function playSong(track) {
+  $('#song-title').replaceWith('<p id="song-title"><marquee behavior="scroll" direction="left">' + track.title + '</marquee></p>');
+  SC.stream('/tracks/' + track.id, { flashVersion: 9, autoPlay: true, multiShot: false, onfinish: function() {
+    stopMusic();
+    pickRandomSong(currentTracks); } }, function(track) {
+      songController(track);
   });
 }
 
@@ -77,7 +81,7 @@ $('#next-btn').on('mousedown', function() {
   var element = $(this).attr('id');
   // animateButtons(element);
   stopMusic();
-  playSong(currentTracks);
+  pickRandomSong(currentTracks);
 });
 
 // CONTROLLER FOR THE PLAY PAUSE BUTTON

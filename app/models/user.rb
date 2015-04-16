@@ -2,6 +2,9 @@ class User < ActiveRecord::Base
   has_many :user_radios
   has_many :radios, through: :user_radios
 
+  has_many :user_songs
+  has_many :songs, through: :user_songs
+
   validates :email,
   uniqueness: true,
     presence: true,

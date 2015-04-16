@@ -5,4 +5,8 @@ Rails.application.routes.draw do
   resources :radios do
     resources :user_radios
   end
+
+  resources :songs do
+    resources :user_songs
+  end
 end
