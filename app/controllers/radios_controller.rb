@@ -9,21 +9,15 @@ class RadiosController < ApplicationController
   end
 
   def create
-    @radio = Radio.new(radio_params)
-    if @radio.save
-      @user_radio = UserRadio.new(user: current_user, radio: @radio)
-      if @user_radio.save
-        respond_to do |format|
-          format.json { render json: @radio }
-        end
-      else
-        respond_to do |format|
-          format.json { render json: { errors: @user_radio.errors.full_messages }, status: 403 }
-        end
+    @radio = Radio.find_or_create_by(radio_params)
+    @user_radio = UserRadio.new(user: current_user, radio: @radio)
+    if @user_radio.save
+      respond_to do |format|
+        format.json { render json: @radio }
       end
     else
       respond_to do |format|
-        format.json { render json: { errors: @radio.errors.full_messages }, status: 403 }
+        format.json { render json: { errors: @user_radio.errors.full_messages }, status: 403 }
       end
     end
   end

@@ -7,36 +7,31 @@ class SongsController < ApplicationController
     end
   end
 
-  # def create
-  #   @radio = Radio.new(radio_params)
-  #   if @radio.save
-  #     @user_radio = UserRadio.new(user: current_user, radio: @radio)
-  #     if @user_radio.save
-  #       respond_to do |format|
-  #         format.json { render json: @radio }
-  #       end
-  #     else
-  #       respond_to do |format|
-  #         format.json { render json: { errors: @user_radio.errors.full_messages }, status: 403 }
-  #       end
-  #     end
-  #   else
-  #     respond_to do |format|
-  #       format.json { render json: { errors: @radio.errors.full_messages }, status: 403 }
-  #     end
-  #   end
-  # end
+  def create
+    @song = Song.find_or_create_by(song_params)
+    @user_song = UserSong.new(user: current_user, song: @song)
+    if @user_song.save
+      respond_to do |format|
+        format.json { render json: @song }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: { errors: @user_song.errors.full_messages }, status: 403 }
+      end
+    end
+  end
 
-  # def destroy
-  #   UserRadio.destroy_all(user: current_user, radio_id: params[:id])
-  #   respond_to do |format|
-  #     format.json { render json: { id: params[:id], message: "The radio was deleted" } }
-  #   end
-  # end
+  def destroy
+    @user_song = UserSong.find_by(user: current_user, song_id: params[:id])
+    UserSong.destroy_all(user: current_user, song_id: params[:id])
+    respond_to do |format|
+      format.json { render json: { id: params[:id], message: "The song was deleted" } }
+    end
+  end
 
-  # protected
+  protected
 
-  # def radio_params
-  #   params.require(:radio).permit(:category, :name)
-  # end
+  def song_params
+    params.require(:song).permit(:sc_song_id, :title, :duration)
+  end
 end

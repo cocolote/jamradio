@@ -69,6 +69,11 @@ function pickRandomSong(tracks) {
   playSong(tracks[i]);
 }
 
+// LIKE A SONG
+$('#like-btn').on('click', function(e) {
+  addSong(currentTrack);
+});
+
 function playSong(track) {
   $('#song-title').replaceWith('<p id="song-title"><marquee behavior="scroll" direction="left">' + track.title + '</marquee></p>');
   SC.stream('/tracks/' + track.id, { flashVersion: 9, autoPlay: true, multiShot: false, onfinish: function() {
@@ -125,6 +130,29 @@ function timer(track) {
     }, 100);
 }
 
+// ADD SONG
+function addSong(song) {
+  var likeSong = $.ajax({
+    url: '/songs',
+    type: 'POST',
+    data: { song: { sc_song_id: currentTrack.id, title: currentTrack.title, duration: currentTrack.duration } },
+    dataType: 'json'
+    });
+  likeSong.done(function(song) {
+    var songHTML = [];
+    songHTML.push('<div class="list-element" id="list-element-' + song.id + '"><li>');
+    songHTML.push('<p class="playlist-element">');
+    songHTML.push('<a class="songs" sc-song-id="' + song.sc_song_id + '" href="#">' + song.title + ' (' + song.duration + ')</a></p>');
+    songHTML.push('<p class="playlist-element-right">');
+    songHTML.push('<a class="delete-song" id="' + song.id + '" href="#">X</a></p></li></div>');
+    $('#songs-play-list').append(songHTML.join(''));
+    alert("Song was add to your play list");
+  });
+  likeSong.fail(function(messages) {
+    alert(messages.responseJSON.errors[0]);
+  });
+}
+
 // ADD RADIO
 $('#new_radio').on('submit', function(e) {
   e.preventDefault();
@@ -173,8 +201,26 @@ $('#player-list').on('click', '.delete-radio', function(e) {
   });
 });
 
-// SWITCH BETWEEN PLAY LISTS
+// DELETE SONG
+$('#player-list').on('click', '.delete-song', function(e) {
+  e.preventDefault();
 
+  var radioID = $(this).attr('id');
+  var deleteSong = $.ajax({
+    url: '/songs/' + radioID,
+    type: 'DELETE',
+    dataType: 'json'
+    });
+  deleteSong.done(function(result) {
+    $('#list-element-' + result.id).remove();
+    alert(result.message);
+  });
+  deleteSong.fail(function() {
+    alert('Something went wrong!');
+  });
+});
+
+// SWITCH BETWEEN PLAY LISTS
 $('.switch a').on('click', function(e) {
   e.preventDefault();
 
@@ -217,7 +263,7 @@ function createSongsList(songs) {
     songHTML.push('<p class="playlist-element">');
     songHTML.push('<a class="songs" sc-song-id="' + songs[i].sc_song_id + '" href="#">' + songs[i].title + ' (' + songs[i].duration + ')</a></p>');
     songHTML.push('<p class="playlist-element-right">');
-    songHTML.push('<a class="delete-radio" id="' + songs[i].id + '" href="#">X</a></p></li></div>');
+    songHTML.push('<a class="delete-song" id="' + songs[i].id + '" href="#">X</a></p></li></div>');
   }
   songHTML.push('</ol>');
   $('#player-list').empty();
