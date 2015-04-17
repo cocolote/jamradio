@@ -1,8 +1,11 @@
 class RadiosController < ApplicationController
-  respond_to :json
+  respond_to :json, :html
 
   def index
-    @radio = Radio.new
+    respond_to do |format|
+      format.html { @radio = Radio.new }
+      format.json { render json: { radios: current_user.radios } }
+    end
   end
 
   def create

@@ -1,82 +1,37 @@
-<div class="row" id="player">
-    <h3 id="soundcloud-credit" class="app-name">JamRadio
-      <p class="app-name">(Powered by <a href="http://www.soundcloud.com">SoundCloud)</a></p>
-    </h3>
-      <p class="radio-timer" id="radio-playing">Radio</p>
-
-    <div id="song-title-container">
-      <p id="song-title">Un Titulo</p>
-      <p id="timer-p">00:00</p>
-    </div>
-    <div id="progress-bar-container">
-      <div id="progess-bar"></div>
-    </div>
-
-    <div id="player-controllers">
-      <div class="btn" id="play-pause">
-        <%= image_tag "play.png", id: "play-pause-btn" %>
-      </div>
-      <div class="btn" id='next-song'>
-        <%= image_tag "fastForward.png", id: "next-btn" %>
-      </div>
-    </div>
-
+<div id="new-radio">
+  <%= form_for @radio do |f| %>
     <div class="row">
-      <div class="new-log" id="new-radio-container">
-
+      <div class="small-6 columns">
+        <%= f.select :category, [["Genre", "genres"], ["Artist", "artist"]] %>
+      </div>
+      <div class="small-6 columns">
+        <%= f.text_field :name, placeholder: "Radio Type" %>
       </div>
     </div>
+  <% end %>
+</div>
 
-    <div id="new-radio">
-      <%= form_for @radio do |f| %>
-        <div class="row">
-          <div class="small-6 columns">
-            <%= f.select :category, [["Genre", "genres"], ["Artist", "artist"]] %>
-          </div>
-          <div class="small-6 columns">
-            <%= f.text_field :name, placeholder: "Radio Type" %>
-          </div>
+<div id="search-songs">
+  <%= form_tag "songs#search", method: "get" do %>
+      <%= text_field_tag :q, nil, id: "search-field", placeholder: "Enter the title of a song" %>
+  <% end %>
+</div>
+
+<div id="player-list">
+  <ol id="radios-play-list">
+    <% if current_user && !current_user.radios.empty? %>
+      <% current_user.radios.each do |radio| %>
+        <div class="list-element" id="list-element-<%= radio.id %>">
+          <li>
+            <p class="plylist-element">
+              <%= link_to radio.name, "#", class: "radios", category: radio.category , name: radio.name %>
+            </p>
+            <p class="playlist-element-right">
+              <%= link_to "X", '#', id: radio.id, class: "delete-radio" %>
+            </p>
+          </li>
         </div>
       <% end %>
-    </div>
-
-    <div id="serch-songs">
-    </div>
-
-    <div id="player-list">
-      <ol id="radios-play-list">
-        <% if current_user && !current_user.radios.empty? %>
-          <% current_user.radios.each do |radio| %>
-            <div class="list-element" id="list-element-<%= radio.id %>">
-              <li>
-                <p class="plylist-element">
-                  <%= link_to radio.name, "#", class: "radios", category: radio.category , name: radio.name %>
-                </p>
-                <p class="playlist-element-right">
-                  <%= link_to "X", '#', id: radio.id, class: "delete-radio" %>
-                </p>
-              </li>
-            </div>
-          <% end %>
-        <% end %>
-      </ol>
-
-      <ol id="songs-play-list">
-        <% if current_user && !current_user.songs.empty? %>
-          <% current_user.songs.each do |song| %>
-            <div class="list-element" id="list-element-<%= song.id %>">
-              <li>
-                <p class="plylist-element">
-                  <%= link_to song.title, "#", class: "songs", title: song.title , sc_song_id: song.sc_song_id %>
-                </p>
-                <p class="playlist-element-right">
-                  (<% "#{song.duration * 1000 / 60 } : #{song.duration * 1000 % 60 }" %>)
-                  <%= link_to " X", '#', id: radio.id, class: "delete-radio" %>
-                </p>
-              </li>
-            </div>
-          <% end %>
-        <% end %>
-      </ol>
-    </div>
+    <% end %>
+  </ol>
 </div>
