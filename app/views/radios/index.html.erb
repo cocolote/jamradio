@@ -15,6 +15,9 @@
   <%= form_tag "songs#search", method: "get" do %>
       <%= text_field_tag :q, nil, id: "search-field", placeholder: "Enter the title of a song" %>
   <% end %>
+  <div id="autocomplete-container">
+    <ul id="autocomplete"></ul>
+  </div>
 </div>
 
 <div id="player-list">

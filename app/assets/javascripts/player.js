@@ -4,6 +4,8 @@ var currentTracks;
 var radioName;
 var radioCategory;
 var currentTrack;
+var quantSongs;
+var posPlayingSong;
 
 // ##### HELPER FUNCTIONS #####
 // Toggle play and pause buttons
@@ -33,9 +35,19 @@ function stopMusic(track) {
   }
 }
 
+// PLAY A SONG
+$('#player-list').on('click', '.songs', function(e) {
+  e.preventDefault();
+
+  posPlayingSong = $(this).attr('count');
+  var soundcloudID = $(this).attr('sc-song-id');
+  playSong(soundcloudID);
+});
+
 // PLAY A RADIO
 $('#player-list').on('click', '.radios', function(e) {
   e.preventDefault();
+
   radioName = $(this).attr('name');
   radioCategory = $(this).attr('category');
   $('#radio-playing').text(radioName);
@@ -66,7 +78,7 @@ function getTracks() {
 function pickRandomSong(tracks) {
   var i = Math.floor(Math.random() * tracks.length);
   currentTrack = tracks[i];
-  playSong(tracks[i]);
+  playRadioSong(tracks[i]);
 }
 
 // LIKE A SONG
@@ -74,13 +86,37 @@ $('#like-btn').on('click', function(e) {
   addSong(currentTrack);
 });
 
-function playSong(track) {
+function playRadioSong(track) {
   $('#song-title').replaceWith('<p id="song-title"><marquee behavior="scroll" direction="left">' + track.title + '</marquee></p>');
   SC.stream('/tracks/' + track.id, { flashVersion: 9, autoPlay: true, multiShot: false, onfinish: function() {
     stopMusic();
     pickRandomSong(currentTracks); } }, function(track) {
       songController(track);
   });
+}
+
+// PLAYS ONLY ONE SONG
+function playSong(soundcloudID) {
+  initialize(CLIENT_ID);
+  stopMusic();
+  SC.get('/tracks/' + soundcloudID, function(track) {
+    $('#song-title').replaceWith('<p id="song-title"><marquee behavior="scroll" direction="left">' + track.title + '</marquee></p>');
+    SC.stream('/tracks/' + track.id, { flashVersion: 9, autoPlay: true, multiShot: false, onfinish: function() {
+      stopMusic();
+      getNextSong(); } }, function(track) {
+        songController(track);
+    });
+  });
+}
+
+// MY PLAYLIST LOOP
+function getNextSong() {
+  if(posPlayingSong < currentTracks.length) {
+    posPlayingSong++;
+    playSong(currentTracks[posPlayingSong].sc_song_id);
+  } else {
+    stopMusic();
+  }
 }
 
 // NEXT SONG
@@ -135,14 +171,16 @@ function addSong(song) {
   var likeSong = $.ajax({
     url: '/songs',
     type: 'POST',
-    data: { song: { sc_song_id: currentTrack.id, title: currentTrack.title, duration: currentTrack.duration } },
+    data: { song: { sc_song_id: song.id, title: song.title, duration: song.duration } },
     dataType: 'json'
     });
   likeSong.done(function(song) {
+    currentTracks.push(song);
     var songHTML = [];
+    var i = quantSongs++;
     songHTML.push('<div class="list-element" id="list-element-' + song.id + '"><li>');
     songHTML.push('<p class="playlist-element">');
-    songHTML.push('<a class="songs" sc-song-id="' + song.sc_song_id + '" href="#">' + song.title + ' (' + song.duration + ')</a></p>');
+    songHTML.push('<a class="songs song-' + i + '" count="' + i + '" sc-song-id="' + song.sc_song_id + '" href="#">' + song.title + ' (' + song.duration + ')</a></p>');
     songHTML.push('<p class="playlist-element-right">');
     songHTML.push('<a class="delete-song" id="' + song.id + '" href="#">X</a></p></li></div>');
     $('#songs-play-list').append(songHTML.join(''));
@@ -234,6 +272,7 @@ $('.switch a').on('click', function(e) {
     if (result.radios) {
       createRadiosList(result.radios);
     } else {
+      currentTracks = result.songs;
       createSongsList(result.songs);
     }
   });
@@ -257,11 +296,12 @@ function createRadiosList(radios) {
 
 function createSongsList(songs) {
   var songHTML = [];
+  quantSongs = songs.length - 1;
   songHTML.push('<ol id="songs-play-list">');
   for(var i = 0; i < songs.length; i++) {
     songHTML.push('<div class="list-element" id="list-element-' + songs[i].id + '"><li>');
     songHTML.push('<p class="playlist-element">');
-    songHTML.push('<a class="songs" sc-song-id="' + songs[i].sc_song_id + '" href="#">' + songs[i].title + ' (' + songs[i].duration + ')</a></p>');
+    songHTML.push('<a class="songs song-' + i + '" count="' + i + '" sc-song-id="' + songs[i].sc_song_id + '" href="#">' + songs[i].title + ' (' + songs[i].duration + ')</a></p>');
     songHTML.push('<p class="playlist-element-right">');
     songHTML.push('<a class="delete-song" id="' + songs[i].id + '" href="#">X</a></p></li></div>');
   }
@@ -280,3 +320,27 @@ function toggleSearchForm(name) {
     $('#new-radio').fadeIn();
   }
 }
+
+// SEARCH WITH AUTOCOMPLETE
+$('#search-field').on('keyup', function() {
+  var q = $(this).val();
+
+  initialize(CLIENT_ID);
+
+  SC.get('/tracks', { state: 'finished', sharing: 'public', streamable: true, q: q, limit: 5 }, function(songs) {
+    $('#autocomplete').empty();
+    $('#autocomplete-container').show();
+    for(var i = 0; i < songs.length; i++) {
+      $('#autocomplete').append('<li><a href="#" class="song-title" id="'+ songs[i].id +'">' + songs[i].title + '</a></li>')
+    }
+  });
+});
+
+$('#autocomplete').on('click', '.song-title', function() {
+  var songID = $(this).attr('id');
+  SC.get('/tracks/' + songID, function(song) {
+    $('#autocomplete-container').fadeOut();
+    $('#search-field').val('');
+    addSong(song);
+  });
+});
