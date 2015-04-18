@@ -126,7 +126,7 @@ $('#search-field').on('keyup', function() {
     $('#autocomplete').empty();
     $('#autocomplete-container').show();
     for(var i = 0; i < songs.length; i++) {
-      $('#autocomplete').append('<li><a href="#" class="song-title" id="'+ songs[i].id +'">' + songs[i].title + '</a></li>')
+      $('#autocomplete').append('<li><a href="#" class="song-title" id="'+ songs[i].id +'">' + songs[i].title + '</a></li>');
     }
   });
 });
