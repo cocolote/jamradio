@@ -139,3 +139,8 @@ $('#autocomplete').on('click', '.song-title', function() {
     addSong(song);
   });
 });
+
+$('#autocomplete-container').on('focusout', function() {
+  $('#autocomplete').empty();
+  $('#autocomplete-container').show();
+});

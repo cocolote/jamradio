@@ -82,6 +82,28 @@ body {
   }
 }
 
+#player-controllers {
+  margin-top: 4vh;
+  text-align: center;
+}
+
+#play-pause {
+  margin-right: 10%;
+}
+
+#progress-bar-container {
+  margin-left: auto;
+  margin-right: auto;
+  height: 0.5em;
+  width: 60%;
+
+  #progess-bar {
+    background-color: $orange;
+    height: 0.5em;
+    width: 0;
+  }
+}
+
 #switch-play-lists {
   border: 1px solid red;
   width: 50%;
@@ -94,29 +116,6 @@ body {
 .switch {
   display: inline-block;
   margin-right: 10%;
-}
-
-#player-controllers {
-  margin-top: 4vh;
-  text-align: center;
-}
-
-#play-pause {
-  margin-right: 10%;
-}
-
-#progress-bar-container {
-
-  margin-left: auto;
-  margin-right: auto;
-  height: 0.5em;
-  width: 60%;
-
-  #progess-bar {
-    background-color: $orange;
-    height: 0.5em;
-    width: 0;
-  }
 }
 
 #new-radio {
@@ -140,6 +139,16 @@ body {
   font-family: 'LED';
   position: relative;
 }
+
+#autocomplete-container {
+  position: relative;
+
+  #autocomplete {
+    background-color: #000;
+    position: absolute;
+  }
+}
+
 
 #player-list {
   font-family: 'LED';

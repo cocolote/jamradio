@@ -3,7 +3,7 @@ class SongsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.json { render json: { songs: current_user.songs } }
+      format.json { render json: { songs: current_user.songs.order("updated_at") } }
     end
   end
 
