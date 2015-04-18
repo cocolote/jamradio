@@ -33,7 +33,42 @@
     </div>
   <%- end -%>
 
-  <div class="row">
+<!-- player -->
+  <div class="row" id="player">
+    <h3 id="soundcloud-credit" class="app-name">JamRadio
+      <p class="app-name">(Powered by <a href="http://www.soundcloud.com">SoundCloud)</a></p>
+    </h3>
+      <p class="radio-timer" id="radio-playing">Radio</p>
+
+    <div id="song-title-container">
+      <p id="song-title"></p>
+      <p id="timer-p">00:00</p>
+    </div>
+    <div id="progress-bar-container">
+      <div id="progess-bar"></div>
+    </div>
+
+    <div id="player-controllers">
+      <div class="btn" id="play-pause">
+        <%= image_tag "play.png", id: "play-pause-btn" %>
+      </div>
+      <div class="btn" id='next-song'>
+        <%= image_tag "fastForward.png", id: "next-btn" %>
+      </div>
+      <div class="btn" id='next-song'>
+        <%= link_to "Like", "#", id: "like-btn" %>
+      </div>
+    </div>
+
+    <div id="switch-play-lists">
+      <div id="radios-switch" class="switch">
+        <%= link_to "Radios", '#', url: "/radios" %>
+      </div>
+      <div id="songs-switch" class="switch">
+        <%= link_to "My Songs", '#', url: "/songs" %>
+      </div>
+    </div>
+
     <%= yield %>
   </div>
   <%= javascript_include_tag 'application' %>

@@ -1,8 +1,6 @@
 // GLOBAL VARIABLES
 var CLIENT_ID = '271b061d5469839b06f3e95da05b822c';
-var currentTracks;
-var radioName;
-var radioCategory;
+var radioOrSongs;
 
 // ##### HELPER FUNCTIONS #####
 // Toggle play and pause buttons
@@ -32,56 +30,21 @@ function stopMusic(track) {
   }
 }
 
-// PLAY A RADIO
-$('#radios-play-list').on('click', '.radios', function(e) {
-  e.preventDefault();
-  radioName = $(this).attr('name');
-  radioCategory = $(this).attr('category');
-  $('#radio-playing').text(radioName);
-  getTracks();
+// LIKE A SONG
+$('#like-btn').on('click', function(e) {
+  addSong(currentTrack);
 });
-
-// CREATES THE PLAYLIST
-function getParameters(radio) {
-  var serchParameters;
-  if (radio === 'genres') {
-    serchParameters = { state: 'finished', sharing: 'public', streamable: true, genres: radioName, limit: 200 };
-  }else{
-    serchParameters = { state: 'finished', sharing: 'public', streamable: true, q: radioName, limit: 200 };
-  }
-  return serchParameters;
-}
-
-function getTracks() {
-  initialize(CLIENT_ID);
-  SC.get('/tracks', getParameters(radioCategory), function(songs) {
-    stopMusic();
-    currentTracks = songs;
-    pick_random_song(currentTracks);
-  });
-}
-
-// GETS THE SONG AND PLAYS IT
-function pickRandomSong(tracks) {
-  var i = Math.floor(Math.random() * tracks.length);
-  playSong(tracks[i]);
-}
-
-function playSong(track) {
-  $('#song-title').replaceWith('<p id="song-title"><marquee behavior="scroll" direction="left">' + track.title + '</marquee></p>');
-  SC.stream('/tracks/' + track.id, { flashVersion: 9, autoPlay: true, multiShot: false, onfinish: function() {
-    stopMusic();
-    pickRandomSong(currentTracks); } }, function(track) {
-      songController(track);
-  });
-}
 
 // NEXT SONG
 $('#next-btn').on('mousedown', function() {
   var element = $(this).attr('id');
   // animateButtons(element);
   stopMusic();
-  pickRandomSong(currentTracks);
+  if(radioOrSongs === 'radio') {
+    pickRandomSong(radioTracks);
+  } else {
+    getNextSong();
+  }
 });
 
 // CONTROLLER FOR THE PLAY PAUSE BUTTON
@@ -123,50 +86,56 @@ function timer(track) {
     }, 100);
 }
 
-// ADD RADIO
-$('#new_radio').on('submit', function(e) {
+// SWITCH BETWEEN PLAY LISTS
+$('.switch a').on('click', function(e) {
   e.preventDefault();
 
-  var category = $('#radio_category').val();
-  var name = $('#radio_name').val();
-  var radio = {name: name, category: category};
-
-  var newRadio = $.ajax({
-    url: '/radios',
-    type: 'POST',
-    data: { radio: radio },
+  var url = $(this).attr('url');
+  var switchPlaylist = $.ajax({
+    url: url,
+    type: 'GET',
     dataType: 'json'
     });
-  newRadio.done(function(radio) {
-    var radioHTML = [];
-    radioHTML.push('<div class="list-element" id="list-element-' + radio.id + '"><li>');
-    radioHTML.push('<p class="playlist-element">');
-    radioHTML.push('<a class="radios" category="' + radio.category + '" name="' + radio.name + '" href="#">' + radio.name + '</a></p>');
-    radioHTML.push('<p class="playlist-element-right">');
-    radioHTML.push('<a class="delete-radio" id="' + radio.id + '" href="#">X</a></p></li></div>');
-    $('#radio_name').val('');
-    $('#radios-play-list').append(radioHTML.join(''));
-  });
-  newRadio.fail(function(messages) {
-    alert(messages.responseJSON.errors[0]);
+  switchPlaylist.done(function(result) {
+    if (result.radios) {
+      createRadiosList(result.radios);
+    } else {
+      playList = result.songs;
+      createSongsList(result.songs);
+    }
   });
 });
 
-// DELETE RADIO
-$('#radios-play-list').on('click', '.delete-radio', function(e) {
-  e.preventDefault();
+function toggleSearchForm(name) {
+  if(name === 'songs') {
+    $('#new-radio').hide();
+    $('#search-songs').fadeIn();
+  } else {
+    $('#search-songs').hide();
+    $('#new-radio').fadeIn();
+  }
+}
 
-  var radioID = $(this).attr('id');
-  var deleteRadio = $.ajax({
-    url: '/radios/' + radioID,
-    type: 'DELETE',
-    dataType: 'json'
-    });
-  deleteRadio.done(function(result) {
-    $('#list-element-' + result.id).remove();
-    alert(result.message);
+// SEARCH WITH AUTOCOMPLETE
+$('#search-field').on('keyup', function() {
+  var q = $(this).val();
+
+  initialize(CLIENT_ID);
+
+  SC.get('/tracks', { state: 'finished', sharing: 'public', streamable: true, q: q, limit: 5 }, function(songs) {
+    $('#autocomplete').empty();
+    $('#autocomplete-container').show();
+    for(var i = 0; i < songs.length; i++) {
+      $('#autocomplete').append('<li><a href="#" class="song-title" id="'+ songs[i].id +'">' + songs[i].title + '</a></li>');
+    }
   });
-  deleteRadio.fail(function() {
-    alert('Something went wrong!');
+});
+
+$('#autocomplete').on('click', '.song-title', function() {
+  var songID = $(this).attr('id');
+  SC.get('/tracks/' + songID, function(song) {
+    $('#autocomplete-container').fadeOut();
+    $('#search-field').val('');
+    addSong(song);
   });
 });

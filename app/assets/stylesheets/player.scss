@@ -24,14 +24,6 @@ body {
   display: inline-block;
 }
 
-.btn {
-  padding: 0;
-  border-radius: 100%;
-
-  img {
-    width: 65%;
-  }
-}
 
 #player {
   background-color: rgba(0,0,0,0.75);
@@ -62,7 +54,7 @@ body {
   }
 
   #song-title {
-    width: 87.5%;
+    width: 85%;
     margin: 0;
     font-size: 200%;
     padding: 0;
@@ -79,6 +71,29 @@ body {
 
 #timer-p {
   float: right;
+}
+
+.btn {
+  padding: 0;
+  border-radius: 100%;
+
+  img {
+    width: 65%;
+  }
+}
+
+#switch-play-lists {
+  border: 1px solid red;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+  text-align: center;
+}
+
+.switch {
+  display: inline-block;
+  margin-right: 10%;
 }
 
 #player-controllers {
@@ -104,16 +119,26 @@ body {
   }
 }
 
-
 #new-radio {
   width: 70%;
   margin-right: auto;
   margin-left: auto;
   margin-top: 5vh;
   font-family: 'LED';
+
   #radio_category {
     font-family: 'LED';
   }
+}
+
+#search-songs {
+  display: none;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5vh;
+  font-family: 'LED';
+  position: relative;
 }
 
 #player-list {
@@ -125,7 +150,7 @@ body {
   margin-bottom: 2vh;
   overflow: auto;
 
-  #radios-play-list {
+  #radios-play-list, #songs-play-list {
     border: 1px solid red;
     width: 85%;
     height: 40vh;
@@ -147,8 +172,4 @@ body {
   li, p {
     margin: 0;
   }
-}
-
-#songs-play-list {
-  display: none;
 }
