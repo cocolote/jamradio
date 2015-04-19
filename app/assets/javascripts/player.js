@@ -131,7 +131,9 @@ $('#search-field').on('keyup', function() {
   });
 });
 
-$('#autocomplete').on('click', '.song-title', function() {
+$('#autocomplete').on('click', '.song-title', function(e) {
+  e.preventDefault();
+
   var songID = $(this).attr('id');
   SC.get('/tracks/' + songID, function(song) {
     $('#autocomplete-container').fadeOut();

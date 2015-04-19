@@ -10,7 +10,19 @@
   <nav class="top-bar">
     <ul class="title-area">
       <li class="name">
-        <h1><a href="/">Jamradio</a></h1>
+        <h1><%= link_to "Jamradio", root_path %></h1>
+      </li>
+      <li class="name">
+        <% if current_user %>
+          <div id="search-friends-container">
+            <%= form_tag "users#search", method: "get" do %>
+              <%= text_field_tag :q, nil, id: "search-friends", placeholder: "Look for a friend" %>
+            <% end %>
+            <div id="users-list-container">
+              <ul id="users-list"></ul>
+            </div>
+          </div>
+        <% end %>
       </li>
     </ul>
 

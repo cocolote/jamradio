@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'radios#index'
   devise_for :users
+  resources :users, only: [:index]
 
   resources :radios do
     resources :user_radios
@@ -9,4 +10,6 @@ Rails.application.routes.draw do
   resources :songs do
     resources :user_songs
   end
+
+  resources :friends, only: [:create]
 end

@@ -12,6 +12,17 @@ body {
   color: $orange;
 }
 
+.name {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#users-list-container {
+  display: none;
+  background-color: #fff;
+  padding-top: 1vh;
+}
+
 #profile-picture {
   width: 34.5px;
 }
