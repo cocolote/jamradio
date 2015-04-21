@@ -3,7 +3,6 @@ class FriendsController < ApplicationController
 
   def index
     # respond_to do |format|
-    #   format.html { @radio = Radio.new }
     #   format.json { render json: { radios: current_user.radios } }
     # end
   end

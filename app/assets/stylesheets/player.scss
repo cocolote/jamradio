@@ -1,5 +1,6 @@
-$orange: #DA6100;
-$grey: #2A2827;
+$grey: #cfcfcf;
+// $blue_led: #00f;
+$blue_led: #0078a0;
 
 @font-face {
   font-family: 'LED';
@@ -7,9 +8,19 @@ $grey: #2A2827;
 }
 
 body {
-  background-image: url(/assets/party_ball.png);
+  // background-image: url(/assets/party_ball.png);
+  background: linear-gradient(to bottom right, #000, white);
   background-size: 100%;
-  color: $orange;
+}
+
+#player {
+  background-color: #fff;
+  box-shadow: inset 0px 0px 15px 5px #aaa;
+  border-radius: 1em;
+  margin-top: 0.5em;
+  width: 50%;
+  height: 97vh;
+  padding: 2%;
 }
 
 .name {
@@ -27,169 +38,210 @@ body {
   width: 34.5px;
 }
 
-#soundcloud-credit {
-  color: $orange;
-}
-
 .app-name {
   display: inline-block;
 }
 
-
-#player {
-  background-color: rgba(0,0,0,0.75);
-  border-radius: 1em;
-  margin-top: 5vh;
-  margin-bottom: 1vh;
-  width: 100%;
-  padding: 2%;
-}
-
 #song-title-container {
+  background-image: url(/assets/display-background.png);
+  box-shadow: inset 0px 0px 7px 1px $blue_led;
+  border: 3px solid $grey;
+  border-radius: 1em;
   font-family: 'LED';
-  border: 1px solid red;
+  color: $blue_led;
+  text-shadow: 0 0 5px $blue_led;
+  letter-spacing: 0.3em;
   margin-left: auto;
   margin-right: auto;
   height: 5em;
-  width: 60%;
+  width: 80%;
 
-  p {
-    display: inline-block;
-    height: 100%;
-    padding: 0.5em;
-    padding-top: 1.5em;
+  #song-title {
+    border-bottom: 1px dashed $blue_led;
+    padding-top: 0.5em;
+    margin: 0;
+    height: 2.5em;
   }
 
   #timer-p {
-    border-left: 1px dashed $orange;
+    padding-right: 0.5em;
+    padding-bottom: 0.5em;
   }
 
-  #song-title {
-    width: 85%;
-    margin: 0;
-    font-size: 200%;
-    padding: 0;
-    padding-top: 2%;
+  #radio-playing {
+    padding-left: 0.5em;
+    padding-bottom: 0.5em;
   }
-}
-
-
-#timer-container, .btn {
-  font-family: 'LED';
-  display: inline-block;
-  border: 1px solid red;
 }
 
 #timer-p {
   float: right;
 }
 
-.btn {
-  padding: 0;
-  border-radius: 100%;
+#progress-bar-container {
+  background-image: url(/assets/display-background.png);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1em;
+  height: 0.5em;
+  border-radius: 1em;
+  width: 80%;
 
-  img {
-    width: 65%;
+  #progess-bar {
+    background-color: rgba($blue_led, 0.7);
+    box-shadow: 0px 0px 7px 0.8px $blue_led;
+    border-radius: 1em;
+    height: 0.5em;
+    width: 0%;
   }
 }
 
 #player-controllers {
-  margin-top: 4vh;
+  margin-top: 1.5em;
   text-align: center;
-}
-
-#play-pause {
-  margin-right: 10%;
-}
-
-#progress-bar-container {
-  margin-left: auto;
+  width: 70%;
   margin-right: auto;
-  height: 0.5em;
-  width: 60%;
+  margin-left: auto;
 
-  #progess-bar {
-    background-color: $orange;
-    height: 0.5em;
-    width: 0;
+  .btn {
+    display: inline-block;
+    border-radius: 100%;
+    margin-right: 3em;
+    border: 0.5px solid transparent;
+    box-shadow: 0px 0px 1.5px 1px #aaa;
+  }
+
+  #like-song {
+    margin-right: 0;
+  }
+
+  .btn-pressed {
+    box-shadow: 0px 0px 1.5px 1px $blue_led;
+    border-radius: 100%;
+    border: 0.5px solid $blue_led;
   }
 }
 
 #switch-play-lists {
-  border: 1px solid red;
-  width: 50%;
+  width: 70%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 5%;
   text-align: center;
+
+  .switch {
+    display: inline-block;
+    margin-right: 30%;
+    padding: 0.2em;
+    border-bottom: 2px solid black;
+    border-radius: 0.4em;
+  }
+
+  #jams-switch {
+    margin-right: 0;
+  }
+
+  .switch-pressed {
+    padding: 0.2em;
+    border-bottom: 2px solid $blue_led;
+    border-radius: 0.4em;
+  }
+
 }
 
-.switch {
-  display: inline-block;
-  margin-right: 10%;
-}
-
-#new-radio {
-  width: 70%;
+#playlist-container {
+  border: 3px solid $grey;
+  background-image: url(/assets/display-background.png);
+  margin-top: 2em;
   margin-right: auto;
   margin-left: auto;
-  margin-top: 5vh;
-  font-family: 'LED';
+  width: 100%;
+  height: 25em;
+  border-radius: 1em;
+  box-shadow: 0px 0px 1.5px 1px $grey;
+  box-shadow: inset 0px 0px 10px 2px $blue_led;
+  overflow: auto;
 
-  #radio_category {
+  .promt {
+    margin-top: 1em;
+    font-size: 0.7em;
+    color: $blue_led;
+    text-shadow: 0 0 5px $blue_led;
+    letter-spacing: 0.3em;
+  }
+
+  .search-boxes input, select {
+    border: none;
+    border-bottom: 2px solid $blue_led;
+    background-color: transparent;
+    color: $blue_led;
+    text-shadow: 0 0 5px $blue_led;
+    letter-spacing: 0.3em;
+  }
+
+  #new-radio {
+    width: 95%;
+    margin-left: 1em;
+    margin-top: 0.2em;
     font-family: 'LED';
+
+    #radio_category {
+      font-family: 'LED';
+    }
+  }
+
+
+  #search-songs {
+    display: none;
+    width: 95%;
+    margin-left: 1em;
+    margin-top: 0.2em;
+    font-family: 'LED';
+    position: relative;
+
+    #autocomplete-container {
+      position: relative;
+
+      #autocomplete {
+        list-style: none;
+        background-color: rgba(#000, 0.8);
+        position: absolute;
+      }
+    }
   }
 }
 
-#search-songs {
+#player-list {
+  font-family: 'LED';
+  width: 98%;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: transparent;
+  text-shadow: 0 0 5px $blue_led;
+  letter-spacing: 0.3em;
+
+  #radios-play-list {
+    list-style: none;
+    margin-left: 0.3em;
+
+    .list-element {
+      margin-bottom: 0.5em;
+    }
+
+    .playlist-element {
+      margin: 0;
+      padding-left: 1em;
+    }
+  }
+
+}
+
+#create-jam {
+  border: 1px solid red;
   display: none;
   width: 70%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 5vh;
-  font-family: 'LED';
-  position: relative;
-}
-
-#autocomplete-container {
-  position: relative;
-
-  #autocomplete {
-    background-color: #000;
-    position: absolute;
-  }
-}
-
-
-#player-list {
-  font-family: 'LED';
-  border: 1px solid red;
-  width: 80%;
-  margin-right: auto;
-  margin-left: auto;
-  margin-bottom: 2vh;
-  overflow: auto;
-
-  #radios-play-list, #songs-play-list {
-    border: 1px solid red;
-    width: 85%;
-    height: 40vh;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 0;
-  }
-    p {
-      display: inline-block;
-    }
-
-    .playlist-element-right {
-      float: right;
-    }
-}
-
-.list-element {
-  border: 1px solid red;
-  li, p {
-    margin: 0;
-  }
+  text-align: center;
 }

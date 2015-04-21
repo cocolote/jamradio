@@ -1,4 +1,4 @@
-// SEARCH WITH AUTOCOMPLETE
+// SEARCH ALL USER TO FIND A FRIEND
 $('#search-friends').on('keyup', function() {
   var q = $(this).val();
 
@@ -41,8 +41,7 @@ $('#users-list').on('click', '.user-name', function(e) {
   });
 });
 
-$('#users-list-container').on('focusout', function() {
-  $('#users-list').empty();
-  $(this).hide();
+$('#search-friends').focusout(function() {
+  $('#users-list-container').fadeOut();
   $('#search-friends').val('');
-})
+});

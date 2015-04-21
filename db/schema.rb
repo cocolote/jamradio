@@ -43,12 +43,12 @@ ActiveRecord::Schema.define(version: 20150419152200) do
 
   create_table "jams", force: :cascade do |t|
     t.string   "name",       null: false
-    t.integer  "creator_id", null: false
+    t.integer  "user_id",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "jams", ["name", "creator_id"], name: "index_jams_on_name_and_creator_id", unique: true, using: :btree
+  add_index "jams", ["name", "user_id"], name: "index_jams_on_name_and_user_id", unique: true, using: :btree
 
   create_table "radios", force: :cascade do |t|
     t.string   "name",       null: false

@@ -6,9 +6,9 @@ var radioOrSongs;
 // Toggle play and pause buttons
 function toggleButton(track) {
   if (track.paused) {
-    $('#play-pause-btn').attr('src', '/assets/play.png');
+    $('#play-pause-btn').removeClass('btn-pressed');
   } else {
-    $('#play-pause-btn').attr('src', '/assets/pause.png');
+    $('#play-pause-btn').addClass('btn-pressed');
   }
 }
 
@@ -99,20 +99,29 @@ $('.switch a').on('click', function(e) {
   switchPlaylist.done(function(result) {
     if (result.radios) {
       createRadiosList(result.radios);
-    } else {
+    } else if (result.songs) {
       playList = result.songs;
       createSongsList(result.songs);
+    } else {
+      createJamsList(result.jams);
     }
   });
 });
 
 function toggleSearchForm(name) {
-  if(name === 'songs') {
+  if (name == 'radios') {
+    $('#create-jam').hide();
+    $('#search-songs').hide();
+    $('#new-radio').fadeIn();
+  } else if (name == 'songs') {
+    $('#create-jam').hide();
     $('#new-radio').hide();
     $('#search-songs').fadeIn();
   } else {
+    $('#new-radio').hide();
     $('#search-songs').hide();
-    $('#new-radio').fadeIn();
+    $('#create-jam').fadeIn();
+
   }
 }
 
@@ -142,7 +151,7 @@ $('#autocomplete').on('click', '.song-title', function(e) {
   });
 });
 
-$('#autocomplete-container').on('focusout', function() {
-  $('#autocomplete').empty();
-  $('#autocomplete-container').show();
+$('#autocomplete-container').focusout(function() {
+  $('#autocomplete-container').hide();
+  $('#search-field').val('');
 });

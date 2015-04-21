@@ -1,10 +1,12 @@
 class User < ActiveRecord::Base
   has_many :user_radios
   has_many :radios, through: :user_radios
-  has_many :friends
 
   has_many :user_songs
   has_many :songs, through: :user_songs
+
+  has_many :friends
+  has_many :jams
 
   validates :email,
   uniqueness: true,
