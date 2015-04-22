@@ -11,10 +11,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416150120) do
+ActiveRecord::Schema.define(version: 20150419152200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "friends", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "friend_id",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "friends", ["user_id", "friend_id"], name: "index_friends_on_user_id_and_friend_id", unique: true, using: :btree
+
+  create_table "guests", force: :cascade do |t|
+    t.integer  "jam_id",     null: false
+    t.integer  "guest_id",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "guests", ["jam_id", "guest_id"], name: "index_guests_on_jam_id_and_guest_id", unique: true, using: :btree
+
+  create_table "jam_songs", force: :cascade do |t|
+    t.integer  "jam_id",     null: false
+    t.integer  "song_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "jams", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "jams", ["name", "user_id"], name: "index_jams_on_name_and_user_id", unique: true, using: :btree
 
   create_table "radios", force: :cascade do |t|
     t.string   "name",       null: false

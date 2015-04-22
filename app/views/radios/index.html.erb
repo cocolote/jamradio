@@ -1,40 +1,55 @@
-<div id="new-radio">
-  <%= form_for @radio do |f| %>
-    <div class="row">
-      <div class="small-6 columns">
-        <%= f.select :category, [["Genre", "genres"], ["Artist", "artist"]] %>
-      </div>
-      <div class="small-6 columns">
-        <%= f.text_field :name, placeholder: "Radio Type" %>
-      </div>
-    </div>
-  <% end %>
-</div>
-
-<div id="search-songs">
-  <%= form_tag "songs#search", method: "get" do %>
-      <%= text_field_tag :q, nil, id: "search-field", placeholder: "Enter the title of a song" %>
-  <% end %>
-  <div id="autocomplete-container">
-    <ul id="autocomplete"></ul>
-  </div>
-</div>
-
-<div id="player-list">
-  <ol id="radios-play-list">
-    <% if current_user && !current_user.radios.empty? %>
-      <% current_user.radios.each do |radio| %>
-        <div class="list-element" id="list-element-<%= radio.id %>">
-          <li>
-            <p class="plylist-element">
+<div id="playlist-container">
+  <div id="player-list">
+      <% if current_user && !current_user.radios.empty? %>
+        <ol id="radios-play-list">
+        <% current_user.radios.each do |radio| %>
+          <li class="row list-element" id="list-element-<%= radio.id %>">
+            <p class="small-11 columns playlist-element">
               <%= link_to radio.name, "#", class: "radios", category: radio.category , name: radio.name %>
             </p>
-            <p class="playlist-element-right">
+            <p class="small-1 columns playlist-element">
               <%= link_to "X", '#', id: radio.id, class: "delete-radio" %>
             </p>
           </li>
-        </div>
+        <% end %>
+        </ol>
       <% end %>
+  </div>
+
+  <div id="new-radio" class="search-boxes">
+    <%= form_for @radio do |f| %>
+      <div class="row">
+        <div class="small-3 columns">
+          <p class="promt">new-radio ></p>
+        </div>
+        <div class="small-3 columns">
+          <%= f.select :category, [["Genre", "genres"], ["Artist", "artist"]] %>
+        </div>
+        <div class="small-6 columns">
+          <%= f.text_field :name %>
+        </div>
+      </div>
     <% end %>
-  </ol>
+  </div>
+
+  <div id="search-songs" class="search-boxes">
+    <%= form_tag "songs#search", method: "get" do %>
+      <div class="row">
+        <div class="small-3 columns">
+          <p class="promt">new-song ></p>
+        </div>
+        <div class="small-9 columns">
+          <%= text_field_tag :q, nil, id: "search-field" %>
+          <div id="autocomplete-container">
+            <ul id="autocomplete"></ul>
+          </div>
+        </div>
+
+      </div>
+    <% end %>
+  </div>
+
+  <div id="create-jam" class="search-boxes">
+    <p><%= link_to "+", "#" %></p>
+  </div>
 </div>

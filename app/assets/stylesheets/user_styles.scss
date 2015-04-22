@@ -1,0 +1,54 @@
+$grey: #cfcfcf;
+$blue_led: #0078a0;
+
+#log-in, #sign_up, #edit_profile {
+  background-image: url(/assets/display-background.png);
+  opacity: 0.9;
+  margin-top: 2em;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  height: 29em;
+  border-radius: 0.5em;
+  border: 3px inset $grey;
+  box-shadow: inset 0px 0px 10px 2px $blue_led;
+  padding: 1em;
+  overflow: auto;
+
+  .text {
+    color: $blue_led;
+  }
+
+  input {
+    background-color: transparent;
+    border-color: transparent;
+    border-bottom: 2px solid $blue_led;
+    color: $blue_led;
+  }
+
+  #picture-field {
+    border: none;
+  }
+
+  #submit-button {
+    border: 2px solid $blue_led;
+    border-radius: 0.5em;
+  }
+
+  #links-users {
+    margin-top: 1em;
+  }
+
+  #picture-stats {
+    text-align: center;
+  }
+
+  #user-picture {
+    width: 10em;
+    height: auto;
+  }
+
+  #profile-stats {
+    margin-top: 1em;
+  }
+}
