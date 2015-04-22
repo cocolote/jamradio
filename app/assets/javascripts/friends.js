@@ -15,7 +15,7 @@ $('#search-friends').on('keyup', function() {
       $('#users-list').append('<li><a href="#" class="user-name" id="'+ users[i].id +'">' + users[i].user_name + '</a></li>');
     }
   });
-  userRequest.fail(function(result) {
+  userRequest.fail(function() {
     $('#users-list-container').fadeOut();
     $('#search-friends').val('');
     alert("Something went wrong ups!");
@@ -32,7 +32,7 @@ $('#users-list').on('click', '.user-name', function(e) {
     data: { id: friendID },
     dataType: 'json'
   });
-  saveFriend.done(function(friend) {
+  saveFriend.done(function() {
     $('#users-list-container').fadeOut();
     $('#search-friends').val('');
   });
