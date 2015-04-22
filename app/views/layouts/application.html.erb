@@ -10,7 +10,7 @@
   <nav class="top-bar">
     <ul class="title-area">
       <li class="name">
-        <h1><%= link_to "Jamradio", root_path %></h1>
+        <h1><%= link_to "Jamradio", root_path, class: "special-font" %></h1>
       </li>
       <li class="name">
         <% if current_user %>
@@ -29,8 +29,12 @@
     <section class="top-bar-section">
       <ul class="right">
         <%- if current_user -%>
-          <li><%= image_tag current_user.picture, id: "profile-picture" %></li>
-          <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
+          <li><%= link_to image_tag(current_user.picture, id: "profile-picture"), '#', "data-dropdown" => "drop1", "aria-controls" => "drop1", "aria-expanded" => "false" %></li>
+            <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
+              <li><%= link_to 'My profile', edit_user_registration_path %></li>
+              <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
+            </ul>
+          <li id="user-name" class="special-font"><%= current_user.user_name %></li>
         <%- else -%>
           <li><%= link_to 'Sign Up', new_user_registration_path %></li>
           <li><%= link_to 'Sign In', new_user_session_path %></li>
@@ -47,15 +51,15 @@
 
 <!-- player -->
   <div class="row" id="player">
-    <h3 id="soundcloud-credit" class="app-name">JamRadio
+    <h3 id="soundcloud-credit" class="app-name special-font">JamRadio
       <p class="app-name">(Powered by <a href="http://www.soundcloud.com">SoundCloud)</a></p>
     </h3>
 
       <div id="song-title-container">
-        <p id="song-title">Title</p>
+        <p id="song-title"></p>
         <div id="timer-playing-container" class="row">
           <div class="small-10 columns">
-            <p id="radio-playing">Radio</p>
+            <p id="radio-playing"></p>
           </div>
           <div class="small-2 columns">
             <p id="timer-p">00:00</p>
@@ -80,7 +84,7 @@
     </div>
 
     <div id="switch-play-lists">
-      <div id="radios-switch" class="switch">
+      <div id="radios-switch" class="switch switch-pressed">
         <%= link_to image_tag("radios1.png"), '#', url: "/radios" %>
       </div>
       <div id="songs-switch" class="switch">

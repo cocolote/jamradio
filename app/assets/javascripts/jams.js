@@ -11,7 +11,7 @@ function createJamsList(jams) {
   }
   jamsHTML.push('</ol>');
   $('#player-list').empty();
-  toggleSearchForm("jams");
+  toggleSearchForm('jams');
   $('#player-list').append(jamsHTML.join(''));
 }
 

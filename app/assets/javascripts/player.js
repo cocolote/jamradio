@@ -8,8 +8,17 @@ function toggleButton(track) {
   if (track.paused) {
     $('#play-pause-btn').removeClass('btn-pressed');
   } else {
+    $('.list-element').removeClass('playing-song');
+    $('#list-element-' + playingSong).addClass('playing-song');
     $('#play-pause-btn').addClass('btn-pressed');
   }
+}
+
+function animateButtons(element) {
+  $('#' + element).addClass('btn-pressed');
+  $(this).on('mouseup', function() {
+    $('#' + element).removeClass('btn-pressed');
+  });
 }
 
 // Initialize the user on soundcloud
@@ -32,13 +41,13 @@ function stopMusic(track) {
 
 // LIKE A SONG
 $('#like-btn').on('click', function(e) {
+  animateButtons('like-btn');
   addSong(currentTrack);
 });
 
 // NEXT SONG
 $('#next-btn').on('mousedown', function() {
-  var element = $(this).attr('id');
-  // animateButtons(element);
+  animateButtons('next-btn');
   stopMusic();
   if(radioOrSongs === 'radio') {
     pickRandomSong(radioTracks);
@@ -51,11 +60,6 @@ $('#next-btn').on('mousedown', function() {
 function songController(track) {
   toggleButton(track);
   timer(track);
-
-  $('#play-pause-btn').on('mousedown', function() {
-    var element = $(this).attr('id');
-    // animateButtons(element);
-  });
 
   $('#play-pause-btn').on('click', function() {
     if (track.paused) {
@@ -80,7 +84,7 @@ function timer(track) {
         sec.toString().length === 1 ? sSeconds = '0' + sec : sSeconds = sec;
         $('#timer-p').text(sMinutes + ':' + sSeconds);
         containerWidth = $('#progress-bar-container').css('width');
-        progress = parseInt(containerWidth) / (track.durationEstimate / 1000);
+        progress = (parseInt(containerWidth) - 6) / (track.durationEstimate / 1000);
         $('#progess-bar').css('width', (progress * seconds));
       }
     }, 100);
@@ -89,6 +93,9 @@ function timer(track) {
 // SWITCH BETWEEN PLAY LISTS
 $('.switch a').on('click', function(e) {
   e.preventDefault();
+
+  $('.switch').removeClass('switch-pressed');
+  $(this).parent().addClass('switch-pressed');
 
   var url = $(this).attr('url');
   var switchPlaylist = $.ajax({
@@ -121,7 +128,6 @@ function toggleSearchForm(name) {
     $('#new-radio').hide();
     $('#search-songs').hide();
     $('#create-jam').fadeIn();
-
   }
 }
 

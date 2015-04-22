@@ -67,11 +67,11 @@ $('#new_radio').on('submit', function(e) {
     });
   newRadio.done(function(radio) {
     var radioHTML = [];
-    radioHTML.push('<div class="list-element" id="list-element-' + radio.id + '"><li>');
-    radioHTML.push('<p class="playlist-element">');
+    radioHTML.push('<li class="row list-element" id="list-element-' + radio.id + '">');
+    radioHTML.push('<p class="small-11 columns playlist-element">');
     radioHTML.push('<a class="radios" category="' + radio.category + '" name="' + radio.name + '" href="#">' + radio.name + '</a></p>');
-    radioHTML.push('<p class="playlist-element-right">');
-    radioHTML.push('<a class="delete-radio" id="' + radio.id + '" href="#">X</a></p></li></div>');
+    radioHTML.push('<p class="small-1 columns playlist-element">');
+    radioHTML.push('<a class="delete-radio" id="' + radio.id + '" href="#">X</a></p></li>');
     $('#radio_name').val('');
     $('#radios-play-list').append(radioHTML.join(''));
   });
@@ -103,14 +103,14 @@ function createRadiosList(radios) {
   var radioHTML = [];
   radioHTML.push('<ol id="radios-play-list">');
   for(var i = 0; i < radios.length; i++) {
-    radioHTML.push('<div class="list-element" id="list-element-' + radios[i].id + '"><li>');
-    radioHTML.push('<p class="playlist-element">');
+    radioHTML.push('<li class="row list-element" id="list-element-' + radios[i].id + '">');
+    radioHTML.push('<p class="small-11 columns playlist-element">');
     radioHTML.push('<a class="radios" category="' + radios[i].category + '" name="' + radios[i].name + '" href="#">' + radios[i].name + '</a></p>');
-    radioHTML.push('<p class="playlist-element-right">');
-    radioHTML.push('<a class="delete-radio" id="' + radios[i].id + '" href="#">X</a></p></li></div>');
+    radioHTML.push('<p class="small-1 columns playlist-element">');
+    radioHTML.push('<a class="delete-radio" id="' + radios[i].id + '" href="#">X</a></p></li>');
   }
   radioHTML.push('</ol>');
   $('#player-list').empty();
-  toggleSearchForm("radios");
+  toggleSearchForm('radios');
   $('#player-list').append(radioHTML.join(''));
 }

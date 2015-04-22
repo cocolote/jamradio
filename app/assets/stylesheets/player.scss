@@ -1,6 +1,6 @@
 $grey: #cfcfcf;
-// $blue_led: #00f;
 $blue_led: #0078a0;
+@import url('http://fonts.googleapis.com/css?family=Audiowide|Plaster');
 
 @font-face {
   font-family: 'LED';
@@ -8,19 +8,27 @@ $blue_led: #0078a0;
 }
 
 body {
-  // background-image: url(/assets/party_ball.png);
-  background: linear-gradient(to bottom right, #000, white);
-  background-size: 100%;
+  background-image: url(http://i.imgur.com/XUl4A2b.png);
+  // background: linear-gradient(to bottom right, #000, white);
+  // background-image: url(http://p1.pichost.me/i/54/1773175.jpg);
+  // background-image: url(http://www.lovethispic.com/uploaded_images/49613-Blue-Night-Sky.jpg);
+  background-size: cover;
+  background-repeat: none;
+}
+
+.special-font {
+  font-family: 'Audiowide', cursive;
 }
 
 #player {
-  background-color: #fff;
+  background-color: rgba(#fff, 0.85);
   box-shadow: inset 0px 0px 15px 5px #aaa;
   border-radius: 1em;
-  margin-top: 0.5em;
+  margin-top: 1em;
+  margin-bottom: 1em;
   width: 50%;
-  height: 97vh;
-  padding: 2%;
+  height: 53em;
+  padding: 1em;
 }
 
 .name {
@@ -35,17 +43,35 @@ body {
 }
 
 #profile-picture {
-  width: 34.5px;
+  margin-right: 0.5em;
+  width: 33px;
 }
 
-.app-name {
+#user-name {
+  padding-top: 0.6em;
+  margin-right: 1em;
+  color: white;
+}
+
+#drop1 {
+  display: block;
+  background-color: #333333;
+}
+
+.app-name, .app-name a {
   display: inline-block;
+  color: #AEAEAE;
+  text-shadow: 0px 1.8px 0px rgba(white, 0.7);
+  letter-spacing: 0.1em;
+  margin-left: 0.2em;
+  margin-bottom: 0.8em;
 }
 
 #song-title-container {
   background-image: url(/assets/display-background.png);
+  opacity: 0.9;
   box-shadow: inset 0px 0px 7px 1px $blue_led;
-  border: 3px solid $grey;
+  border: 3px inset $grey;
   border-radius: 1em;
   font-family: 'LED';
   color: $blue_led;
@@ -57,7 +83,7 @@ body {
   width: 80%;
 
   #song-title {
-    border-bottom: 1px dashed $blue_led;
+    border-bottom: 1px dotted $blue_led;
     padding-top: 0.5em;
     margin: 0;
     height: 2.5em;
@@ -80,18 +106,20 @@ body {
 
 #progress-bar-container {
   background-image: url(/assets/display-background.png);
+  opacity: 0.9;
+  border: 3px inset $grey;
   margin-left: auto;
   margin-right: auto;
   margin-top: 1em;
-  height: 0.5em;
+  height: 0.7em;
   border-radius: 1em;
-  width: 80%;
+  width: 78%;
 
   #progess-bar {
-    background-color: rgba($blue_led, 0.7);
-    box-shadow: 0px 0px 7px 0.8px $blue_led;
+    background-color: rgba($blue_led, 0.6);
+    box-shadow: 0px 0px 2px 0.5px $blue_led;
     border-radius: 1em;
-    height: 0.5em;
+    height: 0.25em;
     width: 0%;
   }
 }
@@ -146,25 +174,22 @@ body {
     border-bottom: 2px solid $blue_led;
     border-radius: 0.4em;
   }
-
 }
 
 #playlist-container {
-  border: 3px solid $grey;
   background-image: url(/assets/display-background.png);
+  opacity: 0.9;
   margin-top: 2em;
   margin-right: auto;
   margin-left: auto;
   width: 100%;
-  height: 25em;
-  border-radius: 1em;
-  box-shadow: 0px 0px 1.5px 1px $grey;
+  border-radius: 0.5em;
+  border: 3px inset $grey;
   box-shadow: inset 0px 0px 10px 2px $blue_led;
-  overflow: auto;
 
   .promt {
-    margin-top: 1em;
-    font-size: 0.7em;
+    margin-top: 0.8em;
+    font-size: 0.8em;
     color: $blue_led;
     text-shadow: 0 0 5px $blue_led;
     letter-spacing: 0.3em;
@@ -190,7 +215,6 @@ body {
     }
   }
 
-
   #search-songs {
     display: none;
     width: 95%;
@@ -204,7 +228,9 @@ body {
 
       #autocomplete {
         list-style: none;
-        background-color: rgba(#000, 0.8);
+        background-image: url(/assets/display-background.png);
+        opacity: 0.9;
+        box-shadow: inset 0px 0px 7px 1px $blue_led;
         position: absolute;
       }
     }
@@ -213,28 +239,52 @@ body {
 
 #player-list {
   font-family: 'LED';
-  width: 98%;
+  width: 100%;
+  height: 25em;
   margin-right: auto;
   margin-left: auto;
   background-color: transparent;
   text-shadow: 0 0 5px $blue_led;
   letter-spacing: 0.3em;
+  overflow: auto;
 
-  #radios-play-list {
+  #radios-play-list, #songs-play-list, #jams-play-list {
     list-style: none;
-    margin-left: 0.3em;
+    margin-left: 1em;
 
-    .list-element {
-      margin-bottom: 0.5em;
+    .list-element:hover {
+      background-color: rgba($blue_led, 0.3);
+    }
+
+    .playing-song {
+      background-color: rgba($blue_led, 0.3);
+    }
+
+    .delete-radio, .delete-song {
+      color: transparent;
+
+      &:hover {
+        color: $blue_led;
+      }
     }
 
     .playlist-element {
       margin: 0;
-      padding-left: 1em;
+      padding: 0.5em;
     }
   }
-
 }
+
+#player-list::-webkit-scrollbar {
+background-color: transparent;
+width: 0.3em;
+}
+
+#player-list::-webkit-scrollbar-thumb{
+  background-color: transparent;
+  border-radius: 2em;
+}
+
 
 #create-jam {
   border: 1px solid red;
@@ -242,6 +292,5 @@ body {
   width: 70%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 5vh;
   text-align: center;
 }
