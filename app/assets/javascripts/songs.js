@@ -38,6 +38,37 @@ function getNextSong() {
   }
 }
 
+// SEARCH WITH AUTOCOMPLETE
+$('#search-field').on('keyup', function() {
+  var q = $(this).val();
+
+  initialize(CLIENT_ID);
+
+  SC.get('/tracks', { state: 'finished', sharing: 'public', streamable: true, q: q, limit: 5 }, function(songs) {
+    $('#autocomplete').empty();
+    $('#autocomplete-container').show();
+    for(var i = 0; i < songs.length; i++) {
+      $('#autocomplete').append('<li><a href="#" class="song-title" id="'+ songs[i].id +'">' + songs[i].title + '</a></li>');
+    }
+  });
+});
+
+$('#autocomplete').on('click', '.song-title', function(e) {
+  e.preventDefault();
+
+  var songID = $(this).attr('id');
+  SC.get('/tracks/' + songID, function(song) {
+    $('#autocomplete-container').fadeOut();
+    $('#search-field').val('');
+    addSong(song);
+  });
+});
+
+$('#search-field').focusout(function() {
+  $('#autocomplete-container').fadeOut();
+  $('#search-field').val('');
+});
+
 // ADD SONG
 function addSong(song) {
   var likeSong = $.ajax({

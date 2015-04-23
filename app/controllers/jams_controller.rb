@@ -2,13 +2,12 @@ class JamsController < ApplicationController
   respond_to :json
 
   def index
-    binding.pry
-    guest_jams = Guest.where(user: current_user).map{ |g| g.jam }
+    jams_songs = current_user.jams.map{ |j| { jam: j, songs: j.songs } }.compact
+    guest_jams_songs = Guest.where(user: current_user).map { |g| { jam: g.jam, songs: g.jam.songs, user: g.jam.user } if g.jam }.compact
     respond_to do |format|
-      format.json { render json: { jams: { jams: current_user.jams,
+      format.json { render json: { jams: { jams: jams_songs,
                                            user: current_user,
-                                           guest_jams: guest_jams,
-                                           guest_users: guest_jams.map{ |j| j.user }
+                                           guest_jams: guest_jams_songs
                                          }
                                   }
                   }
@@ -33,12 +32,13 @@ class JamsController < ApplicationController
     end
   end
 
-  # def destroy
-  #   # UserRadio.destroy_all(user: current_user, radio_id: params[:id])
-  #   # respond_to do |format|
-  #   #   format.json { render json: { id: params[:id], message: "The radio was deleted" } }
-  #   # end
-  # end
+  def destroy
+    Jam.delete(params[:id])
+    respond_to do |format|
+      format.json { render json: { message: "The Jam was deleted" } }
+    end
+  end
+
   protected
 
   def jam_params

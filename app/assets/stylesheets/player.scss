@@ -235,7 +235,7 @@ body {
     #autocomplete-container {
       position: relative;
 
-      #autocomplete {
+      #autocomplete, #jamsongs-autocomplete {
         list-style: none;
         background-image: url(/assets/display-background.png);
         opacity: 0.9;
@@ -247,6 +247,7 @@ body {
 
   #new-jam-form {
     display: none;
+    width: 43%;
     background-image: url(/assets/display-background.png);
     opacity: 0.9;
     box-shadow: inset 0px 0px 7px 1px $blue_led;
@@ -255,6 +256,7 @@ body {
     margin-right: auto;
     text-align: center;
     border-bottom: 1px dotted $blue_led;
+    z-index: 1;
 
     #friends-list {
       width: 90%;
@@ -316,6 +318,7 @@ body {
       margin: 0;
       padding: 0.1em;
       font-size: 1.3em;
+      color: $blue_led;
     }
   }
 }
@@ -331,8 +334,26 @@ width: 0.3em;
 }
 
 #create-jam {
+  font-family: 'LED';
   display: none;
   width: 95%;
   margin-left: auto;
   margin-right: auto;
+
+  select {
+    font-family: 'LED';
+  }
+
+  #jamsongs-autocomplete-container {
+    position: relative;
+
+    #jamsongs-autocomplete {
+      list-style: none;
+      width: 250%;
+      background-image: url(/assets/display-background.png);
+      opacity: 0.9;
+      box-shadow: inset 0px 0px 7px 1px $blue_led;
+      position: absolute;
+    }
+  }
 }

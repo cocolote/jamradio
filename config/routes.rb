@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     resources :user_songs
   end
 
-  resources :jams
+  resources :jams do
+    resources :jam_songs
+  end
   resources :friends, only: [:create, :index]
 end

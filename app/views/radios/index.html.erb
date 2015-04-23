@@ -78,13 +78,15 @@
       <p class="promt small-2 columns">New Song</p>
       <%= form_tag "songs#search", method: "get" do %>
         <div class="small-4 columns">
-          <%= select_tag :jam_id, options_for_select(current_user.jams.map{ |j| [j.name, j.id] }) %>
+          <%= text_field_tag :q, nil, id: "jamsongs-search-field" %>
+          <div id="jamsongs-autocomplete-container">
+            <ul id="jamsongs-autocomplete"></ul>
+          </div>
         </div>
         <div class="small-4 columns">
-          <%= text_field_tag :q, nil, id: "search-field" %>
-          <div id="autocomplete-container">
-            <ul id="autocomplete"></ul>
-          </div>
+          <% if current_user %>
+            <%= select_tag :jam_id, options_for_select(current_user.jams.map{ |j| [j.name, j.id] }) %>
+          <% end %>
         </div>
       <% end %>
     </div>
