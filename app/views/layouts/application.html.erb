@@ -31,8 +31,8 @@
         <%- if current_user -%>
           <li><%= link_to image_tag(current_user.picture, id: "profile-picture"), '#', "data-dropdown" => "drop1", "aria-controls" => "drop1", "aria-expanded" => "false" %></li>
             <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
-              <li><%= link_to 'My profile', edit_user_registration_path %></li>
-              <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
+              <li class="drop1-element"><%= link_to 'My profile', edit_user_registration_path, class: "drop1-link" %></li>
+              <li class="drop1-element"><%= link_to 'Sign Out', destroy_user_session_path, class: "drop1-link", method: :delete %></li>
             </ul>
           <li id="user-name" class="special-font"><%= current_user.user_name %></li>
         <%- else -%>

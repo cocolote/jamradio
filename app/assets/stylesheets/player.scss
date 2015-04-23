@@ -4,7 +4,7 @@ $blue_led: #0078a0;
 
 @font-face {
   font-family: 'LED';
-  src: url(/assets/minisystem.ttf) format(truetype);
+  src: url(/assets/SIGNUS_LED-S.ttf) format(truetype);
 }
 
 body {
@@ -53,9 +53,12 @@ body {
   color: white;
 }
 
-#drop1 {
-  display: block;
-  background-color: #333333;
+.drop1-element {
+  width: 100%;
+
+  .drop1-link:hover {
+    background-color: $blue_led !important;
+  }
 }
 
 .app-name, .app-name a {
@@ -84,19 +87,24 @@ body {
 
   #song-title {
     border-bottom: 1px dotted $blue_led;
-    padding-top: 0.5em;
+    // padding-top: 0.2em;
+    // padding-bottom: 0;
     margin: 0;
-    height: 2.5em;
+    padding: 0.3em;
+    height: 2.1em;
+    font-size: 1.3em;
   }
 
   #timer-p {
     padding-right: 0.5em;
     padding-bottom: 0.5em;
+    font-size: 1.2em;
   }
 
   #radio-playing {
     padding-left: 0.5em;
     padding-bottom: 0.5em;
+    font-size: 1.2em;
   }
 }
 
@@ -189,7 +197,7 @@ body {
 
   .promt {
     margin-top: 0.8em;
-    font-size: 0.8em;
+    font-size: 1em;
     color: $blue_led;
     text-shadow: 0 0 5px $blue_led;
     letter-spacing: 0.3em;
@@ -197,11 +205,12 @@ body {
 
   .search-boxes, #jam-name, input, select {
     border: none;
-    border-bottom: 2px solid $blue_led;
+    border-bottom: 1px dotted $blue_led;
     background-color: transparent;
     color: $blue_led;
     text-shadow: 0 0 5px $blue_led;
     letter-spacing: 0.3em;
+    font-size: 1em;
   }
 
   #new-radio {
@@ -285,7 +294,7 @@ body {
 
   #radios-play-list, #songs-play-list, #jams-play-list {
     list-style: none;
-    margin-left: 1em;
+    margin-left: 1.5em;
 
     .list-element:hover {
       background-color: rgba($blue_led, 0.3);
@@ -305,7 +314,8 @@ body {
 
     .playlist-element {
       margin: 0;
-      padding: 0.5em;
+      padding: 0.1em;
+      font-size: 1.3em;
     }
   }
 }
