@@ -25,6 +25,7 @@ $('#search-friends').on('keyup', function() {
 $('#users-list').on('click', '.user-name', function(e) {
   e.preventDefault();
   var friendID = $(this).attr('id');
+  var friendName = $(this).text();
 
   var saveFriend = $.ajax({
     url: '/friends',
@@ -32,9 +33,10 @@ $('#users-list').on('click', '.user-name', function(e) {
     data: { id: friendID },
     dataType: 'json'
   });
-  saveFriend.done(function() {
+  saveFriend.done(function(friend) {
     $('#users-list-container').fadeOut();
     $('#search-friends').val('');
+    alert(friendName + ' now is your fiend');
   });
   saveFriend.fail(function(friend) {
     alert(friend.responseJSON.errors);

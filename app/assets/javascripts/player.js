@@ -161,3 +161,13 @@ $('#autocomplete-container').focusout(function() {
   $('#autocomplete-container').hide();
   $('#search-field').val('');
 });
+
+$('#new-jam').on('click', function(e) {
+  e.preventDefault();
+
+  if ($('#new-jam-form').is(':visible')){
+    $('#new-jam-form').slideUp('slow');
+  } else {
+    $('#new-jam-form').slideDown('slow');
+  }
+});

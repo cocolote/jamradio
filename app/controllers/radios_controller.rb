@@ -3,7 +3,8 @@ class RadiosController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html { @radio = Radio.new }
+      format.html { @radio = Radio.new
+                    @jam = Jam.new }
       format.json { render json: { radios: current_user.radios } }
     end
   end

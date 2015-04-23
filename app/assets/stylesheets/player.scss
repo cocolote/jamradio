@@ -1,6 +1,6 @@
 $grey: #cfcfcf;
 $blue_led: #0078a0;
-@import url('http://fonts.googleapis.com/css?family=Audiowide|Plaster');
+@import url('//fonts.googleapis.com/css?family=Audiowide|Plaster');
 
 @font-face {
   font-family: 'LED';
@@ -195,7 +195,7 @@ body {
     letter-spacing: 0.3em;
   }
 
-  .search-boxes input, select {
+  .search-boxes, #jam-name, input, select {
     border: none;
     border-bottom: 2px solid $blue_led;
     background-color: transparent;
@@ -232,6 +232,41 @@ body {
         opacity: 0.9;
         box-shadow: inset 0px 0px 7px 1px $blue_led;
         position: absolute;
+      }
+    }
+  }
+
+  #new-jam-form {
+    display: none;
+    background-image: url(/assets/display-background.png);
+    opacity: 0.9;
+    box-shadow: inset 0px 0px 7px 1px $blue_led;
+    position: absolute;
+    margin-left: 2em;
+    margin-right: auto;
+    text-align: center;
+    border-bottom: 1px dotted $blue_led;
+
+    #friends-list {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      overflow: auto;
+      height: 15em;
+
+      .friend {
+        border-radius: 0.5em;
+        padding: 0;
+        margin: 0;
+        height: 8em;
+      }
+
+      .friend_pic {
+        width: 5em;
+      }
+
+      .user-name {
+        color: $blue_led;
       }
     }
   }
@@ -285,12 +320,9 @@ width: 0.3em;
   border-radius: 2em;
 }
 
-
 #create-jam {
-  border: 1px solid red;
   display: none;
-  width: 70%;
+  width: 95%;
   margin-left: auto;
   margin-right: auto;
-  text-align: center;
 }
