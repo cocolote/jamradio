@@ -2,6 +2,10 @@ class RadiosController < ApplicationController
   respond_to :json, :html
 
   def index
+    jams_songs = current_user.jams.map { |j| [j.name, j.id] }.compact
+    guest_jams_songs = Guest.where(user: current_user).map { |g| [g.jam.name, g.jam.id] if g.jam }.compact
+    @all_jams = jams_songs + guest_jams_songs
+
     respond_to do |format|
       format.html { @radio = Radio.new
                     @jam = Jam.new }

@@ -1,5 +1,4 @@
 var posPlayingSong = 0;
-var playList = [];
 var playingSong = '';
 
 // PLAY A SONG

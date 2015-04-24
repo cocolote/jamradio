@@ -1,16 +1,9 @@
 class JamSongsController < ApplicationController
   respond_to :json
 
-  # def index
-  #   respond_to do |format|
-  #     format.json { render json: { songs: current_user.songs.order("updated_at") } }
-  #   end
-  # end
-
   def create
-    binding.pry
     @song = Song.find_or_create_by(song_params)
-    @jam = Jam.find(params[:id])
+    @jam = Jam.find(params[:jam_id])
     @jam_song = JamSong.new(jam: @jam, song: @song)
     if @jam_song.save
       respond_to do |format|
@@ -24,10 +17,10 @@ class JamSongsController < ApplicationController
   end
 
   def destroy
-    @jam_song = UserSong.find_by(user: current_user, song_id: params[:id])
-    UserSong.destroy_all(user: current_user, song_id: params[:id])
+    @jam_song = JamSong.find_by(jam_id: params[:jam_id], song_id: params[:id])
+    JamSong.delete(@jam_song)
     respond_to do |format|
-      format.json { render json: { id: params[:id], message: "The song was deleted" } }
+      format.json { render json: { message: "The song was deleted" } }
     end
   end
 

@@ -1,6 +1,7 @@
 // GLOBAL VARIABLES
 var CLIENT_ID = '271b061d5469839b06f3e95da05b822c';
 var radioOrSongs;
+var playList = [];
 
 // ##### HELPER FUNCTIONS #####
 // Toggle play and pause buttons

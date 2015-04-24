@@ -75,8 +75,11 @@
   <div id="create-jam" class="search-boxes">
     <div class="row">
       <p class="promt small-2 columns"><%= link_to "New Jam!", "#", id: "new-jam" %></p>
-      <p class="promt small-2 columns">New Song</p>
-      <%= form_tag "songs#search", method: "get" do %>
+      <div class="small-2 columns">
+        <p class="promt" id="new-song-label">New Song</p>
+        <p class="promt" id="new-jam-song"><%= link_to "Add", "#" %></p>
+      </div>
+      <%= form_tag "songs#search", id: "jam-song-shearch", method: "get" do %>
         <div class="small-4 columns">
           <%= text_field_tag :q, nil, id: "jamsongs-search-field" %>
           <div id="jamsongs-autocomplete-container">
@@ -85,7 +88,7 @@
         </div>
         <div class="small-4 columns">
           <% if current_user %>
-            <%= select_tag :jam_id, options_for_select(current_user.jams.map{ |j| [j.name, j.id] }) %>
+            <%= select_tag :jam_id, options_for_select(@all_jams) %>
           <% end %>
         </div>
       <% end %>

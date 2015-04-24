@@ -33,9 +33,17 @@ class JamsController < ApplicationController
   end
 
   def destroy
-    Jam.delete(params[:id])
+    jam = Jam.find(params[:id])
+    if jam.user == current_user
+      Jam.delete(params[:id])
+      message = "The Jam was deleted"
+    else
+      guest = Guest.find_by(jam: jam, user: current_user)
+      Guest.delete(guest)
+      message = "You have leave the Jam"
+    end
     respond_to do |format|
-      format.json { render json: { message: "The Jam was deleted" } }
+      format.json { render json: { message: message } }
     end
   end
 
