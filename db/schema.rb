@@ -27,12 +27,12 @@ ActiveRecord::Schema.define(version: 20150419152200) do
 
   create_table "guests", force: :cascade do |t|
     t.integer  "jam_id",     null: false
-    t.integer  "guest_id",   null: false
+    t.integer  "user_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "guests", ["jam_id", "guest_id"], name: "index_guests_on_jam_id_and_guest_id", unique: true, using: :btree
+  add_index "guests", ["jam_id", "user_id"], name: "index_guests_on_jam_id_and_user_id", unique: true, using: :btree
 
   create_table "jam_songs", force: :cascade do |t|
     t.integer  "jam_id",     null: false
