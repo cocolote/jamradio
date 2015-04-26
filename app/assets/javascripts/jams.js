@@ -1,4 +1,5 @@
 var refreshInterval;
+var refreshJams;
 
 // PLAY SONGS FROM THE JAM
 $('#player-list').on('click', '.jam-songs', function(e) {
@@ -298,4 +299,23 @@ function refreshPlayList(jamID) {
       }
     });
     }, 1000);
+}
+
+// REFRESH THE JAMS LIST
+function refreshJamsList() {
+  var jamsLength = 0;
+  refreshJams = setInterval(function() {
+    var getPlaylist = $.ajax({
+      url: '/jams',
+      type: 'GET',
+      dataType: 'json'
+    });
+    getPlaylist.done(function(result) {
+      var quantJams = result.jams.jams.length + result.jams.guest_jams.length;
+      if (quantJams !== jamsLength) {
+        jamsLength = quantJams;
+        createJamsList(result.jams);
+      }
+    });
+  }, 1000);
 }

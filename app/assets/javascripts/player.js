@@ -114,6 +114,7 @@ $('.switch a').on('click', function(e) {
       createSongsList(result.songs);
     } else {
       createJamsList(result.jams);
+      refreshJamsList();
     }
   });
 });
@@ -121,12 +122,14 @@ $('.switch a').on('click', function(e) {
 function toggleSearchForm(name) {
   if (name == 'radios') {
     clearInterval(refreshInterval);
+    clearInterval(refreshJams);
     $('#create-jam').hide();
     $('#search-songs').hide();
     $('#new-jam-form').hide();
     $('#new-radio').fadeIn();
   } else if (name == 'songs') {
     clearInterval(refreshInterval);
+    clearInterval(refreshJams);
     $('#create-jam').hide();
     $('#new-radio').hide();
     $('#new-jam-form').hide();
