@@ -77,7 +77,6 @@ function addSong(song) {
     dataType: 'json'
   });
   newSong.done(function(song) {
-    playList.push(song);
     var getSongs = $.ajax({
       url: '/songs',
       type: 'GET',
@@ -104,11 +103,16 @@ $('#player-list').on('click', '.delete-song', function(e) {
     dataType: 'json'
     });
   deleteSong.done(function(result) {
-    var deleteSong = $('#' + result.id).attr('count');
     $('#list-element-' + result.id).remove();
-    playList.splice(deleteSong, 1);
     posPlayingSong--;
-    createSongsList(playList);
+    var getSongs = $.ajax({
+      url: '/songs',
+      type: 'GET',
+      dataType: 'json'
+    });
+    getSongs.done(function(result) {
+      createSongsList(result.songs);
+    });
     alert(result.message);
   });
   deleteSong.fail(function() {
@@ -118,10 +122,12 @@ $('#player-list').on('click', '.delete-song', function(e) {
 
 function createSongsList(songs) {
   var songHTML = [];
+  playList = [];
   songHTML.push('<ol id="songs-play-list">');
   var sMinutes;
   var sSeconds;
   for(var i = 0; i < songs.length; i++) {
+    playList.push({ sc_song_id: songs[i].sc_song_id });
     var p = '';
     parseInt(playingSong) === songs[i].sc_song_id ? p = 'playing-song' : p = '';
     songHTML.push('<li class="row list-element ' + p + '" id="list-element-' + songs[i].sc_song_id + '">');
