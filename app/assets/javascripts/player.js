@@ -10,7 +10,9 @@ function toggleButton(track) {
     $('#play-pause-btn').removeClass('btn-pressed');
   } else {
     $('.list-element').removeClass('playing-song');
+    $('.jam-song-element').removeClass('playing-song');
     $('#list-element-' + playingSong).addClass('playing-song');
+    $('#jam-song-element-'+ playingSong).addClass('playing-song');
     $('#play-pause-btn').addClass('btn-pressed');
   }
 }

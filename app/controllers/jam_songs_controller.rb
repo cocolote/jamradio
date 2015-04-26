@@ -1,6 +1,13 @@
 class JamSongsController < ApplicationController
   respond_to :json
 
+  def index
+    songs = JamSong.where(jam_id: params[:jam_id])
+    respond_to do |format|
+      format.json { render json: { songs_number: songs.size } }
+    end
+  end
+
   def create
     @song = Song.find_or_create_by(song_params)
     @jam = Jam.find(params[:jam_id])

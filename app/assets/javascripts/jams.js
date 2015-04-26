@@ -3,18 +3,22 @@ $('#player-list').on('click', '.jam-songs', function(e) {
   e.preventDefault();
 
   var jamID = $(this).attr('jam-id');
-  var linkSongs = $('#jams-songs-list-' + jamID).children();
+  var linkSongs = $('#jams-songs-list-' + jamID).children().children();
 
   playList = [];
   for (var i = 0; i < linkSongs.length; i++) {
-    playList.push({ sc_song_id: linkSongs[i].id });
+    if (parseInt(linkSongs[i].id)) {
+      playList.push({ sc_song_id: linkSongs[i].id });
+    }
   }
+
   radioOrSongs = 'songs';
   posPlayingSong = $(this).attr('count');
   var soundcloudID = $(this).attr('sc-song-id');
   var jamName = $(this).attr('jam-name');
   $('#radio-playing').text(jamName);
   playSong(soundcloudID);
+  refreshPlayList(jamID);
 });
 
 // CREATE LIST OF GUESTS
@@ -170,7 +174,7 @@ function createJamsList(result) {
   var jamsHTML = [];
   jamsHTML.push('<ol id="jams-play-list">');
   for(var i = 0; i < result.jams.length; i++) {
-    jamsHTML.push('<li class="jamlist-element" id="jamlist-element-' + result.jams[i].jam.id + ' row">');
+    jamsHTML.push('<li class="jamlist-element row" id="jamlist-element-' + result.jams[i].jam.id + '">');
     jamsHTML.push('<img class="small-1 column" src="' + result.user.picture.url + '" alt="user pic">');
     jamsHTML.push('<p class="jamlist-element small-10 columns">');
     jamsHTML.push('<a class="jams jam-' + i + '" count="' + i + '" jam="' + result.jams[i].jam.id + '" href="#">' + result.jams[i].jam.name + '</a></p>');
@@ -180,7 +184,7 @@ function createJamsList(result) {
   }
 
   for(var i = 0; i < result.guest_jams.length; i++) {
-    jamsHTML.push('<li class="jamlist-element" id="jamlist-element-' + result.guest_jams[i].jam.id + ' row">');
+    jamsHTML.push('<li class="jamlist-element row" id="jamlist-element-' + result.guest_jams[i].jam.id + '">');
     jamsHTML.push('<img class="small-1 column" src="' + result.guest_jams[i].user.picture.url + '" alt="user pic">');
     jamsHTML.push('<p class="jamlist-element small-8 columns">');
     jamsHTML.push('<a class="jams jam-' + i + '" count="' + i + '" jam="' + result.guest_jams[i].jam.id + '" href="#">' + result.guest_jams[i].jam.name + '</a></p>');
@@ -201,8 +205,8 @@ function jamSongsList(songs, jamID, jamsHTML, jamName) {
   for(var i = 0; i < songs.length; i++) {
     var p = '';
     parseInt(playingSong) === songs[i].sc_song_id ? p = 'playing-song' : p = '';
-    jamsHTML.push('<li class="row jam-song-element ' + p + '" id="' + songs[i].sc_song_id + '">');
-    jamsHTML.push('<p class="small-11 columns playlist-element">');
+    jamsHTML.push('<li class="row jam-song-element ' + p + '" id="jam-song-element-' + songs[i].sc_song_id + '">');
+    jamsHTML.push('<p class="small-11 columns playlist-element" id="' + songs[i].sc_song_id + '">');
     var min = Math.floor(songs[i].duration / 60000);
     var sec = Math.floor(songs[i].duration % 60);
     min.toString().length === 1 ? sMinutes = '0' + min : sMinutes = min;
@@ -251,3 +255,30 @@ $('#player-list').on('click', '.jams', function(e) {
   var jamID = $(this).attr('jam');
   $('#jams-songs-list-' + jamID).slideDown('slow');
 });
+
+// REFRESH PLAYLIST EVERY TIME SOMEONE ADDS A SONG
+function refreshPlayList(jamID) {
+  var playListLength = 0;
+  setInterval(function() {
+    console.log(playListLength);
+    var getListLength = $.ajax({
+      url: '/jams/' + jamID + '/jam_songs',
+      type: 'GET',
+      dataType: 'json'
+    });
+    getListLength.done(function(result) {
+      if (result.songs_number !== playListLength) {
+        playListLength = result.songs_number;
+        var getPlaylist = $.ajax({
+          url: '/jams',
+          type: 'GET',
+          dataType: 'json'
+        });
+        getPlaylist.done(function(result) {
+          createJamsList(result.jams);
+          $('#jams-songs-list-' + jamID).show();
+        });
+      }
+    });
+    }, 3000);
+}
