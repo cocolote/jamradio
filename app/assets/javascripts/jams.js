@@ -283,7 +283,6 @@ function refreshPlayList(jamID) {
       dataType: 'json'
     });
     getListLength.done(function(result) {
-      console.log(playListLength);
       if (result.songs.length !== playListLength) {
         playList = result.songs;
         playListLength = result.songs.length;
