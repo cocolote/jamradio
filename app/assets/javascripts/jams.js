@@ -2,15 +2,26 @@
 $('#player-list').on('click', '.jam-songs', function(e) {
   e.preventDefault();
 
-  var jamID = $(this).attr('jam-id');
-  var linkSongs = $('#jams-songs-list-' + jamID).children().children();
-
   playList = [];
-  for (var i = 0; i < linkSongs.length; i++) {
-    if (parseInt(linkSongs[i].id)) {
-      playList.push({ sc_song_id: linkSongs[i].id });
-    }
-  }
+  var jamID = $(this).attr('jam-id');
+  var getSongs = $.ajax({
+    url: '/jams/' + jamID + '/jam_songs',
+    type: 'GET',
+    dataType: 'json'
+  });
+  getSongs.done(function(result) {
+    debugger;
+    playList = result.songs;
+  });
+
+  // var linkSongs = $('#jams-songs-list-' + jamID).children().children();
+
+  // playList = [];
+  // for (var i = 0; i < linkSongs.length; i++) {
+  //   if (parseInt(linkSongs[i].id)) {
+  //     playList.push({ sc_song_id: linkSongs[i].id });
+  //   }
+  // }
 
   radioOrSongs = 'songs';
   posPlayingSong = $(this).attr('count');
@@ -103,7 +114,7 @@ $('#jamsongs-autocomplete').on('click', '.song-title', function(e) {
 
 $('#new-jam-song a').on('click', function(e) {
   e.preventDefault();
-  playList.push({ sc_song_id: songID });
+
   SC.get('/tracks/' + songID, function(song) {
     $('#jamsongs-autocomplete-container').fadeOut();
     addJamSong(song);
@@ -127,12 +138,12 @@ $('#player-list').on('click', '.delete-jam', function(e) {
     });
   deleteJam.done(function(result) {
     alert(result.message);
-    var switchPlaylist = $.ajax({
+    var getPlayList = $.ajax({
       url: '/jams',
       type: 'GET',
       dataType: 'json'
     });
-    switchPlaylist.done(function(result) {
+    getPlayList.done(function(result) {
       createJamsList(result.jams);
     });
   });
@@ -147,21 +158,31 @@ $('#player-list').on('click', '.delete-jam-song', function(e) {
 
   var jamID = $(this).attr('jam-id');
   var songID = $(this).attr('id');
+
   var deleteJamSong = $.ajax({
     url: '/jams/' + jamID + '/jam_songs/' + songID,
     type: 'DELETE',
     dataType: 'json'
-    });
+  });
   deleteJamSong.done(function(result) {
     alert(result.message);
-    var switchPlaylist = $.ajax({
-      url: '/jams',
+    var getSongs = $.ajax({
+      url: '/jams/' + jamID + '/jam_songs',
       type: 'GET',
       dataType: 'json'
     });
-    switchPlaylist.done(function(result) {
-      createJamsList(result.jams);
-      $('#jams-songs-list-' + jamID).show();
+    getSongs.done(function(result) {
+      playList = result.songs;
+      playListLength = result.songs.length;
+      var getPlaylist = $.ajax({
+        url: '/jams',
+        type: 'GET',
+        dataType: 'json'
+      });
+      getPlaylist.done(function(result) {
+        createJamsList(result.jams);
+        $('#jams-songs-list-' + jamID).show();
+      });
     });
   });
   deleteJamSong.fail(function() {
@@ -223,6 +244,7 @@ function jamSongsList(songs, jamID, jamsHTML, jamName) {
 function addJamSong(song) {
   var jamID = $('#jam_id').val();
 
+  playList.push({ sc_song_id: song.id });
   var newJamSong = $.ajax({
     url: '/jams/' + jamID + '/jam_songs',
     type: 'POST',
@@ -260,15 +282,15 @@ $('#player-list').on('click', '.jams', function(e) {
 function refreshPlayList(jamID) {
   var playListLength = 0;
   setInterval(function() {
-    console.log(playListLength);
     var getListLength = $.ajax({
       url: '/jams/' + jamID + '/jam_songs',
       type: 'GET',
       dataType: 'json'
     });
     getListLength.done(function(result) {
-      if (result.songs_number !== playListLength) {
-        playListLength = result.songs_number;
+      if (result.songs.length !== playListLength) {
+        playList = result.songs;
+        playListLength = result.songs.length;
         var getPlaylist = $.ajax({
           url: '/jams',
           type: 'GET',
@@ -280,5 +302,5 @@ function refreshPlayList(jamID) {
         });
       }
     });
-    }, 3000);
+    }, 1000);
 }

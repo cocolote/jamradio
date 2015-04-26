@@ -107,8 +107,8 @@ $('#player-list').on('click', '.delete-song', function(e) {
     var deleteSong = $('#' + result.id).attr('count');
     $('#list-element-' + result.id).remove();
     playList.splice(deleteSong, 1);
-    createSongsList(playList);
     posPlayingSong--;
+    createSongsList(playList);
     alert(result.message);
   });
   deleteSong.fail(function() {
