@@ -1,5 +1,6 @@
 class RadiosController < ApplicationController
   respond_to :json, :html
+  before_action :authenticate_user!, only: [:index]
 
   def index
     jams_songs = current_user.jams.map { |j| [j.name, j.id] }.compact
