@@ -5,12 +5,13 @@ class JamsController < ApplicationController
     jams_songs = current_user.jams.map{ |j| { jam: j, songs: j.songs } }.compact
     guest_jams_songs = Guest.where(user: current_user).map { |g| { jam: g.jam, songs: g.jam.songs, user: g.jam.user } if g.jam }.compact
     respond_to do |format|
-      format.json { render json: { jams: { jams: jams_songs,
-                                           user: current_user,
-                                           guest_jams: guest_jams_songs
-                                         }
-                                  }
-                  }
+      format.json do
+        render json: {
+                 jams: { jams: jams_songs,
+                         user: current_user,
+                         guest_jams: guest_jams_songs }
+                     }
+      end
     end
   end
 

@@ -10,18 +10,8 @@ $('#player-list').on('click', '.jam-songs', function(e) {
     dataType: 'json'
   });
   getSongs.done(function(result) {
-    debugger;
     playList = result.songs;
   });
-
-  // var linkSongs = $('#jams-songs-list-' + jamID).children().children();
-
-  // playList = [];
-  // for (var i = 0; i < linkSongs.length; i++) {
-  //   if (parseInt(linkSongs[i].id)) {
-  //     playList.push({ sc_song_id: linkSongs[i].id });
-  //   }
-  // }
 
   radioOrSongs = 'songs';
   posPlayingSong = $(this).attr('count');
@@ -85,7 +75,9 @@ $('#new-jam-form').on('submit', function(e) {
     data: { jam: {name: name, guests: guests } },
     dataType: 'json'
     });
-  newJam.done(function() {
+  newJam.done(function(jam) {
+    debugger;
+    $('#jam_id').append('<option value="' + jam.id + '">' + jam.name + '</option>');
     var switchPlaylist = $.ajax({
       url: '/jams',
       type: 'GET',

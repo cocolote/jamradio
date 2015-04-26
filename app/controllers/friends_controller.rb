@@ -1,12 +1,6 @@
 class FriendsController < ApplicationController
   respond_to :json
 
-  def index
-    # respond_to do |format|
-    #   format.json { render json: { radios: current_user.radios } }
-    # end
-  end
-
   def create
     @friend = User.find(params[:id])
     if current_user == @friend
@@ -17,7 +11,7 @@ class FriendsController < ApplicationController
       @new_friend = Friend.new(user: current_user, friend_id: @friend.to_param)
       if @new_friend.save
         respond_to do |format|
-          format.json { render json: @new_friend }
+          format.json { render json: @friend }
         end
       else
         respond_to do |format|
@@ -25,12 +19,5 @@ class FriendsController < ApplicationController
         end
       end
     end
-  end
-
-  def destroy
-    # UserRadio.destroy_all(user: current_user, radio_id: params[:id])
-    # respond_to do |format|
-    #   format.json { render json: { id: params[:id], message: "The radio was deleted" } }
-    # end
   end
 end

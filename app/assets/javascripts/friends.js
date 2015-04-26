@@ -24,6 +24,7 @@ $('#search-friends').on('keyup', function() {
 
 $('#users-list').on('click', '.user-name', function(e) {
   e.preventDefault();
+
   var friendID = $(this).attr('id');
   var friendName = $(this).text();
 
@@ -34,8 +35,14 @@ $('#users-list').on('click', '.user-name', function(e) {
     dataType: 'json'
   });
   saveFriend.done(function(friend) {
+    var newFriendHTML = [];
     $('#users-list-container').fadeOut();
     $('#search-friends').val('');
+    newFriendHTML.push('<li class="small-4 columns friend" id="friend-' + friend.id + '">');
+    newFriendHTML.push('<a id="' + friend.id + '" class="jam-friend" href="#">');
+    newFriendHTML.push('<img class="friend_pic" src="' + friend.picture.url + '" alt="user-picture"></a>');
+    newFriendHTML.push('<p class="user-name">' + friend.user_name + '</p></li>');
+    $('#friends-list').append(newFriendHTML.join(''));
     alert(friendName + ' now is your fiend');
   });
   saveFriend.fail(function(friend) {
