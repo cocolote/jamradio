@@ -43,6 +43,7 @@ $('#new-jam').on('click', function(e) {
     $('#new-jam-form').slideUp('slow');
   } else {
     $('#new-jam-form').slideDown('slow');
+    $('.friend').show();
   }
 });
 
