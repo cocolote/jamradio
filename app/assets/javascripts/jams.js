@@ -103,7 +103,7 @@ $('#jamsongs-autocomplete').on('click', '.song-title', function(e) {
 
 $('#new-jam-song a').on('click', function(e) {
   e.preventDefault();
-
+  playList.push({ sc_song_id: songID });
   SC.get('/tracks/' + songID, function(song) {
     $('#jamsongs-autocomplete-container').fadeOut();
     addJamSong(song);
