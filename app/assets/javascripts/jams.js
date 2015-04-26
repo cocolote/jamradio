@@ -205,7 +205,7 @@ function createJamsList(result) {
     jamsHTML.push('<a class="jams jam-' + i + '" count="' + i + '" jam="' + result.guest_jams[i].jam.id + '" href="#">' + result.guest_jams[i].jam.name + '</a></p>');
     jamsHTML.push('<p class="jamlist-element small-2 columns">' + result.guest_jams[i].user.user_name + '</p>');
     jamsHTML.push('<p class="jamlist-element small-1 column"><a class="delete-jam" id="' + result.guest_jams[i].jam.id + '" count="' + i + '" href="#">X</a></p></li>');
-    optionHTML.push('<option value="' + result.jams[i].jam.id + '">' + result.jams[i].jam.name + '</option>');
+    optionHTML.push('<option value="' + result.guest_jams[i].jam.id + '">' + result.guest_jams[i].jam.name + '</option>');
     jamSongsList(result.guest_jams[i].songs, result.guest_jams[i].jam.id, jamsHTML, result.guest_jams[i].jam.name);
   }
   jamsHTML.push('</ol>');
