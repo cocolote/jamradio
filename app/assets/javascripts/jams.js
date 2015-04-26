@@ -1,3 +1,5 @@
+var refreshInterval;
+
 // PLAY SONGS FROM THE JAM
 $('#player-list').on('click', '.jam-songs', function(e) {
   e.preventDefault();
@@ -19,7 +21,6 @@ $('#player-list').on('click', '.jam-songs', function(e) {
   var jamName = $(this).attr('jam-name');
   $('#radio-playing').text(jamName);
   playSong(soundcloudID);
-  refreshPlayList(jamID);
 });
 
 // CREATE LIST OF GUESTS
@@ -265,21 +266,24 @@ function addJamSong(song) {
 $('#player-list').on('click', '.jams', function(e) {
   e.preventDefault();
 
+  clearInterval(refreshInterval);
   $('.jams-songs-list').hide();
   var jamID = $(this).attr('jam');
   $('#jams-songs-list-' + jamID).slideDown('slow');
+  refreshPlayList(jamID);
 });
 
 // REFRESH PLAYLIST EVERY TIME SOMEONE ADDS A SONG
 function refreshPlayList(jamID) {
   var playListLength = 0;
-  setInterval(function() {
+  refreshInterval = setInterval(function() {
     var getListLength = $.ajax({
       url: '/jams/' + jamID + '/jam_songs',
       type: 'GET',
       dataType: 'json'
     });
     getListLength.done(function(result) {
+      console.log(playListLength);
       if (result.songs.length !== playListLength) {
         playList = result.songs;
         playListLength = result.songs.length;

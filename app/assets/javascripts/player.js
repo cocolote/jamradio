@@ -120,11 +120,13 @@ $('.switch a').on('click', function(e) {
 
 function toggleSearchForm(name) {
   if (name == 'radios') {
+    clearInterval(refreshInterval);
     $('#create-jam').hide();
     $('#search-songs').hide();
     $('#new-jam-form').hide();
     $('#new-radio').fadeIn();
   } else if (name == 'songs') {
+    clearInterval(refreshInterval);
     $('#create-jam').hide();
     $('#new-radio').hide();
     $('#new-jam-form').hide();
