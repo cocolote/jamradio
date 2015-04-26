@@ -78,8 +78,6 @@ $('#new-jam-form').on('submit', function(e) {
     dataType: 'json'
     });
   newJam.done(function(jam) {
-    debugger;
-    $('#jam_id').append('<option value="' + jam.id + '">' + jam.name + '</option>');
     var switchPlaylist = $.ajax({
       url: '/jams',
       type: 'GET',
@@ -187,6 +185,7 @@ $('#player-list').on('click', '.delete-jam-song', function(e) {
 // CREATES THE LIST OF JAMS FOR THE CURRENT USER
 function createJamsList(result) {
   var jamsHTML = [];
+  var optionHTML = [];
   jamsHTML.push('<ol id="jams-play-list">');
   for(var i = 0; i < result.jams.length; i++) {
     jamsHTML.push('<li class="jamlist-element row" id="jamlist-element-' + result.jams[i].jam.id + '">');
@@ -195,6 +194,7 @@ function createJamsList(result) {
     jamsHTML.push('<a class="jams jam-' + i + '" count="' + i + '" jam="' + result.jams[i].jam.id + '" href="#">' + result.jams[i].jam.name + '</a></p>');
     jamsHTML.push('<p class="jamlist-element small-1 column">');
     jamsHTML.push('<a class="delete-jam" id="' + result.jams[i].jam.id + '" count="' + i + '" href="#">X</a></p></li>');
+    optionHTML.push('<option value="' + result.jams[i].jam.id + '">' + result.jams[i].jam.name + '</option>');
     jamSongsList(result.jams[i].songs, result.jams[i].jam.id, jamsHTML, result.jams[i].jam.name);
   }
 
@@ -205,12 +205,15 @@ function createJamsList(result) {
     jamsHTML.push('<a class="jams jam-' + i + '" count="' + i + '" jam="' + result.guest_jams[i].jam.id + '" href="#">' + result.guest_jams[i].jam.name + '</a></p>');
     jamsHTML.push('<p class="jamlist-element small-2 columns">' + result.guest_jams[i].user.user_name + '</p>');
     jamsHTML.push('<p class="jamlist-element small-1 column"><a class="delete-jam" id="' + result.guest_jams[i].jam.id + '" count="' + i + '" href="#">X</a></p></li>');
+    optionHTML.push('<option value="' + result.jams[i].jam.id + '">' + result.jams[i].jam.name + '</option>');
     jamSongsList(result.guest_jams[i].songs, result.guest_jams[i].jam.id, jamsHTML, result.guest_jams[i].jam.name);
   }
   jamsHTML.push('</ol>');
   $('#player-list').empty();
+  $('#jam_id').empty();
   toggleSearchForm('jams');
   $('#player-list').append(jamsHTML.join(''));
+  $('#jam_id').append(optionHTML.join(''));
 }
 
 function jamSongsList(songs, jamID, jamsHTML, jamName) {
