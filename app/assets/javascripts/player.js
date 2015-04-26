@@ -45,7 +45,18 @@ function stopMusic(track) {
 // LIKE A SONG
 $('#like-btn').on('click', function(e) {
   animateButtons('like-btn');
-  addSong(currentTrack);
+  var likeSong = $.ajax({
+    url: '/songs',
+    type: 'POST',
+    data: { song: { sc_song_id: currentTrack.id, title: currentTrack.title, duration: currentTrack.duration } },
+    dataType: 'json'
+  });
+  likeSong.done(function(song) {
+    alert("Song was add to your play list");
+  });
+  likeSong.fail(function(messages) {
+    alert(messages.responseJSON.errors[0]);
+  });
 });
 
 // NEXT SONG

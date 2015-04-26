@@ -70,25 +70,25 @@ $('#search-field').focusout(function() {
 
 // ADD SONG
 function addSong(song) {
-  var likeSong = $.ajax({
+  var newSong = $.ajax({
     url: '/songs',
     type: 'POST',
     data: { song: { sc_song_id: song.id, title: song.title, duration: song.duration } },
     dataType: 'json'
-    });
-  likeSong.done(function(song) {
+  });
+  newSong.done(function(song) {
     playList.push(song);
     var getSongs = $.ajax({
       url: '/songs',
       type: 'GET',
       dataType: 'json'
-      });
+    });
     getSongs.done(function(result) {
       createSongsList(result.songs);
     });
     alert("Song was add to your play list");
   });
-  likeSong.fail(function(messages) {
+  newSong.fail(function(messages) {
     alert(messages.responseJSON.errors[0]);
   });
 }
