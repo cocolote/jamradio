@@ -78,18 +78,14 @@ function addSong(song) {
     });
   likeSong.done(function(song) {
     playList.push(song);
-    var i = playList.length - 1;
-    var songHTML = [];
-    songHTML.push('<li class="row list-element" id="list-element-' + song.sc_song_id + '">');
-    songHTML.push('<p class="small-11 columns playlist-element">');
-    var min = Math.floor(song.duration / 60000);
-    var sec = Math.floor(song.duration % 60);
-    min.toString().length === 1 ? sMinutes = '0' + min : sMinutes = min;
-    sec.toString().length === 1 ? sSeconds = '0' + sec : sSeconds = sec;
-    songHTML.push('<a class="songs song-' + i + '" count="' + i + '" sc-song-id="' + song.sc_song_id + '" href="#">' + song.title + ' (' + sMinutes + ':' + sSeconds + ')</a></p>');
-    songHTML.push('<p class="small-1 columns playlist-element">');
-    songHTML.push('<a class="delete-song" id="' + song.id + '" count="' + i + '" href="#">X</a></p></li>');
-    $('#songs-play-list').append(songHTML.join(''));
+    var getSongs = $.ajax({
+      url: '/songs',
+      type: 'GET',
+      dataType: 'json'
+      });
+    getSongs.done(function(result) {
+      createSongsList(result.songs);
+    });
     alert("Song was add to your play list");
   });
   likeSong.fail(function(messages) {

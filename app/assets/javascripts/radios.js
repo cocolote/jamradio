@@ -66,14 +66,15 @@ $('#new_radio').on('submit', function(e) {
     dataType: 'json'
     });
   newRadio.done(function(radio) {
-    var radioHTML = [];
-    radioHTML.push('<li class="row list-element" id="list-element-' + radio.id + '">');
-    radioHTML.push('<p class="small-11 columns playlist-element">');
-    radioHTML.push('<a class="radios" category="' + radio.category + '" name="' + radio.name + '" href="#">' + radio.name + '</a></p>');
-    radioHTML.push('<p class="small-1 columns playlist-element">');
-    radioHTML.push('<a class="delete-radio" id="' + radio.id + '" href="#">X</a></p></li>');
     $('#radio_name').val('');
-    $('#radios-play-list').append(radioHTML.join(''));
+    var getRadios = $.ajax({
+      url: '/radios',
+      type: 'GET',
+      dataType: 'json'
+      });
+    getRadios.done(function(result) {
+      createRadiosList(result.radios);
+    });
   });
   newRadio.fail(function(messages) {
     alert(messages.responseJSON.errors[0]);
