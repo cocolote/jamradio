@@ -1,11 +1,8 @@
 $grey: #cfcfcf;
-$blue_led: #0078a0;
+/*$blue_led: #0078a0;*/
+$blue_led: #1EB500;
 @import url('//fonts.googleapis.com/css?family=Audiowide|Plaster');
-
-@font-face {
-  font-family: 'LED';
-  src: url(/assets/SIGNUS_LED-S.ttf) format(truetype);
-}
+@import url('//fonts.googleapis.com/css?family=Nova+Mono');
 
 body {
   background-image: url('//i.imgur.com/XUl4A2b.png');
@@ -73,7 +70,7 @@ body {
   box-shadow: inset 0px 0px 7px 1px $blue_led;
   border: 3px inset $grey;
   border-radius: 1em;
-  font-family: 'LED';
+  font-family: 'Nova Mono';
   color: $blue_led;
   text-shadow: 0 0 5px $blue_led;
   letter-spacing: 0.3em;
@@ -179,6 +176,10 @@ body {
   }
 }
 
+#playlist-container a {
+  color: $blue_led;
+}
+
 #playlist-container {
   background-image: url(/assets/display-background.png);
   opacity: 0.9;
@@ -220,10 +221,10 @@ body {
     width: 95%;
     margin-left: 1em;
     margin-top: 0.2em;
-    font-family: 'LED';
+    font-family: 'Nova Mono';
 
     #radio_category {
-      font-family: 'LED';
+      font-family: 'Nova Mono';
     }
   }
 
@@ -232,7 +233,7 @@ body {
     width: 95%;
     margin-left: 1em;
     margin-top: 0.2em;
-    font-family: 'LED';
+    font-family: 'Nova Mono';
     position: relative;
 
     #autocomplete-container {
@@ -287,7 +288,7 @@ body {
 }
 
 #player-list {
-  font-family: 'LED';
+  font-family: 'Nova Mono';
   width: 100%;
   height: 90.5%;
   margin-right: auto;
@@ -349,14 +350,14 @@ width: 0.3em;
 }
 
 #create-jam {
-  font-family: 'LED';
+  font-family: 'Nova Mono';
   display: none;
   width: 95%;
   margin-left: auto;
   margin-right: auto;
 
   select {
-    font-family: 'LED';
+    font-family: 'Nova Mono';
   }
 
   #jamsongs-autocomplete-container {
