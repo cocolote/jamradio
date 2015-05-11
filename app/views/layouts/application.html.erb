@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Jamradio</title>
+  <title>JamRadio</title>
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= csrf_meta_tags %>
 </head>
@@ -9,20 +9,21 @@
 
   <nav class="top-bar">
     <ul class="title-area">
-      <li class="name">
-        <h1><%= link_to "Jamradio", root_path, class: "special-font" %></h1>
+      <li class="name small-12 medium-3 columns">
+        <h1><%= link_to "JamRadio", root_path, id: "app-title", class: "special-font" %></h1>
       </li>
-      <li class="name">
-        <% if current_user %>
-          <div id="search-friends-container">
-            <%= form_tag "users#search", method: "get" do %>
-              <%= text_field_tag :q, nil, id: "search-friends", placeholder: "Look for a friend" %>
-            <% end %>
-            <div id="users-list-container">
-              <ul id="users-list"></ul>
-            </div>
+      <li class="name small-12 medium-3 columns">
+        <div id="player-controllers">
+          <div class="btn" id="play-pause">
+            <%= image_tag "playbutton.png", id: "play-pause-btn" %>
           </div>
-        <% end %>
+          <div class="btn" id='next-song'>
+            <%= image_tag "fastforward.png", id: "next-btn" %>
+          </div>
+          <div class="btn" id='like-song'>
+            <%= image_tag "heart.png", id: "like-btn" %>
+          </div>
+        </div>
       </li>
     </ul>
 
@@ -69,18 +70,6 @@
 
     <div id="progress-bar-container">
       <div id="progess-bar"></div>
-    </div>
-
-    <div id="player-controllers">
-      <div class="btn" id="play-pause">
-        <%= image_tag "playbutton7.png", id: "play-pause-btn" %>
-      </div>
-      <div class="btn" id='next-song'>
-        <%= image_tag "fast-forward3.png", id: "next-btn" %>
-      </div>
-      <div class="btn" id='like-song'>
-        <%= image_tag "romance1.png", id: "like-btn" %>
-      </div>
     </div>
 
     <div id="switch-play-lists">
