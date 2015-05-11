@@ -1,5 +1,5 @@
 $grey: #cfcfcf;
-$blue_led: #1EB500;
+$leds: #1EB500;
 @import url(http://fonts.googleapis.com/css?family=Josefin+Sans|Shadows+Into+Light);
 
 body {
@@ -15,7 +15,7 @@ body {
 #app-title {
   font-size: 1.6em;
   font-weight: bold;
-  color: $blue_led;
+  color: $leds;
   letter-spacing: 2px;
   text-shadow: 0px 0px 8px rgba(white, .5);
   z-index: 20;
@@ -29,7 +29,6 @@ body {
   margin-bottom: 1em;
   width: 50%;
   height: auto;
-  // padding: 1em;
 }
 
 .name {
@@ -58,45 +57,41 @@ body {
   width: 100%;
 
   .drop1-link:hover {
-    background-color: $blue_led !important;
+    background-color: $leds !important;
   }
 }
 
 .app-name, .app-name a {
   display: inline-block;
-  color: $blue_led;
+  color: $leds;
   text-shadow: 0px 0px 10px rgba(white, 0.7);
   margin-left: 0.2em;
   margin-bottom: 0.8em;
 }
 
 #song-title-container {
+  position: fixed;
+  bottom: 3.1em;
   background-image: url(/assets/display-background.png);
   opacity: 0.9;
-  box-shadow: inset 0px 0px 7px 1px $blue_led;
-  border: 3px inset $grey;
-  border-radius: 1em;
+  box-shadow: inset 0px 0px 7px 1px $leds;
+  border-top: 5px solid #333;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+  border-top-left-radius: 0.8em;
+  border-top-right-radius: 0.8em;
   font-family: 'Josefin Sans', sans-serif;
-  color: $blue_led;
-  text-shadow: 0 0 5px $blue_led;
+  color: $leds;
+  text-shadow: 0 0 10px $leds;
   letter-spacing: 0.3em;
-  margin-left: auto;
-  margin-right: auto;
-  height: 5em;
-  width: 80%;
+  margin-left: 30%;
+  height: 0.2em;
+  width: 40%;
 
   #song-title {
-    border-bottom: 1px dotted $blue_led;
     margin: 0;
     padding: 0.3em;
     height: 2.1em;
-    font-size: 1.3em;
-  }
-
-  #timer-p {
-    padding-right: 0.5em;
-    padding-bottom: 0.5em;
-    font-size: 1.2em;
   }
 
   #radio-playing {
@@ -106,26 +101,23 @@ body {
   }
 }
 
-#timer-p {
-  float: right;
-}
-
 #progress-bar-container {
   background-image: url(/assets/display-background.png);
   opacity: 0.9;
-  border: 3px inset $grey;
+  border: 1.5px solid $grey;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 1em;
-  height: 0.7em;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+  height: 0.4em;
   border-radius: 1em;
-  width: 78%;
+  width: 15em;
 
   #progess-bar {
-    background-color: rgba($blue_led, 0.6);
-    box-shadow: 0px 0px 2px 0.5px $blue_led;
+    background-color: rgba($leds, 0.6);
+    box-shadow: 0px 0px 10px 0.6px $leds;
     border-radius: 1em;
-    height: 0.25em;
+    height: 0.3em;
     width: 0%;
   }
 }
@@ -133,32 +125,46 @@ body {
 .name {
   border: 1px solid red;
   width: 10em;
+  margin-right: 20%;
 }
 
 #player-controllers {
-  border: 1px solid red;
-  // margin-top: 1.5em;
   text-align: center;
-  // width: 1em;
   margin-right: auto;
   margin-left: auto;
+  width: 100%;
 
   .btn {
     display: inline-block;
+    border: 2px solid #222;
     border-radius: 100%;
-    // margin-right: 3em;
-    // border: 0.5px solid transparent;
-    // box-shadow: 0px 0px 1.5px 1px #aaa;
+    margin: 0;
   }
 
   #like-song {
+    padding: 0.21em;
     margin-right: 0;
   }
 
-  .btn-pressed {
-    box-shadow: 0px 0px 1.5px 1px $blue_led;
-    border-radius: 100%;
-    border: 0.5px solid $blue_led;
+  #clock-container {
+    font-family: 'Josefin Sans', sans-serif;
+    background-image: url(/assets/display-background.png);
+    opacity: 0.9;
+    border: 1px solid grey;
+    border-radius: 0.3em;
+    box-shadow: inset 0px 0px 5.5px 0.5px $leds;
+    margin-top: 0.2em;
+    margin-left: 0.5em;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    width: 4em;
+
+    #timer-p {
+      color: $leds;
+      text-shadow: 0px 0px 5px $leds;
+      margin: 0;
+      padding-top: 0.2em;
+    }
   }
 }
 
@@ -183,13 +189,13 @@ body {
 
   .switch-pressed {
     padding: 0.2em;
-    border-bottom: 2px solid $blue_led;
+    border-bottom: 2px solid $leds;
     border-radius: 0.4em;
   }
 }
 
 #playlist-container a {
-  color: $blue_led;
+  color: $leds;
 }
 
 #playlist-container {
@@ -202,29 +208,29 @@ body {
   height: 10em;
   border-radius: 0.5em;
   border: 3px inset $grey;
-  box-shadow: inset 0px 0px 10px 2px $blue_led;
+  box-shadow: inset 0px 0px 10px 2px $leds;
 
   .promt {
     margin-top: 0.8em;
     font-size: 1em;
-    color: $blue_led;
-    text-shadow: 0 0 5px $blue_led;
+    color: $leds;
+    text-shadow: 0 0 5px $leds;
     letter-spacing: 0.3em;
   }
 
   #new-jam-song {
     display: none;
-    border: 2px dotted $blue_led;
+    border: 2px dotted $leds;
     border-radius: 0.5em;
     text-align: center;
   }
 
   #jam-name, input, select {
     border: none;
-    border-bottom: 1px dotted $blue_led;
+    border-bottom: 1px dotted $leds;
     background-color: transparent;
-    color: $blue_led;
-    text-shadow: 0 0 5px $blue_led;
+    color: $leds;
+    text-shadow: 0 0 5px $leds;
     letter-spacing: 0.3em;
     font-size: 1em;
   }
@@ -255,7 +261,7 @@ body {
         list-style: none;
         background-image: url(/assets/display-background.png);
         opacity: 0.9;
-        box-shadow: inset 0px 0px 7px 1px $blue_led;
+        box-shadow: inset 0px 0px 7px 1px $leds;
         position: absolute;
       }
     }
@@ -266,12 +272,12 @@ body {
     width: 40em;
     background-image: url(/assets/display-background.png);
     opacity: 0.9;
-    box-shadow: inset 0px 0px 7px 1px $blue_led;
+    box-shadow: inset 0px 0px 7px 1px $leds;
     position: absolute;
     margin-left: 2em;
     margin-right: auto;
     text-align: center;
-    border-bottom: 1px dotted $blue_led;
+    border-bottom: 1px dotted $leds;
     z-index: 1;
 
     #friends-list {
@@ -293,7 +299,7 @@ body {
       }
 
       .user-name {
-        color: $blue_led;
+        color: $leds;
       }
     }
   }
@@ -306,7 +312,7 @@ body {
   margin-right: auto;
   margin-left: auto;
   background-color: transparent;
-  text-shadow: 0 0 5px $blue_led;
+  text-shadow: 0 0 5px $leds;
   letter-spacing: 0.3em;
   overflow: auto;
 
@@ -315,18 +321,18 @@ body {
     margin-left: 1.5em;
 
     .list-element:hover, .jam-song-element:hover {
-      background-color: rgba($blue_led, 0.3);
+      background-color: rgba($leds, 0.3);
     }
 
     .playing-song {
-      background-color: rgba($blue_led, 0.3);
+      background-color: rgba($leds, 0.3);
     }
 
     .delete-radio, .delete-song, .delete-jam, .delete-jam-song {
       color: transparent;
 
       &:hover {
-        color: $blue_led;
+        color: $leds;
       }
     }
 
@@ -334,14 +340,14 @@ body {
       margin: 0em;
       padding: 0.1em;
       font-size: 1.2em;
-      color: $blue_led;
+      color: $leds;
     }
 
     .jamlist-element {
       margin: 0;
       padding: 0.1em;
       font-size: 1.3em;
-      color: $blue_led;
+      color: $leds;
       height: 3em;
     }
 
@@ -380,8 +386,15 @@ width: 0.3em;
       width: 250%;
       background-image: url(/assets/display-background.png);
       opacity: 0.9;
-      box-shadow: inset 0px 0px 7px 1px $blue_led;
+      box-shadow: inset 0px 0px 7px 1px $leds;
       position: absolute;
     }
   }
+}
+
+#footer-player {
+  position: fixed;
+  bottom: 0;
+  background-color: #333;
+  width: 100%;
 }

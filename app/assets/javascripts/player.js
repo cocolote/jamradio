@@ -7,20 +7,32 @@ var playList = [];
 // Toggle play and pause buttons
 function toggleButton(track) {
   if (track.paused) {
-    $('#play-pause-btn').removeClass('btn-pressed');
+    $('#play-pause').css({ 
+        'border-color': '#222',
+        'box-shadow': '0px 0px 10px 0px transparent'
+      });
   } else {
     $('.list-element').removeClass('playing-song');
     $('.jam-song-element').removeClass('playing-song');
     $('#list-element-' + playingSong).addClass('playing-song');
     $('#jam-song-element-'+ playingSong).addClass('playing-song');
-    $('#play-pause-btn').addClass('btn-pressed');
+    $('#play-pause').css({ 
+        'border-color': '#1EB500',
+        'box-shadow': '0px 0px 10px 0px #1EB533'
+      });
   }
 }
 
 function animateButtons(element) {
-  $('#' + element).addClass('btn-pressed');
+  $('#' + element).css({ 
+        'border-color': '#1EB500',
+        'box-shadow': '0px 0px 10px 0px #1EB533'
+      });
   $(this).on('mouseup', function() {
-    $('#' + element).removeClass('btn-pressed');
+    $('#' + element).css({ 
+        'border-color': '#222',
+        'box-shadow': '0px 0px 10px 0px transparent'
+      });
   });
 }
 
@@ -35,6 +47,7 @@ function initialize(client) {
 function stopMusic(track) {
   if(typeof(soundManager) !== 'undefined'){
     soundManager.stopAll();
+    track = "";
     var soundsIDs = soundManager.soundIDs;
     for (i = 0; i < soundsIDs.length; i++) {
       soundManager.destroySound(soundsIDs[i]);
@@ -44,11 +57,14 @@ function stopMusic(track) {
 
 // LIKE A SONG
 $('#like-btn').on('click', function(e) {
-  animateButtons('like-btn');
+  animateButtons('like-song');
   var likeSong = $.ajax({
     url: '/songs',
     type: 'POST',
-    data: { song: { sc_song_id: currentTrack.id, title: currentTrack.title, duration: currentTrack.duration } },
+    data: { song: { sc_song_id: currentTrack.id, 
+                    title: currentTrack.title, 
+                    duration: currentTrack.duration } 
+          },
     dataType: 'json'
   });
   likeSong.done(function(song) {
@@ -61,7 +77,7 @@ $('#like-btn').on('click', function(e) {
 
 // NEXT SONG
 $('#next-btn').on('mousedown', function() {
-  animateButtons('next-btn');
+  animateButtons('next-song');
   stopMusic();
   if(radioOrSongs === 'radio') {
     pickRandomSong(radioTracks);
@@ -73,15 +89,32 @@ $('#next-btn').on('mousedown', function() {
 // CONTROLLER FOR THE PLAY PAUSE BUTTON
 function songController(track) {
   toggleButton(track);
+  
+  $('#song-title-container').animate({
+    height: '2.1em'
+    }, 600, "linear");
+  
+  playPause(track);
   timer(track);
+}
 
+function playPause(track) {
   $('#play-pause-btn').on('click', function() {
-    if (track.paused) {
-      track.play();
-    } else {
-      track.pause();
-    }
+    if (track.sID === soundManager.soundIDs[0]) {
+    
+      if (track.paused) {
+        track.play();
+        $('#song-title-container').animate({
+          height: '2.1em'
+        }, 600, "linear");
+      } else {
+        track.pause();
+        $('#song-title-container').animate({
+          height: '0.2em'
+        }, 600, "linear");
+      }
     toggleButton(track);
+    }
   });
 }
 
@@ -98,11 +131,14 @@ function timer(track) {
         sec.toString().length === 1 ? sSeconds = '0' + sec : sSeconds = sec;
         $('#timer-p').text(sMinutes + ':' + sSeconds);
         containerWidth = $('#progress-bar-container').css('width');
-        progress = (parseInt(containerWidth) - 6) / (track.durationEstimate / 1000);
+        progress = (parseInt(containerWidth) - 1) / (track.durationEstimate / 1000);
         $('#progess-bar').css('width', (progress * seconds));
       }
     }, 100);
 }
+
+$('#hide-show-title').on('click', function() {
+})
 
 // SWITCH BETWEEN PLAY LISTS
 $('.switch a').on('click', function(e) {

@@ -43,11 +43,18 @@ function pickRandomSong(tracks) {
 
 // PLAYS THE SONG
 function playRadioSong(track) {
-  $('#song-title').replaceWith('<p id="song-title"><marquee behavior="scroll" direction="left">' + track.title + '</marquee></p>');
-  SC.stream('/tracks/' + track.id, { flashVersion: 9, autoPlay: true, multiShot: false, onfinish: function() {
-    stopMusic();
-    pickRandomSong(radioTracks) } }, function(track) {
-      songController(track);
+  $('#song-title').replaceWith(
+    '<p id="song-title"><marquee behavior="scroll" direction="left">' + 
+    track.title + '</marquee></p>');
+  SC.stream('/tracks/' + track.id, 
+    { flashVersion: 9, 
+      autoPlay: true, 
+      multiShot: false, 
+      onfinish: function() {
+        stopMusic();
+        pickRandomSong(radioTracks) } }, 
+      function(track) {
+        songController(track);
   });
 }
 
