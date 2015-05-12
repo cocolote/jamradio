@@ -1,0 +1,106 @@
+$grey: #cfcfcf;
+$leds: #f90;
+
+#top-bar {
+  height: 3em;
+  background: webkit-linear-gradient(#333, #111);
+  background: moz-linear-gradient(#333, #111);
+  background: -o-linear-gradient(#333, #111);
+  background: linear-gradient(#333, #111);
+
+  a {
+    color: white;
+  }
+
+  #app-name {
+    text-align: center;
+    top: -1em;
+
+    #app-title {
+      font-weight: bold;
+      font-size: 0.7em;
+      color: white;
+      letter-spacing: 2px;
+      text-shadow: 0px 0px 10px white;
+      z-index: 20;
+    }
+  }
+
+  #switch-play-lists {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+
+    .switch {
+      text-align: center;
+      display: inline-block;
+      border-left: 1px solid #111;
+      margin: 0;
+      padding: 0.8em;
+      height: 3em;
+    }
+
+    #jams-switch {
+      margin-right: 0;
+      border-right: 1px solid #111;
+    }
+  }
+
+  #user-name {
+    position: relative;
+    padding-top: 0.8em;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    width: 80%;
+    text-align: right;
+
+    a {
+      padding: 0.61em;
+      border-left: 1px solid #111;
+      border-right: 1px solid #111;
+    }
+  }
+
+  #picture-container {
+    margin: 0;
+    padding: 0;
+    float: right;
+
+    #profile-picture {
+      margin: 0;
+      padding: 0;
+      border: 2px solid #fff;
+      border-radius: 100%;
+      width: 2.9em;
+      height: 2.9em;
+    }
+  }
+
+  #drop1 {
+    width: 30%;
+    background-color: #222;
+
+    .drop1-element {
+      width: 100%;
+
+      &:hover {
+        background-color: $leds !important;
+      }
+    }
+  }
+}
+
+.switch-pressed {
+  background: webkit-linear-gradient(#111, #333);
+  background: moz-linear-gradient(#111, #333);
+  background: -o-linear-gradient(#111, #333);
+  background: linear-gradient(#111, #333);
+  text-shadow: 0px 0px 6px white;
+  box-shadow: inset 10px 0 10px -10px #111,
+              inset -10px 0 10px -10px #111;
+}

@@ -7,32 +7,38 @@ var playList = [];
 // Toggle play and pause buttons
 function toggleButton(track) {
   if (track.paused) {
-    $('#play-pause').css({ 
-        'border-color': '#222',
-        'box-shadow': '0px 0px 10px 0px transparent'
-      });
+    // $('#play-pause').css({ 
+    //     'border-color': '#111',
+    //     'box-shadow': '0px 0px 10px 0px transparent'
+    //   });
+    $('#play-pause').removeClass('btn-pressed');
+    $('#play-pause-btn').attr('src', '/assets/playbutton.png');
   } else {
     $('.list-element').removeClass('playing-song');
     $('.jam-song-element').removeClass('playing-song');
     $('#list-element-' + playingSong).addClass('playing-song');
     $('#jam-song-element-'+ playingSong).addClass('playing-song');
-    $('#play-pause').css({ 
-        'border-color': '#1EB500',
-        'box-shadow': '0px 0px 10px 0px #1EB533'
-      });
+    $('#play-pause-btn').attr('src', '/assets/pausebutton.png');
+    $('#play-pause').addClass('btn-pressed');
+    // $('#play-pause').css({ 
+    //     'border-color': '#f90',
+    //     'box-shadow': '0px 0px 10px 0px #f95'
+    //   });
   }
 }
 
 function animateButtons(element) {
-  $('#' + element).css({ 
-        'border-color': '#1EB500',
-        'box-shadow': '0px 0px 10px 0px #1EB533'
-      });
+  $('#' + element).addClass('btn-pressed');
+  // $('#' + element).css({ 
+  //       'border-color': '#f90',
+  //       'box-shadow': '0px 0px 10px 0px #f95'
+  //     });
   $(this).on('mouseup', function() {
-    $('#' + element).css({ 
-        'border-color': '#222',
-        'box-shadow': '0px 0px 10px 0px transparent'
-      });
+    $('#' + element).removeClass('btn-pressed');
+    // $('#' + element).css({ 
+    //     'border-color': '#111',
+    //     'box-shadow': '0px 0px 10px 0px transparent'
+    //   });
   });
 }
 
@@ -54,6 +60,11 @@ function stopMusic(track) {
     }
   }
 }
+
+// USER NAME
+$('#user-name a').on('click', function() {
+  animateButtons('user-name a');
+});
 
 // LIKE A SONG
 $('#like-btn').on('click', function(e) {
@@ -89,11 +100,16 @@ $('#next-btn').on('mousedown', function() {
 // CONTROLLER FOR THE PLAY PAUSE BUTTON
 function songController(track) {
   toggleButton(track);
-  
-  $('#song-title-container').animate({
-    height: '2.1em'
-    }, 600, "linear");
-  
+  if ($('#footer-player').is(':hidden')) {
+    $('#footer-player').animate({
+      height: 'toggle'
+     }, 600, "linear", function() {
+      $('#song-title-container').animate({
+        height: 'toggle'
+        }, 600, "linear");
+     });
+  }
+
   playPause(track);
   timer(track);
 }
@@ -132,7 +148,7 @@ function timer(track) {
         $('#timer-p').text(sMinutes + ':' + sSeconds);
         containerWidth = $('#progress-bar-container').css('width');
         progress = (parseInt(containerWidth) - 1) / (track.durationEstimate / 1000);
-        $('#progess-bar').css('width', (progress * seconds));
+        $('#progress-bar').css('width', (progress * seconds));
       }
     }, 100);
 }
