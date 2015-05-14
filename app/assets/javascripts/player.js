@@ -7,18 +7,12 @@ var playList = [];
 // Toggle play and pause buttons
 function toggleButton(track) {
   if (track.paused) {
-    // $('#play-pause').css({ 
-    //     'border-color': '#111',
-    //     'box-shadow': '0px 0px 10px 0px transparent'
-    //   });
     $('#play-pause').removeClass('btn-pressed');
-    $('#play-pause-btn').attr('src', '/assets/playbutton.png');
   } else {
     $('.list-element').removeClass('playing-song');
     $('.jam-song-element').removeClass('playing-song');
     $('#list-element-' + playingSong).addClass('playing-song');
     $('#jam-song-element-'+ playingSong).addClass('playing-song');
-    $('#play-pause-btn').attr('src', '/assets/pausebutton.png');
     $('#play-pause').addClass('btn-pressed');
     // $('#play-pause').css({ 
     //     'border-color': '#f90',
@@ -29,16 +23,8 @@ function toggleButton(track) {
 
 function animateButtons(element) {
   $('#' + element).addClass('btn-pressed');
-  // $('#' + element).css({ 
-  //       'border-color': '#f90',
-  //       'box-shadow': '0px 0px 10px 0px #f95'
-  //     });
   $(this).on('mouseup', function() {
     $('#' + element).removeClass('btn-pressed');
-    // $('#' + element).css({ 
-    //     'border-color': '#111',
-    //     'box-shadow': '0px 0px 10px 0px transparent'
-    //   });
   });
 }
 
@@ -65,6 +51,20 @@ function stopMusic(track) {
 $('#user-name a').on('click', function() {
   animateButtons('user-name a');
 });
+
+// ANIMATE TRASH CAN
+$('.list-element')
+  .mouseenter(function() {
+    // debugger;
+    $(this).children('.delete').animate({
+      width: '1.2em'
+    }, 100, 'linear');
+  })
+  .mouseleave(function() {
+    $('.list-element .delete').animate({
+      width: '0em'
+    }, 100, 'linear');
+  });
 
 // LIKE A SONG
 $('#like-btn').on('click', function(e) {
@@ -115,7 +115,7 @@ function songController(track) {
 }
 
 function playPause(track) {
-  $('#play-pause-btn').on('click', function() {
+  $('.play-pause-btn').on('click', function() {
     if (track.sID === soundManager.soundIDs[0]) {
     
       if (track.paused) {
@@ -123,11 +123,13 @@ function playPause(track) {
         $('#song-title-container').animate({
           height: '2.1em'
         }, 600, "linear");
+        $(this).attr('src', '/assets/pausebutton.png');
       } else {
         track.pause();
         $('#song-title-container').animate({
           height: '0.2em'
         }, 600, "linear");
+        $(this).attr('src', '/assets/playbutton.png');
       }
     toggleButton(track);
     }
