@@ -1,5 +1,8 @@
 <div id="playlist-container">
-  <div id="new-jam-form">
+  <div id="song-info-container"class="small-12 medium-3 columns">
+    <p>info of the song</p>
+  </div>
+  <div id="new-jam-form" class="small-12 medium-9 columns">
     <%= form_for @jam do |f| %>
       <div class="row">
         <div class="small-3 columns">
@@ -23,17 +26,17 @@
     <% end %>
   </div>
 
-  <div id="player-list">
+  <div id="player-list" class="small-12 medium-9 columns">
     <% if current_user && !current_user.radios.empty? %>
       <ol id="radios-play-list">
       <% current_user.radios.each do |radio| %>
         <li class="row list-element" id="list-element-<%= radio.id %>">
-          <p class="small-11 columns playlist-element">
+          <div class="small-11 columns playlist-element">
             <%= link_to radio.name, "#", class: "radios", category: radio.category , name: radio.name %>
-          </p>
-          <p class="small-1 columns playlist-element">
+          </div>
+          <div class="small-1 column playlist-element">
             <%= link_to "X", '#', id: radio.id, class: "delete-radio" %>
-          </p>
+          </div>
         </li>
       <% end %>
       </ol>

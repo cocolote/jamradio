@@ -160,8 +160,8 @@ $('#hide-show-title').on('click', function() {
 $('.switch a').on('click', function(e) {
   e.preventDefault();
 
-  $('.switch').removeClass('switch-pressed');
-  $(this).parent().addClass('switch-pressed');
+  $('.switch').removeClass('btn-pressed');
+  $(this).parent().addClass('btn-pressed');
 
   var url = $(this).attr('url');
   var switchPlaylist = $.ajax({
