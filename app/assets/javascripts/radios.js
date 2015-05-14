@@ -3,10 +3,25 @@ var radioCategory;
 var radioTracks = [];
 var currentTrack;
 
+// ANIMATE TRASH CAN
+$('#player-list')
+  .on('mouseenter', '.list-element', function() {
+    $(this).children('.delete').animate({
+      width: '1.2em'
+    }, 100, 'linear');
+  })
+  .on('mouseleave', '.list-element', function() {
+    $(this).children('.delete').animate({
+      width: '0em'
+    }, 100, 'linear');
+  });
+
 // PLAY A RADIO
 $('#player-list').on('click', '.radios', function(e) {
   e.preventDefault();
 
+  $('.list-element').removeClass('now-playing');
+  $(this).parent().parent().addClass('now-playing');
   radioOrSongs = 'radio';
   radioName = $(this).attr('name');
   radioCategory = $(this).attr('category');
@@ -111,12 +126,18 @@ function createRadiosList(radios) {
   var radioHTML = [];
   radioHTML.push('<ol id="radios-play-list">');
   for(var i = 0; i < radios.length; i++) {
+    var p;
+    radioName === radios[i].name ? p = 'now-playing' : p = '';
     radioHTML.push('<li class="row list-element" id="list-element-' + radios[i].id + '">');
-    radioHTML.push('<p class="small-11 columns playlist-element">');
-    radioHTML.push('<a class="radios" category="' + radios[i].category + '" name="' + radios[i].name + '" href="#">' + radios[i].name + '</a></p>');
-    radioHTML.push('<p class="small-1 columns playlist-element">');
-    radioHTML.push('<a class="delete-radio" id="' + radios[i].id + '" href="#">X</a></p></li>');
+    radioHTML.push('<div class="small-1 column play-pause-container">');
+    radioHTML.push('<img class="play-pause-btn" src="/assets/playbutton.png" alt="Playbutton"></div>');
+    radioHTML.push('<div class="small-10 columns playlist-element">');
+    radioHTML.push('<a class="radios" category="' + radios[i].category + '" name="' + radios[i].name + '" href="#">' + radios[i].name + '</a></div>');
+    radioHTML.push('<div class="small-1 column playlist-element delete">');
+    radioHTML.push('<a class="delete-radio" id="' + radios[i].id + '" href="#">');
+    radioHTML.push('<img src="/assets/delete.png" alt="Delete"></a></div></li>');
   }
+  
   radioHTML.push('</ol>');
   $('#player-list').empty();
   toggleSearchForm('radios');

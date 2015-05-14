@@ -5,7 +5,7 @@ $leds: #f90;
   height: 3em;
   background-color: #333;
   box-shadow: 0 2px 3px rgba(#111,0.5);
-  z-index: 20;
+  z-index: 10;
 
   a {
     color: white;
@@ -39,6 +39,7 @@ $leds: #f90;
     }
 
     #jams-switch {
+      margin: 0;
       border-right: 1px solid #111;
     }
   }

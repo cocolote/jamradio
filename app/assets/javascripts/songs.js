@@ -124,24 +124,32 @@ function createSongsList(songs) {
   var songHTML = [];
   playList = [];
   songHTML.push('<ol id="songs-play-list">');
-  var sMinutes;
-  var sSeconds;
   for(var i = 0; i < songs.length; i++) {
     playList.push({ sc_song_id: songs[i].sc_song_id });
+    var duration = formatTime(songs[i]);
     var p = '';
-    parseInt(playingSong) === songs[i].sc_song_id ? p = 'playing-song' : p = '';
+    parseInt(playingSong) === songs[i].sc_song_id ? p = 'now-playing' : p = '';
     songHTML.push('<li class="row list-element ' + p + '" id="list-element-' + songs[i].sc_song_id + '">');
-    songHTML.push('<p class="small-11 columns playlist-element">');
-    var min = Math.floor(songs[i].duration / 60000);
-    var sec = Math.floor(songs[i].duration % 60);
-    min.toString().length === 1 ? sMinutes = '0' + min : sMinutes = min;
-    sec.toString().length === 1 ? sSeconds = '0' + sec : sSeconds = sec;
-    songHTML.push('<a class="songs song-' + i + '" count="' + i + '" sc-song-id="' + songs[i].sc_song_id + '" href="#">' + songs[i].title + ' (' + sMinutes + ':' + sSeconds + ')</a></p>');
-    songHTML.push('<p class="small-1 columns playlist-element">');
-    songHTML.push('<a class="delete-song" id="' + songs[i].id + '" count="' + i + '" href="#">X</a></p></li>');
+    songHTML.push('<div class="small-1 column play-pause-container">');
+    songHTML.push('<img class="play-pause-btn" src="/assets/playbutton.png" alt="Playbutton"></div>');
+    songHTML.push('<div class="small-10 columns playlist-element">');
+    songHTML.push('<a class="songs song-' + i + '" count="' + i + '" sc-song-id="' + songs[i].sc_song_id + '" href="#">' + songs[i].title + ' (' + duration + ')</a></div>');
+    songHTML.push('<div class="small-1 columns playlist-element delete">');
+    songHTML.push('<a class="delete-song" id="' + songs[i].id + '" count="' + i + '" href="#">');
+    songHTML.push('<img src="/assets/delete.png" alt="Delete"></a></div></li>');
   }
   songHTML.push('</ol>');
   $('#player-list').empty();
   toggleSearchForm('songs');
   $('#player-list').append(songHTML.join(''));
+}
+
+function formatTime(song) {
+  var sMinutes;
+  var sSeconds;
+  var min = Math.floor(song.duration / 60000);
+  var sec = Math.floor(song.duration % 60);
+  min.toString().length === 1 ? sMinutes = '0' + min : sMinutes = min;
+  sec.toString().length === 1 ? sSeconds = '0' + sec : sSeconds = sec;
+  return sMinutes + ':' + sSeconds;
 }

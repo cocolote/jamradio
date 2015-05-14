@@ -21,7 +21,7 @@ body {
   background-color: #666;
   box-shadow: 1px 0 12px -1px #111,
              -1px 0 12px -1px #111;
-  z-index: -10;
+  z-index: -1;
   overflow: auto;
 
   #song-info-container {
@@ -30,6 +30,7 @@ body {
     border-right: 2px solid #333;
     box-shadow: 1px 0 5px -1px #111;
     overflow: auto;
+    z-index: 2;
   }
 
   .promt {
@@ -121,97 +122,6 @@ body {
       }
     }
   }
-}
-
-#player-list {
-  position: relative;
-  font-family: 'Josefin Sans', sans-serif;
-  // font-family: 'Roboto', sans-serif;
-  z-index: 2;
-  background-color: transparent;
-  letter-spacing: 0.05em;
-  padding-top: 4em;
-  margin-left: 26%;
-  width: 80%;
-
-  ol { 
-    padding: 0;
-    margin: 0;
-  }
-
-  #radios-play-list, #songs-play-list, #jams-play-list {
-    list-style: none;
-    padding-left: 0;
-    z-index: 3;
-
-    .playing-song {
-      background-color: rgba($leds, 0.3);
-    }
-
-    .list-element {
-      background-color: transparent;
-
-      .play-pause-container {
-        width: 3em;
-        padding-top: 0.3em;
-        z-index: 4;
-      }
-
-      .playlist-element {
-        z-index: 4;
-        padding: 0;
-        padding-top: 0.5em;
-        padding-bottom: 0.5em;
-        margin-left: -0.1em;
-        border-bottom: 1px solid rgba(#aaa, 0.7);
-
-
-        .radios, .songs {
-          color: #fff;
-          margin: 0;
-          padding: 0;
-        }
-      }
-
-      .delete {
-        width: 0em;
-        float: left;
-        margin-left: 0.6em;
-        border-color: red;
-      }
-
-      .jamlist-element {
-        margin: 0;
-        font-size: 1.3em;
-        color: $leds;
-        height: 3em;
-        z-index: 4;
-      }
-    }
-
-    .jams-songs-list {
-      display: none;
-    }
-
-    .list-element:hover, .jam-song-element:hover {
-      color: #f99;
-      border-bottom-color: $leds;
-
-        .playlist-element a {
-          color: $leds;
-        }
-    }
-  }
-}
-
-#playlist-container::-webkit-scrollbar {
-  background-color: rgba(#000, 0.2);
-  width: 0.6em;
-}
-
-#playlist-container::-webkit-scrollbar-thumb{
-  background-color: rgba(#666, 0.5);
-  border-radius: 2em;
 }
 
 #create-jam {

@@ -14,10 +14,6 @@ function toggleButton(track) {
     $('#list-element-' + playingSong).addClass('playing-song');
     $('#jam-song-element-'+ playingSong).addClass('playing-song');
     $('#play-pause').addClass('btn-pressed');
-    // $('#play-pause').css({ 
-    //     'border-color': '#f90',
-    //     'box-shadow': '0px 0px 10px 0px #f95'
-    //   });
   }
 }
 
@@ -51,20 +47,6 @@ function stopMusic(track) {
 $('#user-name a').on('click', function() {
   animateButtons('user-name a');
 });
-
-// ANIMATE TRASH CAN
-$('.list-element')
-  .mouseenter(function() {
-    // debugger;
-    $(this).children('.delete').animate({
-      width: '1.2em'
-    }, 100, 'linear');
-  })
-  .mouseleave(function() {
-    $('.list-element .delete').animate({
-      width: '0em'
-    }, 100, 'linear');
-  });
 
 // LIKE A SONG
 $('#like-btn').on('click', function(e) {
