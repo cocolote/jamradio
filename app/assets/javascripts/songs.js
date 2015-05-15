@@ -5,6 +5,9 @@ var playingSong = '';
 $('#player-list').on('click', '.songs', function(e) {
   e.preventDefault();
 
+  radioName= '';
+  $('.list-element').removeClass('now-playing');
+  $(this).addClass('now-playing');
   $('#radio-playing').text('My Playlist')
   radioOrSongs = 'songs';
   posPlayingSong = $(this).attr('count');

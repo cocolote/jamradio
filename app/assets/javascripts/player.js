@@ -8,12 +8,17 @@ var playList = [];
 function toggleButton(track) {
   if (track.paused) {
     $('#play-pause').removeClass('btn-pressed');
+    $('.play-pause-btn').attr('src', '/assets/playbutton.png');
+    $('#play-pause-' + radioID).attr('src', '/assets/playbutton.png');
   } else {
-    $('.list-element').removeClass('playing-song');
-    $('.jam-song-element').removeClass('playing-song');
-    $('#list-element-' + playingSong).addClass('playing-song');
-    $('#jam-song-element-'+ playingSong).addClass('playing-song');
+    $('.list-element').removeClass('now-playing');
+    $('.jam-song-element').removeClass('now-playing');
+    $('#list-element-' + playingSong).addClass('now-playing');
+    $('#list-element-' + radioID).addClass('now-playing');
+    $('#jam-song-element-'+ playingSong).addClass('now-playing');
     $('#play-pause').addClass('btn-pressed');
+    $('.play-pause-btn').attr('src', '/assets/pausebutton.png');
+    $('#play-pause-' + radioID).attr('src', '/assets/pausebutton.png');
   }
 }
 
@@ -92,30 +97,29 @@ function songController(track) {
      });
   }
 
-  playPause(track);
+  $('.play-pause-btn, .play-pause-container img').on('click', function() {
+    playPause(track);
+  });
   timer(track);
 }
 
 function playPause(track) {
-  $('.play-pause-btn').on('click', function() {
-    if (track.sID === soundManager.soundIDs[0]) {
-    
-      if (track.paused) {
-        track.play();
-        $('#song-title-container').animate({
-          height: '2.1em'
-        }, 600, "linear");
-        $(this).attr('src', '/assets/pausebutton.png');
-      } else {
-        track.pause();
-        $('#song-title-container').animate({
-          height: '0.2em'
-        }, 600, "linear");
-        $(this).attr('src', '/assets/playbutton.png');
-      }
-    toggleButton(track);
+  if (track.sID === soundManager.soundIDs[0]) {
+    if (track.paused) {
+      track.play();
+      $('#song-title-container').animate({
+        height: '2.1em'
+      }, 600, "linear");
+      $(this).attr('src', '/assets/pausebutton.png');
+    } else {
+      track.pause();
+      $('#song-title-container').animate({
+        height: '0.2em'
+      }, 600, "linear");
+      $(this).attr('src', '/assets/playbutton.png');
     }
-  });
+  toggleButton(track);
+  }
 }
 
 // UPDATES THE SONG TIMER

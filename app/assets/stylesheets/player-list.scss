@@ -77,9 +77,6 @@ $leds: #f90;
 
     .list-element:hover, .jam-song-element:hover {
       border-left-color: $leds;
-      background-color: #555;
-      box-shadow: inset 0px -5px 5px -3px #333,
-                  inset 0px 5px 5px -3px #333;
 
       .playlist-element a {
         text-shadow: 0px 0px 5px rgba(#fff, 0.7);

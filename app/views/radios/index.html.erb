@@ -86,9 +86,9 @@
       <% current_user.radios.each do |radio| %>
         <li class="row list-element" id="list-element-<%= radio.id %>">
           <div class="small-1 columns play-pause-container">
-            <%= image_tag "playbutton.png", class: "play-pause-btn" %>
+            <%= image_tag "playbutton.png", id: "play-pause-#{radio.id}" %>
           </div>
-          <div class="small-10 columns playlist-element">
+          <div class="small-10 columns playlist-element" radio-id="<%= radio.id %>">
             <%= link_to radio.name, "#", class: "radios", category: radio.category , name: radio.name %>
           </div>
           <div class="small-1 column playlist-element delete">

@@ -1,3 +1,4 @@
+var radioID;
 var radioName;
 var radioCategory;
 var radioTracks = [];
@@ -17,14 +18,20 @@ $('#player-list')
   });
 
 // PLAY A RADIO
-$('#player-list').on('click', '.radios', function(e) {
+$('#player-list').on('click', '.playlist-element', function(e) {
   e.preventDefault();
+  playingSong = '';
+  $('.play-pause-container').children()
+    .attr('src', '/assets/playbutton.png');
+
+  radioID = $(this).attr('radio-id');
+  $('#play-pause-' + radioID).attr('src', '/assets/pausebutton.png');
 
   $('.list-element').removeClass('now-playing');
-  $(this).parent().parent().addClass('now-playing');
+  $(this).parent().addClass('now-playing');
   radioOrSongs = 'radio';
-  radioName = $(this).attr('name');
-  radioCategory = $(this).attr('category');
+  radioName = $(this).children('.radios').attr('name');
+  radioCategory = $(this).children('.radios').attr('category');
   $('#radio-playing').text(radioName);
   getTracks();
 });
@@ -127,8 +134,9 @@ function createRadiosList(radios) {
   radioHTML.push('<ol id="radios-play-list">');
   for(var i = 0; i < radios.length; i++) {
     var p;
-    radioName === radios[i].name ? p = 'now-playing' : p = '';
-    radioHTML.push('<li class="row list-element" id="list-element-' + radios[i].id + '">');
+    debugger;
+    radioName == radios[i].name ? p = 'now-playing' : p = '';
+    radioHTML.push('<li class="row list-element '+ p +'" id="list-element-' + radios[i].id + '">');
     radioHTML.push('<div class="small-1 column play-pause-container">');
     radioHTML.push('<img class="play-pause-btn" src="/assets/playbutton.png" alt="Playbutton"></div>');
     radioHTML.push('<div class="small-10 columns playlist-element">');
