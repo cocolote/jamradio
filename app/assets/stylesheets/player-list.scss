@@ -1,6 +1,60 @@
 $grey: #cfcfcf;
 $leds: #f90;
 
+#title-container {
+  position: fixed;
+  top: 3em;
+  width: 64.8%;
+  background-image: url(radio.png);
+  background-repeat: none;
+  background-size: 100% 100%;
+  border-bottom: 1px solid #333;
+  box-shadow: 0px 3px 5px -2px #111;
+  z-index: 3;
+
+  .info-songs-topbar {
+    display: inline-block;
+  }
+
+  #song-info-topbar-container{
+    display: none;
+    float: right;
+    width: 60%;
+    height: 4.4em;
+    margin-top: 0.3em;
+    margin-right: 2%;
+    background-color: rgba(#111, 0.4);
+    box-shadow: -3px -1px 10px -1px rgba(#111, 0.8);
+
+    #artwork-url {
+      margin-top: 0.4em;
+    }
+
+    h5 {
+      font-family: 'Roboto Condensed', sans-serif;
+      color: rgba(#fff,0.8);
+      text-shadow: 0px 0px 5px rgba(#fff, 0.6);
+    }
+
+    .artist-duration-topbar {
+      display: inline-block;
+      font-family: 'Roboto Condensed', sans-serif;
+      color: rgba(#fff,0.8);
+      text-shadow: 0px 0px 5px rgba(#fff, 0.6);
+    }
+  }
+
+  h2 {
+    font-family: 'Josefin Sans', sans-serif;
+    color: #fff;
+    padding: 0.4em;
+    margin: 0;
+    letter-spacing: 0.5em;
+    font-weight: bold;
+    text-shadow: -2px 0px 5px rgba(#111, 0.6);
+  }
+}
+
 #player-list {
   position: relative;
   float: right;
@@ -8,7 +62,7 @@ $leds: #f90;
   background-color: transparent;
   letter-spacing: 0.05em;
   padding: 0;
-  padding-top: 3.1em;
+  padding-top: 8em;
   width: 72%;
   z-index: 2;
 
@@ -38,8 +92,9 @@ $leds: #f90;
         padding: 0;
         padding-top: 0.5em;
       }
-
-      .playlist-element {
+      
+      .songslist-element,
+      .radioslist-element {
         padding: 0;
         width: 88%;
         padding-top: 0.7em;
@@ -77,8 +132,9 @@ $leds: #f90;
 
     .list-element:hover, .jam-song-element:hover {
       border-left-color: $leds;
-
-      .playlist-element a {
+        
+      .radioslist-element a,
+      .songslist-element a {
         text-shadow: 0px 0px 5px rgba(#fff, 0.7);
       }
     }
@@ -89,7 +145,8 @@ $leds: #f90;
       box-shadow: inset 0px -5px 5px -3px #333,
                   inset 0px 5px 5px -3px #333;
 
-      .playlist-element a {
+      .radioslist-element a,
+      .songslist-element a {
         text-shadow: 0px 0px 5px rgba(#fff, 0.7);
       }
     }

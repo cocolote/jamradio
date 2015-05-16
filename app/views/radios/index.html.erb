@@ -81,6 +81,19 @@
   </div>
 
   <div id="player-list" class="small-12 medium-9 columns">
+    <div id="title-container">
+      <h2 id="title" class="info-songs-topbar">Radios</h2>
+      <div id="song-info-topbar-container" class="row info-songs-topbar">
+        <div id="image-container" class="small-2 columns">
+          <img id="artwork-url" src="#" alt="artwork">
+        </div>
+        <div id="info-container" class="small-10 columns">
+          <h5 id="song-title-topbar"></h5>
+          <h6 id="artis-name-topbar" class="artist-duration-topbar"></h6>
+          <h6 id="duration-song-topbar" class="artist-duration-topbar"></h6>
+        </div>
+      </div>
+    </div>
     <% if current_user && !current_user.radios.empty? %>
       <ol id="radios-play-list">
       <% current_user.radios.each do |radio| %>
@@ -88,10 +101,10 @@
           <div class="small-1 columns play-pause-container">
             <%= image_tag "playbutton.png", id: "play-pause-#{radio.id}" %>
           </div>
-          <div class="small-10 columns playlist-element" radio-id="<%= radio.id %>">
+          <div class="small-10 columns radioslist-element" radio-id="<%= radio.id %>">
             <%= link_to radio.name, "#", class: "radios", category: radio.category , name: radio.name %>
           </div>
-          <div class="small-1 column playlist-element delete">
+          <div class="small-1 column radioslist-element delete">
             <%= link_to image_tag("delete.png"), '#', id: radio.id, class: "delete-radio" %>
           </div>
         </li>

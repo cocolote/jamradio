@@ -10,15 +10,18 @@ function toggleButton(track) {
     $('#play-pause').removeClass('btn-pressed');
     $('.play-pause-btn').attr('src', '/assets/playbutton.png');
     $('#play-pause-' + radioID).attr('src', '/assets/playbutton.png');
+    $('#play-pause-' + playingSong.id).attr('src', '/assets/playbutton.png');
   } else {
     $('.list-element').removeClass('now-playing');
     $('.jam-song-element').removeClass('now-playing');
-    $('#list-element-' + playingSong).addClass('now-playing');
+    $('#list-element-' + playingSong.id).addClass('now-playing');
     $('#list-element-' + radioID).addClass('now-playing');
-    $('#jam-song-element-'+ playingSong).addClass('now-playing');
+    $('#jam-song-element-'+ playingSong.id).addClass('now-playing');
     $('#play-pause').addClass('btn-pressed');
     $('.play-pause-btn').attr('src', '/assets/pausebutton.png');
+    $('.play-pause-container img').attr('src', '/assets/playbutton.png');
     $('#play-pause-' + radioID).attr('src', '/assets/pausebutton.png');
+    $('#play-pause-' + playingSong.id).attr('src', '/assets/pausebutton.png');
   }
 }
 
@@ -87,17 +90,18 @@ $('#next-btn').on('mousedown', function() {
 // CONTROLLER FOR THE PLAY PAUSE BUTTON
 function songController(track) {
   toggleButton(track);
-  if ($('#footer-player').is(':hidden')) {
-    $('#footer-player').animate({
-      height: 'toggle'
-     }, 600, "linear", function() {
-      $('#song-title-container').animate({
-        height: 'toggle'
-        }, 600, "linear");
-     });
-  }
+  showFooter();
 
-  $('.play-pause-btn, .play-pause-container img').on('click', function() {
+  $('#player-list').on('click', '#play-pause-' + playingSong.id,
+    function() {
+      playPause(track);
+    });
+
+  $('#player-list').on('click', '#play-pause-' + radioID, function() {
+    playPause(track);
+  });
+
+  $('.play-pause-btn').on('click', function() {
     playPause(track);
   });
   timer(track);
@@ -191,3 +195,29 @@ function toggleSearchForm(name) {
     $('#create-jam').fadeIn();
   }
 }
+
+function showFooter() {
+  if ($('#footer-player').is(':hidden')) {
+    $('#playlist-container').animate({
+      height: '-=2.9em'
+    }, 600, "linear");
+    $('#footer-player').animate({
+      height: 'toggle'
+     }, 600, "linear", function() {
+      $('#song-title-container').animate({
+        height: 'toggle'
+        }, 600, "linear");
+     });
+  }
+}
+
+$('#song-title-container')
+  .on('mouseenter', function() {
+     $('#song-title-container').animate({
+       height: '0'
+       }, 600, "linear", function() {
+          $('#song-title-container').animate({
+            height: '2.1em'
+          }, 4000, "linear");
+      });
+    });

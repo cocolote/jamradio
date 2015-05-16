@@ -1,40 +1,44 @@
 var posPlayingSong = 0;
-var playingSong = '';
+var playingSong;
 
 // PLAY A SONG
-$('#player-list').on('click', '.songs', function(e) {
+$('#player-list').on('click', '.songslist-element', function(e) {
   e.preventDefault();
 
   radioName= '';
-  $('.list-element').removeClass('now-playing');
-  $(this).addClass('now-playing');
-  $('#radio-playing').text('My Playlist')
   radioOrSongs = 'songs';
-  posPlayingSong = $(this).attr('count');
-  var soundcloudID = $(this).attr('sc-song-id');
-  playSong(soundcloudID);
+  posPlayingSong = $(this).children('.songs').attr('count');
+  var soundcloudID = $(this).children('.songs').attr('sc-song-id');
+  getSong(soundcloudID);
 });
 
 // PLAYS ONLY ONE SONG
-function playSong(soundcloudID) {
+function getSong(soundcloudID) {
   initialize(CLIENT_ID);
   stopMusic();
-  playingSong = soundcloudID;
   SC.get('/tracks/' + soundcloudID, function(track) {
+    playingSong = track;
+    artworkTitle(track);
     $('#song-title').replaceWith('<p id="song-title"><marquee behavior="scroll" direction="left">' + track.title + '</marquee></p>');
-    SC.stream('/tracks/' + track.id, { flashVersion: 9, autoPlay: true, multiShot: false, onfinish: function() {
-      stopMusic();
-      getNextSong(); } }, function(track) {
-        songController(track);
-    });
+    playSong(track);
   });
 }
+
+function playSong(track) {
+  SC.stream('/tracks/' + track.id, { flashVersion: 9, autoPlay: true, multiShot: false, onfinish: function() {
+    stopMusic();
+    getNextSong(); } }, function(track) {
+      songController(track);
+  });
+}
+
 
 // MY PLAYLIST LOOP
 function getNextSong() {
   if(posPlayingSong < playList.length) {
     posPlayingSong++;
-    playSong(playList[posPlayingSong].sc_song_id);
+    debugger;
+    getSong(playList[posPlayingSong].sc_song_id);
   } else {
     stopMusic();
   }
@@ -126,18 +130,34 @@ $('#player-list').on('click', '.delete-song', function(e) {
 function createSongsList(songs) {
   var songHTML = [];
   playList = [];
+  songHTML.push('<div id="title-container"><h2 id="title" class="info-songs-topbar">My Songs</h2>');
+  songHTML.push('<div id="song-info-topbar-container" class="row info-songs-topbar">');
+  songHTML.push('<div id="image-container" class="small-2 columns">');
+  songHTML.push('<img id="artwork-url" src="#" alt="artwork"></div>');
+  songHTML.push('<div id="info-container" class="small-10 columns">');
+  songHTML.push('<h5 id="song-title-topbar"></h5>');
+  songHTML.push('<h6 id="artis-name-topbar" class="artist-duration-topbar"></h6>');
+  songHTML.push('<h6 id="duration-song-topbar" class="artist-duration-topbar"></h6></div></div></div>');
   songHTML.push('<ol id="songs-play-list">');
+
   for(var i = 0; i < songs.length; i++) {
     playList.push({ sc_song_id: songs[i].sc_song_id });
     var duration = formatTime(songs[i]);
-    var p = '';
-    parseInt(playingSong) === songs[i].sc_song_id ? p = 'now-playing' : p = '';
+    var p;
+    var icon;
+    if (playingSong && playingSong.id === songs[i].sc_song_id) {
+      p = 'now-playing';
+      icon = "/assets/pausebutton.png";
+    } else {
+      p = '';
+      icon = "/assets/playbutton.png";
+    };
     songHTML.push('<li class="row list-element ' + p + '" id="list-element-' + songs[i].sc_song_id + '">');
     songHTML.push('<div class="small-1 column play-pause-container">');
-    songHTML.push('<img class="play-pause-btn" src="/assets/playbutton.png" alt="Playbutton"></div>');
-    songHTML.push('<div class="small-10 columns playlist-element">');
+    songHTML.push('<img src="' + icon + '" alt="Playbutton" id="play-pause-' + songs[i].sc_song_id + '"></div>');
+    songHTML.push('<div class="small-10 columns songslist-element" song-id="' + songs[i].sc_song_id + '">');
     songHTML.push('<a class="songs song-' + i + '" count="' + i + '" sc-song-id="' + songs[i].sc_song_id + '" href="#">' + songs[i].title + ' (' + duration + ')</a></div>');
-    songHTML.push('<div class="small-1 columns playlist-element delete">');
+    songHTML.push('<div class="small-1 columns songslist-element delete">');
     songHTML.push('<a class="delete-song" id="' + songs[i].id + '" count="' + i + '" href="#">');
     songHTML.push('<img src="/assets/delete.png" alt="Delete"></a></div></li>');
   }
@@ -145,6 +165,10 @@ function createSongsList(songs) {
   $('#player-list').empty();
   toggleSearchForm('songs');
   $('#player-list').append(songHTML.join(''));
+
+  if (playingSong) {
+    artworkTitle(playingSong);
+  }
 }
 
 function formatTime(song) {

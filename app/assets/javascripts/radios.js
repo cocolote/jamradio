@@ -18,17 +18,12 @@ $('#player-list')
   });
 
 // PLAY A RADIO
-$('#player-list').on('click', '.playlist-element', function(e) {
+$('#player-list').on('click', '.radioslist-element', function(e) {
   e.preventDefault();
+
   playingSong = '';
-  $('.play-pause-container').children()
-    .attr('src', '/assets/playbutton.png');
 
   radioID = $(this).attr('radio-id');
-  $('#play-pause-' + radioID).attr('src', '/assets/pausebutton.png');
-
-  $('.list-element').removeClass('now-playing');
-  $(this).parent().addClass('now-playing');
   radioOrSongs = 'radio';
   radioName = $(this).children('.radios').attr('name');
   radioCategory = $(this).children('.radios').attr('category');
@@ -65,6 +60,7 @@ function pickRandomSong(tracks) {
 
 // PLAYS THE SONG
 function playRadioSong(track) {
+  artworkTitle(track);
   $('#song-title').replaceWith(
     '<p id="song-title"><marquee behavior="scroll" direction="left">' + 
     track.title + '</marquee></p>');
@@ -77,6 +73,21 @@ function playRadioSong(track) {
         pickRandomSong(radioTracks) } }, 
       function(track) {
         songController(track);
+  });
+}
+
+// EFECT FOR TITLE OF SON AND ARTWORK
+function artworkTitle(track) {
+  $('#song-info-topbar-container').fadeOut('slow', function() {
+    var titleSong;
+    track.title.length > 45 ? titleSong = track.title.slice(0, 42) + '...' : titleSong = track.title
+    var duration = formatTime(track);
+    $('#artwork-url').attr('src', track.artwork_url || '/assets/jamlogo_sml.png');
+    $('#song-title-topbar').text(titleSong);
+    $('#artis-name-topbar').text(track.user.username);
+    $('#duration-song-topbar').text('(' + duration + ')');
+
+    $('#song-info-topbar-container').fadeIn('slow');
   });
 }
 
@@ -131,17 +142,31 @@ $('#player-list').on('click', '.delete-radio', function(e) {
 
 function createRadiosList(radios) {
   var radioHTML = [];
+  radioHTML.push('<div id="title-container"><h2 id="title" class="info-songs-topbar">Radios</h2>');
+  radioHTML.push('<div id="song-info-topbar-container" class="row info-songs-topbar">');
+  radioHTML.push('<div id="image-container" class="small-2 columns">');
+  radioHTML.push('<img id="artwork-url" src="#" alt="artwork"></div>');
+  radioHTML.push('<div id="info-container" class="small-10 columns">');
+  radioHTML.push('<h5 id="song-title-topbar"></h5>');
+  radioHTML.push('<h6 id="artis-name-topbar" class="artist-duration-topbar"></h6>');
+  radioHTML.push('<h6 id="duration-song-topbar" class="artist-duration-topbar"></h6></div></div></div>');
   radioHTML.push('<ol id="radios-play-list">');
   for(var i = 0; i < radios.length; i++) {
     var p;
-    debugger;
-    radioName == radios[i].name ? p = 'now-playing' : p = '';
+    var icon;
+    if (radioName == radios[i].name) {
+      p = 'now-playing';
+      icon = "/assets/pausebutton.png";
+    } else {
+      p = '';
+      icon = "/assets/playbutton.png";
+    };
     radioHTML.push('<li class="row list-element '+ p +'" id="list-element-' + radios[i].id + '">');
     radioHTML.push('<div class="small-1 column play-pause-container">');
-    radioHTML.push('<img class="play-pause-btn" src="/assets/playbutton.png" alt="Playbutton"></div>');
-    radioHTML.push('<div class="small-10 columns playlist-element">');
+    radioHTML.push('<img src="' + icon + '" alt="Playbutton" id="play-pause-' + radios[i].id + '"></div>');
+    radioHTML.push('<div class="small-10 columns radioslist-element" radio-id="' + radios[i].id + '">');
     radioHTML.push('<a class="radios" category="' + radios[i].category + '" name="' + radios[i].name + '" href="#">' + radios[i].name + '</a></div>');
-    radioHTML.push('<div class="small-1 column playlist-element delete">');
+    radioHTML.push('<div class="small-1 column radioslist-element delete">');
     radioHTML.push('<a class="delete-radio" id="' + radios[i].id + '" href="#">');
     radioHTML.push('<img src="/assets/delete.png" alt="Delete"></a></div></li>');
   }
@@ -150,4 +175,8 @@ function createRadiosList(radios) {
   $('#player-list').empty();
   toggleSearchForm('radios');
   $('#player-list').append(radioHTML.join(''));
+
+  if (currentTrack) {
+    artworkTitle(currentTrack);
+  }
 }
