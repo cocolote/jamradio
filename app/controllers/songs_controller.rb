@@ -23,9 +23,10 @@ class SongsController < ApplicationController
 
   def destroy
     @user_song = UserSong.find_by(user: current_user, song_id: params[:id])
-    UserSong.destroy_all(user: current_user, song_id: params[:id])
+    UserSong.delete(@user_song)
+    song = Song.find(params[:id])
     respond_to do |format|
-      format.json { render json: { id: params[:id], message: "The song was deleted" } }
+      format.json { render json: { sc_song_id: song.sc_song_id, message: "The song was deleted" } }
     end
   end
 

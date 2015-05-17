@@ -1,14 +1,20 @@
 var refreshInterval;
 var refreshJams;
+var jamPlayingSong;
 
 // PLAY SONGS FROM THE JAM
-$('#player-list').on('click', '.jam-songs', function(e) {
+$('#player-list').on('click', '.jamsonglist-element', function(e) {
   e.preventDefault();
+  radioOrSongs = 'songs';
+  posPlayingSong = $(this).children('.jam-songs').attr('count');
+  var soundcloudID = $(this).children('.jam-songs').attr('sc-song-id');
 
-  playList = [];
-  var jamID = $(this).attr('jam-id');
+  radioName = '';
+  playingSong = null;
+  currentTrack = null;
+  var jamUrl = $(this).children('.jam-songs').attr('href');
   var getSongs = $.ajax({
-    url: '/jams/' + jamID + '/jam_songs',
+    url: jamUrl,
     type: 'GET',
     dataType: 'json'
   });
@@ -16,12 +22,7 @@ $('#player-list').on('click', '.jam-songs', function(e) {
     playList = result.songs;
   });
 
-  radioOrSongs = 'songs';
-  posPlayingSong = $(this).attr('count');
-  var soundcloudID = $(this).attr('sc-song-id');
-  var jamName = $(this).attr('jam-name');
-  $('#radio-playing').text(jamName);
-  playSong(soundcloudID);
+  getSong(soundcloudID, 'jams');
 });
 
 // CREATE LIST OF GUESTS
@@ -187,55 +188,89 @@ $('#player-list').on('click', '.delete-jam-song', function(e) {
 function createJamsList(result) {
   var jamsHTML = [];
   var optionHTML = [];
-  jamsHTML.push('<ol id="jams-play-list">');
+  jamsHTML.push('<div id="title-container"><h2 id="title" class="info-songs-topbar">Jams</h2>');
+  jamsHTML.push('<div id="song-info-topbar-container" class="row info-songs-topbar">');
+  jamsHTML.push('<div id="image-container" class="small-2 columns">');
+  jamsHTML.push('<img id="artwork-url" src="#" alt="artwork"></div>');
+  jamsHTML.push('<div id="info-container" class="small-10 columns">');
+  jamsHTML.push('<h5 id="song-title-topbar"></h5>');
+  jamsHTML.push('<h6 id="artis-name-topbar" class="artist-duration-topbar"></h6>');
+  jamsHTML.push('<h6 id="duration-song-topbar" class="artist-duration-topbar"></h6></div></div></div>');
+
+  jamsHTML.push('<ol id="jams-list">');
   for(var i = 0; i < result.jams.length; i++) {
-    jamsHTML.push('<li class="jamlist-element row" id="jamlist-element-' + result.jams[i].jam.id + '">');
-    jamsHTML.push('<img class="small-1 column" src="' + result.user.picture.url + '" alt="user pic">');
-    jamsHTML.push('<p class="jamlist-element small-10 columns">');
-    jamsHTML.push('<a class="jams jam-' + i + '" count="' + i + '" jam="' + result.jams[i].jam.id + '" href="#">' + result.jams[i].jam.name + '</a></p>');
-    jamsHTML.push('<p class="jamlist-element small-1 column">');
-    jamsHTML.push('<a class="delete-jam" id="' + result.jams[i].jam.id + '" count="' + i + '" href="#">X</a></p></li>');
+    jamsHTML.push('<li class="list-element row" id="list-element-' + result.jams[i].jam.id + '">');
+    jamsHTML.push('<div class="small-1 column user-pic-container">');
+    jamsHTML.push('<img class="user-pic" src="' + result.user.picture.url + '" alt="user pic"></div>');
+    jamsHTML.push('<div class="jamlist-element small-10 columns">');
+    jamsHTML.push('<a class="jams jam-' + i + '" count="' + i + '" jam="'
++ result.jams[i].jam.id + '" href="#">' + result.jams[i].jam.name + '</a></div>');
+    jamsHTML.push('<div class="small-1 column delete">');
+    jamsHTML.push('<a class="delete-jam" id="' + result.jams[i].jam.id + '" count="' + i + '" href="#">');
+    jamsHTML.push('<img src="/assets/delete.png" alt="Delete"></a></div></li>');
+
     optionHTML.push('<option value="' + result.jams[i].jam.id + '">' + result.jams[i].jam.name + '</option>');
+
     jamSongsList(result.jams[i].songs, result.jams[i].jam.id, jamsHTML, result.jams[i].jam.name);
   }
 
   for(var i = 0; i < result.guest_jams.length; i++) {
-    jamsHTML.push('<li class="jamlist-element row" id="jamlist-element-' + result.guest_jams[i].jam.id + '">');
-    jamsHTML.push('<img class="small-1 column" src="' + result.guest_jams[i].user.picture.url + '" alt="user pic">');
-    jamsHTML.push('<p class="jamlist-element small-8 columns">');
-    jamsHTML.push('<a class="jams jam-' + i + '" count="' + i + '" jam="' + result.guest_jams[i].jam.id + '" href="#">' + result.guest_jams[i].jam.name + '</a></p>');
-    jamsHTML.push('<p class="jamlist-element small-2 columns">' + result.guest_jams[i].user.user_name + '</p>');
-    jamsHTML.push('<p class="jamlist-element small-1 column"><a class="delete-jam" id="' + result.guest_jams[i].jam.id + '" count="' + i + '" href="#">X</a></p></li>');
+    jamsHTML.push('<li class="list-element row" id="list-element-' + result.guest_jams[i].jam.id + '">');
+    jamsHTML.push('<div class="small-1 column user-pic-container">');
+    jamsHTML.push('<img class="user-pic" src="' + result.guest_jams[i].user.picture.url + '" alt="user pic"></div>');
+    jamsHTML.push('<div class="jamlist-element small-8 columns">');
+    jamsHTML.push('<a class="jams jam-' + i + '" count="' + i + '" jam="'
++ result.guest_jams[i].jam.id + '" href="#">' + result.guest_jams[i].jam.name + '</a></div>');
+    jamsHTML.push('<div class="jamlist-element small-2 columns">(' + result.guest_jams[i].user.user_name + ')</div>');
+    jamsHTML.push('<div class="small-1 column delete">');
+    jamsHTML.push('<a class="delete-jam" id="' + result.guest_jams[i].jam.id + '" count="' + i + '" href="#">');
+    jamsHTML.push('<img src="/assets/delete.png" alt="Delete"></a></div></li>');
+
     optionHTML.push('<option value="' + result.guest_jams[i].jam.id + '">' + result.guest_jams[i].jam.name + '</option>');
+
     jamSongsList(result.guest_jams[i].songs, result.guest_jams[i].jam.id, jamsHTML, result.guest_jams[i].jam.name);
   }
+
   jamsHTML.push('</ol>');
   $('#player-list').empty();
   $('#jam_id').empty();
   toggleSearchForm('jams');
   $('#player-list').append(jamsHTML.join(''));
   $('#jam_id').append(optionHTML.join(''));
+
+  if (jamPlayingSong) {
+    artworkTitle(jamPlayingSong);
+  }
+
 }
 
 function jamSongsList(songs, jamID, jamsHTML, jamName) {
-  jamsHTML.push('<ul class="jams-songs-list" id="jams-songs-list-' + jamID + '">');
+  jamsHTML.push('<ol class="jams-songs-list" id="jams-songs-list-' + jamID + '">');
   var sMinutes;
   var sSeconds;
   for(var i = 0; i < songs.length; i++) {
-    var p = '';
-    parseInt(playingSong) === songs[i].sc_song_id ? p = 'playing-song' : p = '';
-    jamsHTML.push('<li class="row jam-song-element ' + p + '" id="jam-song-element-' + songs[i].sc_song_id + '">');
-    jamsHTML.push('<p class="small-11 columns playlist-element" id="' + songs[i].sc_song_id + '">');
-    var min = Math.floor(songs[i].duration / 60000);
-    var sec = Math.floor(songs[i].duration % 60);
-    min.toString().length === 1 ? sMinutes = '0' + min : sMinutes = min;
-    sec.toString().length === 1 ? sSeconds = '0' + sec : sSeconds = sec;
-    jamsHTML.push('<a class="jam-songs song-' + i + '" count="' + i + '" sc-song-id="' + songs[i].sc_song_id + '" jam-name="' + jamName +
-      '" jam-id="' + jamID + '" href="#">' + songs[i].title + ' (' + sMinutes + ':' + sSeconds + ')</a></p>');
-    jamsHTML.push('<p class="small-1 columns playlist-element">');
-    jamsHTML.push('<a class="delete-jam-song" id="' + songs[i].id + '" jam-id="' + jamID + '" href="#">X</a></p></li>');
+    var duration = formatTime(songs[i]);
+    var p;
+    var icon;
+    if (jamPlayingSong && jamPlayingSong.id === songs[i].sc_song_id) {
+      p = 'now-playing';
+      icon = "/assets/pausebutton.png";
+    } else {
+      p = '';
+      icon = "/assets/playbutton.png";
+    };
+    jamsHTML.push('<li class="row list-element ' + p + '" id="list-element-' + songs[i].sc_song_id + '">');
+    jamsHTML.push('<div class="small-1 column play-pause-container">');
+    jamsHTML.push('<img src="' + icon + '" alt="Playbutton" id="play-pause-' + songs[i].sc_song_id + '"></div>');
+    jamsHTML.push('<div class="small-10 columns jamsonglist-element">');
+    jamsHTML.push('<a class="jam-songs song-' + i + '" count="' + i 
++ '" sc-song-id="' + songs[i].sc_song_id + '" href="/jams/' + jamID + '/jam_songs">'
++ songs[i].title + ' (' + duration + ')</a></div>');
+    jamsHTML.push('<div class="small-1 columns delete">');
+    jamsHTML.push('<a class="delete-jam-song" id="' + songs[i].id + '" jam-id="' + jamID + '" href="#">');
+    jamsHTML.push('<img src="/assets/delete.png" alt="Delete"></a></p></li>');
   }
-  jamsHTML.push('</ul>');
+  jamsHTML.push('</ol>');
 }
 
 // ADD NEW SONG TO A JAM
@@ -268,14 +303,20 @@ function addJamSong(song) {
 }
 
 // TOGGLES THE PLAY LIST
-$('#player-list').on('click', '.jams', function(e) {
+$('#player-list').on('click', '.jamlist-element', function(e) {
   e.preventDefault();
 
   clearInterval(refreshInterval);
   $('.jams-songs-list').hide();
-  var jamID = $(this).attr('jam');
-  $('#jams-songs-list-' + jamID).slideDown('slow');
-  refreshPlayList(jamID);
+  var jamID = $(this).children('.jams').attr('jam');
+  var getSongsList = $.ajax({
+    url: '/jams/' + jamID + '/jam_songs',
+    type: 'GET',
+    dataType: 'json'
+  });
+  getSongsList.done(function(result) {
+    $('#jams-songs-list-' + jamID).slideDown('slow');
+  });
 });
 
 // REFRESH PLAYLIST EVERY TIME SOMEONE ADDS A SONG
@@ -298,7 +339,7 @@ function refreshPlayList(jamID) {
         });
         getPlaylist.done(function(result) {
           createJamsList(result.jams);
-          $('#jams-songs-list-' + jamID).show();
+          $('#jams-songs-list-' + jamID).slideDown('slow');
         });
       }
     });

@@ -2,7 +2,8 @@ class JamSongsController < ApplicationController
   respond_to :json
 
   def index
-    songs = JamSong.where(jam_id: params[:jam_id]).map { |s| { sc_song_id: s.song.sc_song_id } }
+    # binding.pry
+    songs = JamSong.where(jam_id: params[:jam_id]).map { |s| s.song }
     respond_to do |format|
       format.json { render json: { songs: songs } }
     end

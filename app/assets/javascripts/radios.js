@@ -1,27 +1,15 @@
 var radioID;
 var radioName;
 var radioCategory;
-var radioTracks = [];
+var radioTracks;
 var currentTrack;
-
-// ANIMATE TRASH CAN
-$('#player-list')
-  .on('mouseenter', '.list-element', function() {
-    $(this).children('.delete').animate({
-      width: '1.2em'
-    }, 100, 'linear');
-  })
-  .on('mouseleave', '.list-element', function() {
-    $(this).children('.delete').animate({
-      width: '0em'
-    }, 100, 'linear');
-  });
 
 // PLAY A RADIO
 $('#player-list').on('click', '.radioslist-element', function(e) {
   e.preventDefault();
 
-  playingSong = '';
+  playingSong = null;
+  jamPlayingSong = null;
 
   radioID = $(this).attr('radio-id');
   radioOrSongs = 'radio';
@@ -76,21 +64,6 @@ function playRadioSong(track) {
   });
 }
 
-// EFECT FOR TITLE OF SON AND ARTWORK
-function artworkTitle(track) {
-  $('#song-info-topbar-container').fadeOut('slow', function() {
-    var titleSong;
-    track.title.length > 45 ? titleSong = track.title.slice(0, 42) + '...' : titleSong = track.title
-    var duration = formatTime(track);
-    $('#artwork-url').attr('src', track.artwork_url || '/assets/jamlogo_sml.png');
-    $('#song-title-topbar').text(titleSong);
-    $('#artis-name-topbar').text(track.user.username);
-    $('#duration-song-topbar').text('(' + duration + ')');
-
-    $('#song-info-topbar-container').fadeIn('slow');
-  });
-}
-
 // ADD RADIO
 $('#new_radio').on('submit', function(e) {
   e.preventDefault();
@@ -125,14 +98,18 @@ $('#new_radio').on('submit', function(e) {
 $('#player-list').on('click', '.delete-radio', function(e) {
   e.preventDefault();
 
-  var radioID = $(this).attr('id');
+  var radioUrl = $(this).attr('href');
   var deleteRadio = $.ajax({
-    url: '/radios/' + radioID,
+    url: radioUrl,
     type: 'DELETE',
     dataType: 'json'
-    });
+  });
   deleteRadio.done(function(result) {
     $('#list-element-' + result.id).remove();
+    if (radioID == result.id){ 
+      stopMusic();
+      radioTracks = null;
+    }
     alert(result.message);
   });
   deleteRadio.fail(function() {
@@ -150,7 +127,7 @@ function createRadiosList(radios) {
   radioHTML.push('<h5 id="song-title-topbar"></h5>');
   radioHTML.push('<h6 id="artis-name-topbar" class="artist-duration-topbar"></h6>');
   radioHTML.push('<h6 id="duration-song-topbar" class="artist-duration-topbar"></h6></div></div></div>');
-  radioHTML.push('<ol id="radios-play-list">');
+  radioHTML.push('<ol id="radios-playlist">');
   for(var i = 0; i < radios.length; i++) {
     var p;
     var icon;
@@ -165,9 +142,10 @@ function createRadiosList(radios) {
     radioHTML.push('<div class="small-1 column play-pause-container">');
     radioHTML.push('<img src="' + icon + '" alt="Playbutton" id="play-pause-' + radios[i].id + '"></div>');
     radioHTML.push('<div class="small-10 columns radioslist-element" radio-id="' + radios[i].id + '">');
-    radioHTML.push('<a class="radios" category="' + radios[i].category + '" name="' + radios[i].name + '" href="#">' + radios[i].name + '</a></div>');
-    radioHTML.push('<div class="small-1 column radioslist-element delete">');
-    radioHTML.push('<a class="delete-radio" id="' + radios[i].id + '" href="#">');
+    radioHTML.push('<a class="radios" category="' + radios[i].category + 
+'" name="' + radios[i].name + '" href="#">' + radios[i].name + '</a></div>');
+    radioHTML.push('<div class="small-1 column delete">');
+    radioHTML.push('<a class="delete-radio" href="/radios/' + radios[i].id + '">');
     radioHTML.push('<img src="/assets/delete.png" alt="Delete"></a></div></li>');
   }
   

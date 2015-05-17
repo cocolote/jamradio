@@ -95,7 +95,7 @@
       </div>
     </div>
     <% if current_user && !current_user.radios.empty? %>
-      <ol id="radios-play-list">
+      <ol id="radios-playlist">
       <% current_user.radios.each do |radio| %>
         <li class="row list-element" id="list-element-<%= radio.id %>">
           <div class="small-1 columns play-pause-container">
@@ -104,8 +104,8 @@
           <div class="small-10 columns radioslist-element" radio-id="<%= radio.id %>">
             <%= link_to radio.name, "#", class: "radios", category: radio.category , name: radio.name %>
           </div>
-          <div class="small-1 column radioslist-element delete">
-            <%= link_to image_tag("delete.png"), '#', id: radio.id, class: "delete-radio" %>
+          <div class="small-1 column delete">
+            <%= link_to image_tag("delete.png"), "/radios/#{radio.id}", class: "delete-radio" %>
           </div>
         </li>
       <% end %>
