@@ -44,6 +44,11 @@ $leds: #f90;
     }
   }
 
+  .flash {
+    color: $leds;
+    text-shadow: 0 0 10px rgba($leds, 0.7);
+  }
+
   #user-name {
     font-family: 'Roboto Condensed', sans-serif;
     position: relative;

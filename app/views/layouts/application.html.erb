@@ -24,6 +24,12 @@
       </div>
     </div>
 
+<!--     <%- flash.each do |key, value| -%>
+      <div class="flash flash-<%= key %>">
+        <%= value %>
+      </div>
+    <%- end -%>
+ -->
     <div class="small-12 medium-3 columns" id="user-menu">
       <%- if current_user -%>
         <div id="user-name" class="special-font small-12 medium-3 columns" >
@@ -46,12 +52,6 @@
       <%- end -%>
     </div>
   </div>
-
-  <%- flash.each do |key, value| -%>
-    <div class="flash flash-<%= key %>">
-      <%= value %>
-    </div>
-  <%- end -%>
 
   <%= yield %>
 
