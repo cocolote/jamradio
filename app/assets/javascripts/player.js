@@ -88,9 +88,9 @@ $('#like-btn').on('click', function(e) {
   var likeSong = $.ajax({
     url: '/songs',
     type: 'POST',
-    data: { song: { sc_song_id: currentTrack.id, 
-                    title: currentTrack.title, 
-                    duration: currentTrack.duration } 
+    data: { song: { sc_song_id: currentTrack.id,
+                    title: currentTrack.title,
+                    duration: currentTrack.duration }
           },
     dataType: 'json'
   });

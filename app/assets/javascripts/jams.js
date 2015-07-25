@@ -263,7 +263,7 @@ function jamSongsList(songs, jamID, jamsHTML, jamName) {
     jamsHTML.push('<div class="small-1 column play-pause-container">');
     jamsHTML.push('<img src="' + icon + '" alt="Playbutton" id="play-pause-' + songs[i].sc_song_id + '"></div>');
     jamsHTML.push('<div class="small-10 columns jamsonglist-element">');
-    jamsHTML.push('<a class="jam-songs song-' + i + '" count="' + i 
+    jamsHTML.push('<a class="jam-songs song-' + i + '" count="' + i
 + '" sc-song-id="' + songs[i].sc_song_id + '" href="/jams/' + jamID + '/jam_songs">'
 + songs[i].title + ' (' + duration + ')</a></div>');
     jamsHTML.push('<div class="small-1 columns delete">');
@@ -348,7 +348,7 @@ function refreshPlayList(jamID) {
 
 // REFRESH THE JAMS LIST
 function refreshJamsList() {
-  var jamsLength = 0;
+  var jamsLength;
   refreshJams = setInterval(function() {
     var getPlaylist = $.ajax({
       url: '/jams',
