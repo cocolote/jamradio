@@ -2,18 +2,28 @@
 var CLIENT_ID = '271b061d5469839b06f3e95da05b822c';
 var radioOrSongs;
 var playList = [];
+var elementId;
 
 // ##### HELPER FUNCTIONS #####
 // Toggle play and pause buttons
 function toggleButton(track) {
+  if (playingSong) { elementId = playingSong.id };
+  if (jamPlayingSong) { elementId = jamPlayingSong.id };
+
   if (track.paused) {
-    $('#play-pause-btn').removeClass('btn-pressed');
+    $('#play-pause').removeClass('btn-pressed');
+    $('.play-pause-btn').attr('src', '/assets/playbutton.png');
+    $('#play-pause-' + radioID).attr('src', '/assets/playbutton.png');
+    $('#play-pause-' + elementId).attr('src', '/assets/playbutton.png');
   } else {
-    $('.list-element').removeClass('playing-song');
-    $('.jam-song-element').removeClass('playing-song');
-    $('#list-element-' + playingSong).addClass('playing-song');
-    $('#jam-song-element-'+ playingSong).addClass('playing-song');
-    $('#play-pause-btn').addClass('btn-pressed');
+    $('.list-element').removeClass('now-playing');
+    $('#list-element-' + elementId).addClass('now-playing');
+    $('#list-element-' + radioID).addClass('now-playing');
+    $('#play-pause').addClass('btn-pressed');
+    $('.play-pause-btn').attr('src', '/assets/pausebutton.png');
+    $('.play-pause-container img').attr('src', '/assets/playbutton.png');
+    $('#play-pause-' + radioID).attr('src', '/assets/pausebutton.png');
+    $('#play-pause-' + elementId).attr('src', '/assets/pausebutton.png');
   }
 }
 
@@ -35,6 +45,7 @@ function initialize(client) {
 function stopMusic(track) {
   if(typeof(soundManager) !== 'undefined'){
     soundManager.stopAll();
+    track = "";
     var soundsIDs = soundManager.soundIDs;
     for (i = 0; i < soundsIDs.length; i++) {
       soundManager.destroySound(soundsIDs[i]);
@@ -42,13 +53,45 @@ function stopMusic(track) {
   }
 }
 
+// Animate trash can
+$('#player-list')
+  .on('mouseenter', '.list-element', function() {
+    $(this).children('.delete').fadeIn('fast');
+  })
+  .on('mouseleave', '.list-element', function() {
+    $(this).children('.delete').fadeOut('fast');
+  });
+
+// USER NAME
+$('#user-name a').on('click', function() {
+  animateButtons('user-name a');
+});
+
+// EFECT FOR TITLE OF SON AND ARTWORK
+function artworkTitle(track) {
+  $('#song-info-topbar-container').fadeOut('slow', function() {
+    var titleSong;
+    track.title.length > 45 ? titleSong = track.title.slice(0, 42) + '...' : titleSong = track.title
+    var duration = formatTime(track);
+    $('#artwork-url').attr('src', track.artwork_url || '/assets/jamlogo_sml.png');
+    $('#song-title-topbar').text(titleSong);
+    $('#artis-name-topbar').text(track.user.username);
+    $('#duration-song-topbar').text('(' + duration + ')');
+
+    $('#song-info-topbar-container').fadeIn('slow');
+  });
+}
+
 // LIKE A SONG
 $('#like-btn').on('click', function(e) {
-  animateButtons('like-btn');
+  animateButtons('like-song');
   var likeSong = $.ajax({
     url: '/songs',
     type: 'POST',
-    data: { song: { sc_song_id: currentTrack.id, title: currentTrack.title, duration: currentTrack.duration } },
+    data: { song: { sc_song_id: currentTrack.id,
+                    title: currentTrack.title,
+                    duration: currentTrack.duration }
+          },
     dataType: 'json'
   });
   likeSong.done(function(song) {
@@ -61,7 +104,7 @@ $('#like-btn').on('click', function(e) {
 
 // NEXT SONG
 $('#next-btn').on('mousedown', function() {
-  animateButtons('next-btn');
+  animateButtons('next-song');
   stopMusic();
   if(radioOrSongs === 'radio') {
     pickRandomSong(radioTracks);
@@ -73,16 +116,40 @@ $('#next-btn').on('mousedown', function() {
 // CONTROLLER FOR THE PLAY PAUSE BUTTON
 function songController(track) {
   toggleButton(track);
-  timer(track);
+  showFooter();
 
-  $('#play-pause-btn').on('click', function() {
+  $('#player-list').on('click', '#play-pause-' + elementId,
+    function() {
+      playPause(track);
+    });
+
+  $('#player-list').on('click', '#play-pause-' + radioID, function() {
+    playPause(track);
+  });
+
+  $('.play-pause-btn').on('click', function() {
+    playPause(track);
+  });
+  timer(track);
+}
+
+function playPause(track) {
+  if (track.sID === soundManager.soundIDs[0]) {
     if (track.paused) {
       track.play();
+      $('#song-title-container').animate({
+        height: '2.1em'
+      }, 600, "linear");
+      $(this).attr('src', '/assets/pausebutton.png');
     } else {
       track.pause();
+      $('#song-title-container').animate({
+        height: '0.2em'
+      }, 600, "linear");
+      $(this).attr('src', '/assets/playbutton.png');
     }
-    toggleButton(track);
-  });
+  toggleButton(track);
+  }
 }
 
 // UPDATES THE SONG TIMER
@@ -98,8 +165,8 @@ function timer(track) {
         sec.toString().length === 1 ? sSeconds = '0' + sec : sSeconds = sec;
         $('#timer-p').text(sMinutes + ':' + sSeconds);
         containerWidth = $('#progress-bar-container').css('width');
-        progress = (parseInt(containerWidth) - 6) / (track.durationEstimate / 1000);
-        $('#progess-bar').css('width', (progress * seconds));
+        progress = (parseInt(containerWidth) - 1) / (track.durationEstimate / 1000);
+        $('#progress-bar').css('width', (progress * seconds));
       }
     }, 100);
 }
@@ -108,8 +175,8 @@ function timer(track) {
 $('.switch a').on('click', function(e) {
   e.preventDefault();
 
-  $('.switch').removeClass('switch-pressed');
-  $(this).parent().addClass('switch-pressed');
+  $('.switch').removeClass('btn-pressed');
+  $(this).parent().addClass('btn-pressed');
 
   var url = $(this).attr('url');
   var switchPlaylist = $.ajax({
@@ -121,10 +188,8 @@ $('.switch a').on('click', function(e) {
     if (result.radios) {
       createRadiosList(result.radios);
     } else if (result.songs) {
-      playList = result.songs;
       createSongsList(result.songs);
     } else {
-      createJamsList(result.jams);
       refreshJamsList();
     }
   });
@@ -151,3 +216,29 @@ function toggleSearchForm(name) {
     $('#create-jam').fadeIn();
   }
 }
+
+function showFooter() {
+  if ($('#footer-player').is(':hidden')) {
+    $('#playlist-container').animate({
+      height: '-=2.9em'
+    }, 600, "linear");
+    $('#footer-player').animate({
+      height: 'toggle'
+     }, 600, "linear", function() {
+      $('#song-title-container').animate({
+        height: 'toggle'
+        }, 600, "linear");
+     });
+  }
+}
+
+$('#song-title-container')
+  .on('mouseenter', function() {
+     $('#song-title-container').animate({
+       height: '0'
+       }, 600, "linear", function() {
+          $('#song-title-container').animate({
+            height: '2.1em'
+          }, 4000, "linear");
+      });
+    });

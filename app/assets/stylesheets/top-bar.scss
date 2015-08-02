@@ -1,0 +1,98 @@
+$grey: #cfcfcf;
+$leds: #f90;
+
+#top-bar {
+  height: 3em;
+  background-color: #333;
+  box-shadow: 0 2px 3px rgba(#111,0.5);
+  z-index: 10;
+
+  a {
+    color: white;
+  }
+
+  #app-name {
+    text-align: center;
+    top: -1em;
+
+    #app-title {
+      font-weight: bold;
+      font-size: 0.7em;
+      color: white;
+      letter-spacing: 0.3em;
+      text-shadow: 0px 0px 10px white;
+    }
+  }
+
+  #switch-play-lists {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+
+    .switch {
+      text-align: center;
+      display: inline-block;
+      border-left: 1px solid #111;
+      padding: 0.8em;
+      height: 3em;
+    }
+
+    #jams-switch {
+      margin: 0;
+      border-right: 1px solid #111;
+    }
+  }
+
+  .flash {
+    color: $leds;
+    text-shadow: 0 0 10px rgba($leds, 0.7);
+  }
+
+  #user-name {
+    font-family: 'Roboto Condensed', sans-serif;
+    position: relative;
+    top: 0.8em;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    width: 80%;
+    text-align: right;
+
+    a {
+      margin: 0;
+      padding: 0.9em;
+      border-left: 1px solid #111;
+      border-right: 1px solid #111;
+    }
+  }
+
+  #picture-container {
+    margin: 0;
+    padding: 0;
+    float: right;
+
+    #profile-picture {
+      margin: 0;
+      padding: 0;
+      border: 2px solid #fff;
+      border-radius: 100%;
+      width: 2.9em;
+      height: 2.9em;
+    }
+  }
+
+  #drop1 {
+    width: 30%;
+    background-color: #222;
+
+    .drop1-element {
+      width: 100%;
+
+      &:hover {
+        background-color: $leds !important;
+      }
+    }
+  }
+}

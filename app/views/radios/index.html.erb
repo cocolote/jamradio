@@ -1,97 +1,115 @@
 <div id="playlist-container">
-  <div id="new-jam-form">
-    <%= form_for @jam do |f| %>
+  <div id="search-friends-container" class="small-12 medium-3 columns">
+    <div id="new-radio" class="search-boxes">
+      <%= form_for @radio do |f| %>
+        <div class="row">
+          <div class="small-12 columns">
+            <p class="promt">NEW RADIO</p>
+          </div>
+          <div class="small-12 columns">
+            <%= f.select :category, [["Genre", "genres"], ["Artist", "artist"]] %>
+          </div>
+          <div class="small-12 columns">
+            <%= f.text_field :name %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div id="search-songs" class="search-boxes">
+      <%= form_tag "songs#search", method: "get" do %>
+        <div class="row">
+          <div class="small-12 columns">
+            <p class="promt">NEW SONG</p>
+          </div>
+          <div class="small-12 columns">
+            <%= text_field_tag :q, nil, id: "search-field" %>
+            <div id="autocomplete-container">
+              <ul id="autocomplete"></ul>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div id="new-jam-form" class="small-12 columns">
+      <%= form_for @jam do |f| %>
+        <div class="row">
+          <div class="small-12 columns">
+            <p class="promt">new-jam ></p>
+          </div>
+          <div class="small-12 columns">
+            <%= f.text_field :name, id: "jam-name" %>
+          </div>
+        </div>
+      <% end %>
+      <% if current_user && !current_user.friends.empty? %>
+        <ul id="friends-list" class="row">
+          <% current_user.friends.each do |friend| %>
+            <% user_friend = User.find(friend.friend_id) %>
+            <li class="small-4 columns friend" id="friend-<%= user_friend.id %>">
+              <%= link_to image_tag(user_friend.picture, class: "friend_pic"), "#", id: user_friend.id, class: "jam-friend" %>
+              <p class="user-name"><%= user_friend.user_name %></p>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+
+    <div id="create-jam" class="search-boxes">
       <div class="row">
-        <div class="small-3 columns">
-          <p class="promt">new-jam ></p>
+        <p class="promt small-12 columns"><%= link_to "New Jam!", "#", id: "new-jam" %></p>
+        <div class="small-12 columns">
+          <p class="promt" id="new-song-label">New Song</p>
+          <p class="promt" id="new-jam-song"><%= link_to "Add", "#" %></p>
         </div>
-        <div class="small-9 columns">
-          <%= f.text_field :name, id: "jam-name" %>
-        </div>
-      </div>
-    <% end %>
-    <% if current_user && !current_user.friends.empty? %>
-      <ul id="friends-list" class="row">
-        <% current_user.friends.each do |friend| %>
-          <% user_friend = User.find(friend.friend_id) %>
-          <li class="small-4 columns friend" id="friend-<%= user_friend.id %>">
-            <%= link_to image_tag(user_friend.picture, class: "friend_pic"), "#", id: user_friend.id, class: "jam-friend" %>
-            <p class="user-name"><%= user_friend.user_name %></p>
-          </li>
+        <%= form_tag "songs#search", id: "jam-song-shearch", method: "get" do %>
+          <div class="small-12 columns">
+            <%= text_field_tag :q, nil, id: "jamsongs-search-field" %>
+            <div id="jamsongs-autocomplete-container">
+              <ul id="jamsongs-autocomplete"></ul>
+            </div>
+          </div>
+          <div class="small-12 columns">
+            <% if current_user %>
+              <%= select_tag :jam_id, options_for_select(@all_jams) %>
+            <% end %>
+          </div>
         <% end %>
-      </ul>
-    <% end %>
+      </div>
+    </div>
   </div>
 
-  <div id="player-list">
+  <div id="player-list" class="small-12 medium-9 columns">
+    <div id="title-container">
+      <h2 id="title" class="info-songs-topbar">Radios</h2>
+      <div id="song-info-topbar-container" class="row info-songs-topbar">
+        <div id="image-container" class="small-2 columns">
+          <img id="artwork-url" src="#" alt="artwork">
+        </div>
+        <div id="info-container" class="small-10 columns">
+          <h5 id="song-title-topbar"></h5>
+          <h6 id="artis-name-topbar" class="artist-duration-topbar"></h6>
+          <h6 id="duration-song-topbar" class="artist-duration-topbar"></h6>
+        </div>
+      </div>
+    </div>
     <% if current_user && !current_user.radios.empty? %>
-      <ol id="radios-play-list">
+      <ol id="radios-playlist">
       <% current_user.radios.each do |radio| %>
         <li class="row list-element" id="list-element-<%= radio.id %>">
-          <p class="small-11 columns playlist-element">
+          <div class="small-1 columns play-pause-container">
+            <%= image_tag "playbutton.png", id: "play-pause-#{radio.id}" %>
+          </div>
+          <div class="small-10 columns radioslist-element" radio-id="<%= radio.id %>">
             <%= link_to radio.name, "#", class: "radios", category: radio.category , name: radio.name %>
-          </p>
-          <p class="small-1 columns playlist-element">
-            <%= link_to "X", '#', id: radio.id, class: "delete-radio" %>
-          </p>
+          </div>
+          <div class="small-1 column delete">
+            <%= link_to image_tag("delete.png"), "/radios/#{radio.id}", class: "delete-radio" %>
+          </div>
         </li>
       <% end %>
       </ol>
     <% end %>
-  </div>
-
-  <div id="new-radio" class="search-boxes">
-    <%= form_for @radio do |f| %>
-      <div class="row">
-        <div class="small-3 columns">
-          <p class="promt">new-radio ></p>
-        </div>
-        <div class="small-3 columns">
-          <%= f.select :category, [["Genre", "genres"], ["Artist", "artist"]] %>
-        </div>
-        <div class="small-6 columns">
-          <%= f.text_field :name %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-
-  <div id="search-songs" class="search-boxes">
-    <%= form_tag "songs#search", method: "get" do %>
-      <div class="row">
-        <div class="small-3 columns">
-          <p class="promt">new-song ></p>
-        </div>
-        <div class="small-9 columns">
-          <%= text_field_tag :q, nil, id: "search-field" %>
-          <div id="autocomplete-container">
-            <ul id="autocomplete"></ul>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
-
-  <div id="create-jam" class="search-boxes">
-    <div class="row">
-      <p class="promt small-2 columns"><%= link_to "New Jam!", "#", id: "new-jam" %></p>
-      <div class="small-2 columns">
-        <p class="promt" id="new-song-label">New Song</p>
-        <p class="promt" id="new-jam-song"><%= link_to "Add", "#" %></p>
-      </div>
-      <%= form_tag "songs#search", id: "jam-song-shearch", method: "get" do %>
-        <div class="small-4 columns">
-          <%= text_field_tag :q, nil, id: "jamsongs-search-field" %>
-          <div id="jamsongs-autocomplete-container">
-            <ul id="jamsongs-autocomplete"></ul>
-          </div>
-        </div>
-        <div class="small-4 columns">
-          <% if current_user %>
-            <%= select_tag :jam_id, options_for_select(@all_jams) %>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
   </div>
 </div>

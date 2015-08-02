@@ -1,101 +1,76 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Jamradio</title>
+  <title>JamRadio</title>
+  <link rel="icon" type="image/png" href="/assets/power.png">
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-  <nav class="top-bar">
-    <ul class="title-area">
-      <li class="name">
-        <h1><%= link_to "Jamradio", root_path, class: "special-font" %></h1>
-      </li>
-      <li class="name">
-        <% if current_user %>
-          <div id="search-friends-container">
-            <%= form_tag "users#search", method: "get" do %>
-              <%= text_field_tag :q, nil, id: "search-friends", placeholder: "Look for a friend" %>
-            <% end %>
-            <div id="users-list-container">
-              <ul id="users-list"></ul>
-            </div>
-          </div>
-        <% end %>
-      </li>
-    </ul>
-
-    <section class="top-bar-section">
-      <ul class="right">
-        <%- if current_user -%>
-          <li><%= link_to image_tag(current_user.picture, id: "profile-picture"), '#', "data-dropdown" => "drop1", "aria-controls" => "drop1", "aria-expanded" => "false" %></li>
-            <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
-              <li class="drop1-element"><%= link_to 'My profile', edit_user_registration_path, class: "drop1-link" %></li>
-              <li class="drop1-element"><%= link_to 'Sign Out', destroy_user_session_path, class: "drop1-link", method: :delete %></li>
-            </ul>
-          <li id="user-name" class="special-font"><%= current_user.user_name %></li>
-        <%- else -%>
-          <li><%= link_to 'Sign Up', new_user_registration_path %></li>
-          <li><%= link_to 'Sign In', new_user_session_path %></li>
-        <%- end -%>
-      </ul>
-    </section>
-  </nav>
-
-  <%- flash.each do |key, value| -%>
-    <div class="flash flash-<%= key %>">
-      <%= value %>
+  <div class="container" id="top-bar">
+    <div class="small-12 medium-2 columns" id="app-name">
+      <h1><%= link_to "JamRadio", root_path, id: "app-title", class: "special-font" %></h1>
     </div>
-  <%- end -%>
-
-<!-- player -->
-  <div class="row" id="player">
-    <h3 id="soundcloud-credit" class="app-name special-font">JamRadio
-      <p class="app-name">(Powered by <a href="http://www.soundcloud.com">SoundCloud)</a></p>
-    </h3>
-
-      <div id="song-title-container">
-        <p id="song-title"></p>
-        <div id="timer-playing-container" class="row">
-          <div class="small-10 columns">
-            <p id="radio-playing"></p>
-          </div>
-          <div class="small-2 columns">
-            <p id="timer-p">00:00</p>
-          </div>
+    <div class="small-12 medium-4 columns">
+      <div id="switch-play-lists" class="special-font row">
+        <div id="radios-switch" class="switch switch-pressed small-4 columns">
+          <%= link_to "Radios", "#", url: "/radios" %>
+        </div>
+        <div id="songs-switch" class="switch small-4 columns">
+          <%= link_to "My Music", "#", url: "/songs" %>
+        </div>
+        <div id="jams-switch" class="switch small-4 columns">
+          <%= link_to "Jams", "#", url: "/jams" %>
         </div>
       </div>
+    </div>
 
+    <div class="small-12 medium-3 columns" id="user-menu">
+      <%- if current_user -%>
+        <div id="user-name" class="special-font small-12 medium-3 columns" >
+          <%= link_to current_user.user_name, '#', "data-dropdown" => "drop1", "aria-controls" => "drop1", "aria-expanded" => "false" %>
+        </div>
+        <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
+          <li class="drop1-element"><%= link_to 'My profile', edit_user_registration_path, class: "drop1-link" %></li>
+          <li class="drop1-element"><%= link_to 'Sign Out', destroy_user_session_path, class: "drop1-link", method: :delete %></li>
+        </ul>
+        <div class="small-12 medium-2 columns" id="picture-container">
+          <%= image_tag current_user.picture, id: "profile-picture" %>
+        </div>
+      <%- else -%>
+        <div class="small-12 medium-1 columns">
+          <%= link_to 'Sign Up', new_user_registration_path %>
+        </div>
+        <div class="small-12 medium-1 columns">
+          <%= link_to 'Sign In', new_user_session_path %>
+        </div>
+      <%- end -%>
+    </div>
+  </div>
+
+  <%= yield %>
+
+  <div id="song-title-container">
+    <p id="song-title"></p>
+  </div>
+  <div id="footer-player">
+    <div id="player-controllers" class="row">
+      <div class="btn small-1 column" id="like-song">
+        <%= image_tag "heart.png", id: "like-btn" %>
+      </div>
+      <div class="btn small-1 column" id="play-pause">
+        <%= image_tag "playbutton.png", class: "play-pause-btn" %>
+      </div>
+      <div class="btn small-1 column" id="next-song">
+        <%= image_tag "fast-forward.png", id: "next-btn" %>
+      </div>
+      <div class="btn small-1 column" id="clock-container">
+        <p id="timer-p">00:00</p>
+      </div>
+    </div>
     <div id="progress-bar-container">
-      <div id="progess-bar"></div>
+      <div id="progress-bar"></div>
     </div>
-
-    <div id="player-controllers">
-      <div class="btn" id="play-pause">
-        <%= image_tag "playbutton7.png", id: "play-pause-btn" %>
-      </div>
-      <div class="btn" id='next-song'>
-        <%= image_tag "fast-forward3.png", id: "next-btn" %>
-      </div>
-      <div class="btn" id='like-song'>
-        <%= image_tag "romance1.png", id: "like-btn" %>
-      </div>
-    </div>
-
-    <div id="switch-play-lists">
-      <div id="radios-switch" class="switch switch-pressed">
-        <%= link_to image_tag("radios1.png"), '#', url: "/radios" %>
-      </div>
-      <div id="songs-switch" class="switch">
-        <%= link_to image_tag("player9.png"), '#', url: "/songs" %>
-      </div>
-      <div id="jams-switch" class="switch">
-        <%= link_to image_tag("discjockey.png"), '#', url: "/jams" %>
-      </div>
-    </div>
-
-    <%= yield %>
   </div>
   <%= javascript_include_tag 'application' %>
   <%= javascript_include_tag '//connect.soundcloud.com/sdk.js' %>
